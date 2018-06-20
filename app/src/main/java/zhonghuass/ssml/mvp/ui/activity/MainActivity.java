@@ -8,37 +8,38 @@ import android.support.annotation.Nullable;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-import com.maning.mndialoglibrary.MProgressDialog;
+
+import zhonghuass.ssml.di.component.DaggerMainActivityComponent;
+import zhonghuass.ssml.di.module.MainActivityModule;
+import zhonghuass.ssml.mvp.contract.MainActivityContract;
+import zhonghuass.ssml.mvp.presenter.MainActivityPresenter;
 
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerLogInComponent;
-import zhonghuass.ssml.di.module.LogInModule;
-import zhonghuass.ssml.mvp.contract.LogInContract;
-import zhonghuass.ssml.mvp.presenter.LogInPresenter;
+
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class LogInActivity extends BaseActivity<LogInPresenter> implements LogInContract.View {
+public class MainActivity extends BaseActivity<MainActivityPresenter> implements MainActivityContract.View {
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerLogInComponent //如找不到该类,请编译一下项目
+        DaggerMainActivityComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .logInModule(new LogInModule(this))
+                .mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_log_in; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        return R.layout.activity_main; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        MProgressDialog.showProgress(this);
+
     }
 
     @Override
