@@ -34,5 +34,6 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]//依赖插件, annotationProcessor 是 AndroidStudio 自带并用来替换 APT
     implementation 'me.drakeet.materialdialog:library:1.3.1'
     implementation 'com.github.maning0303:MNProgressHUD:V1.0.9'
+    implementation 'com.roughike:bottom-bar:2.3.1' //底部导航
 }
 

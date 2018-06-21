@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_home"
+        title="首页" />
+    <!--icon="@drawable/ic_dashboard_black_24dp"-->
+
+    <tab
+        id="@+id/tab_company"
+        title="企业名录" />
+
+    <tab
+        id="@+id/tab_daily"
+        title="每日一语" />
+    <!--icon="@mipmap/ic_friends"-->
+    <tab
+        id="@+id/tab_mycenter"
+
+        title="我的" />
+
+</tabs>

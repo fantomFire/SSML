@@ -4,42 +4,37 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.TextView;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-import com.maning.mndialoglibrary.MProgressDialog;
 
-import butterknife.BindView;
-import butterknife.OnClick;
+import zhonghuass.ssml.di.component.DaggerHomeFragmentComponent;
+import zhonghuass.ssml.di.module.HomeFragmentModule;
+import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
+import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
+
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerLogInComponent;
-import zhonghuass.ssml.di.module.LogInModule;
-import zhonghuass.ssml.mvp.contract.LogInContract;
-import zhonghuass.ssml.mvp.presenter.LogInPresenter;
+
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class LogInActivity extends BaseActivity<LogInPresenter> implements LogInContract.View {
-
-    @BindView(R.id.tv_upload)
-    TextView tvUpload;
+public class HomeFragmentActivity extends BaseActivity<HomeFragmentPresenter> implements HomeFragmentContract.View {
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerLogInComponent //如找不到该类,请编译一下项目
+        DaggerHomeFragmentComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .logInModule(new LogInModule(this))
+                .homeFragmentModule(new HomeFragmentModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_log_in; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        return R.layout.activity_home_fragment; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
@@ -54,7 +49,7 @@ public class LogInActivity extends BaseActivity<LogInPresenter> implements LogIn
 
     @Override
     public void hideLoading() {
-        MProgressDialog.dismissProgress();
+
     }
 
     @Override
@@ -72,11 +67,5 @@ public class LogInActivity extends BaseActivity<LogInPresenter> implements LogIn
     @Override
     public void killMyself() {
         finish();
-    }
-
-    @OnClick(R.id.tv_upload)
-    public void onViewClicked() {
-        ArmsUtils.startActivity(MainActivity.class);
-
     }
 }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SSML</string>
+    <string name="title_home">首页</string>
+    <string name="tab_company">企业名录</string>
+    <string name="tab_daily">每日一语</string>
+    <string name="tab_mycenter">我的</string>
+    <string name="tab_home">首页</string>
 </resources>
