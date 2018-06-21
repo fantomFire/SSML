@@ -76,7 +76,6 @@ public class LogInActivity extends BaseActivity<LogInPresenter> implements LogIn
 
     @OnClick(R.id.tv_upload)
     public void onViewClicked() {
-        ArmsUtils.startActivity(MainActivity.class);
-
+     ArmsUtils.startActivity(this,MainActivity.class);
     }
 }
