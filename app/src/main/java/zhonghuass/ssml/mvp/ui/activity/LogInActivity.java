@@ -18,11 +18,12 @@ import zhonghuass.ssml.di.component.DaggerLogInComponent;
 import zhonghuass.ssml.di.module.LogInModule;
 import zhonghuass.ssml.mvp.contract.LogInContract;
 import zhonghuass.ssml.mvp.presenter.LogInPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class LogInActivity extends BaseActivity<LogInPresenter> implements LogInContract.View {
+public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogInContract.View {
 
     @BindView(R.id.tv_upload)
     TextView tvUpload;
@@ -37,8 +38,10 @@ public class LogInActivity extends BaseActivity<LogInPresenter> implements LogIn
                 .inject(this);
     }
 
+
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
+        //setContentLayout();
         return R.layout.activity_log_in; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 

@@ -90,8 +90,11 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_main; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        setContentView(R.layout.activity_main);
+        return 0; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
+
+
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
