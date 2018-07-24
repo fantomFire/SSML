@@ -7,19 +7,19 @@
     android:orientation="vertical"
     tools:context=".mvp.ui.activity.MainActivity">
 
-    <include layout="@layout/include_title"/>
+    <include layout="@layout/include_title" />
 
     <FrameLayout
         android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    </FrameLayout>
+        android:layout_weight="1"></FrameLayout>
+    0
+
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:bb_tabXmlResource="@xml/bottombar_tabs"
         android:layout_gravity="bottom"
-        />
+        app:bb_tabXmlResource="@xml/bottombar_tabs" />
 </LinearLayout>
