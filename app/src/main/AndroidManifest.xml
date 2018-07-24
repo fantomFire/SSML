@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".mvp.ui.activity.LogInActivity"
+            android:name=".mvp.ui.activity.WelcomeActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".mvp.ui.activity.MainActivity" />
-        <activity android:name=".mvp.ui.activity.HomeFragmentActivity"></activity>
+        <activity android:name=".mvp.ui.activity.HomeFragmentActivity"/>
+        <activity android:name=".mvp.ui.activity.GuideActivity" />
+        <activity android:name=".mvp.ui.activity.LogInActivity" />
+
     </application>
 
 </manifest>
