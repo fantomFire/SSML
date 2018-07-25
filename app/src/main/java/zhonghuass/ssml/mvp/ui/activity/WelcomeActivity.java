@@ -14,7 +14,6 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.utils.PrefUtils;
 
 public class WelcomeActivity extends Activity {
-
     private Handler handler;
 
     @Override

@@ -22,7 +22,8 @@
         <activity android:name=".mvp.ui.activity.MainActivity" />
         <activity android:name=".mvp.ui.activity.GuideActivity" />
         <activity android:name=".mvp.ui.activity.WelcomeActivity" />
-
+        <activity android:name=".mvp.ui.activity.RegisterActivity" />
+        <activity android:name=".mvp.ui.activity.MSMQActivity"></activity>
     </application>
 
 </manifest>
