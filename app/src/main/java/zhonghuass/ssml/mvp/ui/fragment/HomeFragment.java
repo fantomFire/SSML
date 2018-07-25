@@ -36,6 +36,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     ViewPager fragVp;
 
     public static HomeFragment newInstance() {
+        System.out.println("33333333333333333333333333333333");
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
@@ -59,8 +60,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-        System.out.println("===initData");
-        System.out.println("==================");
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add( RecommendFragment.newInstance());
         fragments.add( DanymicFragment.newInstance());
