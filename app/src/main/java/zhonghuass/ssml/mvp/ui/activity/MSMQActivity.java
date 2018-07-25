@@ -4,13 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
-import zhonghuass.ssml.di.component.DaggerMSMQComponent;
-import zhonghuass.ssml.di.module.MSMQModule;
 import zhonghuass.ssml.mvp.contract.MSMQContract;
 import zhonghuass.ssml.mvp.presenter.MSMQPresenter;
 
@@ -25,12 +21,12 @@ public class MSMQActivity extends MBaseActivity<MSMQPresenter> implements MSMQCo
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerMSMQComponent //如找不到该类,请编译一下项目
-                .builder()
-                .appComponent(appComponent)
-                .mSMQModule(new MSMQModule(this))
-                .build()
-                .inject(this);
+//        DaggerMSMQComponent //如找不到该类,请编译一下项目
+//                .builder()
+//                .appComponent(appComponent)
+//                .mSMQModule(new MSMQModule(this))
+//                .build()
+//                .inject(this);
     }
 
     @Override
