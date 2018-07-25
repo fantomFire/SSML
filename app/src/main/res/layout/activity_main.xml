@@ -13,13 +13,15 @@
         android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"></FrameLayout>
-    0
+        android:layout_weight="1" />
 
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
+    <com.github.library.layoutView.BottomNavigationViewEx
+        android:id="@+id/bottomMenu"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
-        app:bb_tabXmlResource="@xml/bottombar_tabs" />
+        android:background="@color/white"
+        app:menu="@menu/bottom_menus" />
+
+
 </LinearLayout>

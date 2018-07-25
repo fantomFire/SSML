@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
@@ -12,17 +13,15 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.github.library.layoutView.BottomNavigationViewEx;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerMainActivityComponent;
 import zhonghuass.ssml.di.module.MainActivityModule;
@@ -48,8 +47,8 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     Toolbar toolbar;
     @BindView(R.id.main_frame)
     FrameLayout mainFrame;
-    @BindView(R.id.bottomBar)
-    BottomBar bottomBar;
+    @BindView(R.id.bottomMenu)
+    BottomNavigationViewEx bottomMenu;
     private List<Integer> mTitles;
     private List<Fragment> mFragments;
     private List<Integer> mNavIds;
@@ -67,37 +66,21 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     }
 
-    private OnTabSelectListener mOnSelect = tid -> {
-        switch (tid) {
-            case R.id.tab_home:
-                mReplace = 0;
-                break;
-            case R.id.tab_company:
-                mReplace = 1;
-                break;
-            case R.id.tab_daily:
-                mReplace = 2;
-                break;
-            case R.id.tab_mycenter:
-                mReplace = 3;
-                break;
-
-        }
-
-        toolbarTitle.setText(mTitles.get(mReplace));
-        FragmentUtils.hideAllShowFragment(mFragments.get(mReplace));
-    };
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
-        return 0; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        return R.layout.activity_main; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
-
 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+//        //关闭菜单切换动画特效
+        bottomMenu.enableAnimation(false);
+        bottomMenu.enableShiftingMode(false);
+        bottomMenu.enableItemShiftingMode(false);
+
         toolbarBack.setVisibility(View.GONE);
         //  mPresenter.requestPermissions();
         if (mTitles == null) {
@@ -142,7 +125,36 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
             mFragments.add(mycenterFragment);
         }
         FragmentUtils.addFragments(getSupportFragmentManager(), mFragments, R.id.main_frame, 0);
-        bottomBar.setOnTabSelectListener(mOnSelect);
+        toolbarTitle.setText(mTitles.get(0));//设置默认显示第一个Fragment标题
+
+        bottomMenu.setOnNavigationItemSelectedListener(menuSelect);
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener menuSelect = item -> {
+        switch (item.getItemId()) {
+            case R.id.bottom_menu1:
+                mReplace = 0;
+                changeFragment();
+                return true; //不返回图标不变色
+            case R.id.bottom_menu2:
+                mReplace = 1;
+                changeFragment();
+                return true; //不返回图标不变色
+            case R.id.bottom_menu3:
+                mReplace = 2;
+                changeFragment();
+                return true; //不返回图标不变色
+            case R.id.bottom_menu4:
+                mReplace = 3;
+                changeFragment();
+                return true; //不返回图标不变色
+        }
+        return false;
+    };
+
+    private void changeFragment() {
+        toolbarTitle.setText(mTitles.get(mReplace));
+        FragmentUtils.hideAllShowFragment(mFragments.get(mReplace));
     }
 
     @Override
@@ -178,7 +190,4 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         outState.putInt(ACTIVITY_FRAGMENT_REPLACE, mReplace);
     }
 
-    @OnClick(R.id.bottomBar)
-    public void onViewClicked() {
-    }
 }
