@@ -1,51 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lite_blue"
     android:orientation="vertical">
-    <TextView
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/my_indict"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="手痒痒"
-        android:background="#fffff0"
-        />
-    <RelativeLayout
+
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabTextColor="@color/black_de" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/frag_vp"
         android:layout_width="match_parent"
-        android:background="@color/colorAccent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/rl_11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DASFASDF"
-                android:background="#56465514"
-                />                                               
-        </LinearLayout>
-        <LinearLayout
-            android:layout_below="@id/rl_11"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-        <Button
-            android:layout_width="wrap_content"
-            android:text="btn"
-            android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:text="btn"
-                android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:text="btn"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 </LinearLayout>

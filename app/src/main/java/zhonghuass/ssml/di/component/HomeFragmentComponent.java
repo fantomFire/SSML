@@ -8,13 +8,10 @@ import zhonghuass.ssml.di.module.HomeFragmentModule;
 
 import com.jess.arms.di.scope.ActivityScope;
 
-import zhonghuass.ssml.mvp.ui.activity.HomeFragmentActivity;
 import zhonghuass.ssml.mvp.ui.fragment.HomeFragment;
 
 @ActivityScope
 @Component(modules = HomeFragmentModule.class, dependencies = AppComponent.class)
 public interface HomeFragmentComponent {
-    void inject(HomeFragmentActivity activity);
-
     void inject(HomeFragment fragment);
 }

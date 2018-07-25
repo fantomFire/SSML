@@ -7,10 +7,9 @@ import android.support.annotation.Nullable;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.di.component.DaggerAppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
-import zhonghuass.ssml.di.component.DaggerMSMQComponent;
-import zhonghuass.ssml.di.module.MSMQModule;
 import zhonghuass.ssml.mvp.contract.MSMQContract;
 import zhonghuass.ssml.mvp.presenter.MSMQPresenter;
 
@@ -24,17 +23,18 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class MSMQActivity extends MBaseActivity<MSMQPresenter> implements MSMQContract.View {
 
     @Override
-    public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerMSMQComponent //如找不到该类,请编译一下项目
+    public void setupActivityComponent(@NonNull AppComponent appComponent)  {
+        /*DaggerMSMQComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
                 .mSMQModule(new MSMQModule(this))
                 .build()
-                .inject(this);
+                .inject(this);*/
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
+
         return R.layout.activity_msmq; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 

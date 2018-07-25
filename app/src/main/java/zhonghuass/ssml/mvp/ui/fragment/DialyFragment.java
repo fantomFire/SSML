@@ -48,7 +48,7 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        System.out.println("eeeeeeee");
     }
 
     /**
@@ -118,4 +118,5 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
     public void killMyself() {
 
     }
+
 }

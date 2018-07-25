@@ -2,10 +2,11 @@ package zhonghuass.ssml.mvp.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +15,25 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerHomeFragmentComponent;
 import zhonghuass.ssml.di.module.HomeFragmentModule;
 import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
-
-import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements HomeFragmentContract.View {
+
+    @BindView(R.id.my_indict)
+    TabLayout myIndict;
+    @BindView(R.id.frag_vp)
+    ViewPager fragVp;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -43,50 +52,38 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        System.out.println("home initview");
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
+        System.out.println("===initData");
+        System.out.println("==================");
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        fragments.add( RecommendFragment.newInstance());
+        fragments.add( DanymicFragment.newInstance());
+        fragments.add(FocusFragment.newInstance());
+        // 创建ViewPager适配器
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
+        myPagerAdapter.setFragments(fragments);
+        // 给ViewPager设置适配器
+        fragVp.setAdapter(myPagerAdapter);
+
+        // TabLayout 指示器 (记得自己手动创建4个Fragment,注意是 app包下的Fragment 还是 V4包下的 Fragment)
+        myIndict.addTab(myIndict.newTab());
+        myIndict.addTab(myIndict.newTab());
+        myIndict.addTab(myIndict.newTab());
+        // 使用 TabLayout 和 ViewPager 相关联
+        myIndict.setupWithViewPager(fragVp);
+        // TabLayout指示器添加文本
+        myIndict.getTabAt(0).setText("推荐");
+        myIndict.getTabAt(1).setText("动态");
+        myIndict.getTabAt(2).setText("关注");
+        System.out.println("--------------"+fragments.size());
     }
 
-    /**
-     * 通过此方法可以使 Fragment 能够与外界做一些交互和通信, 比如说外部的 Activity 想让自己持有的某个 Fragment 对象执行一些方法,
-     * 建议在有多个需要与外界交互的方法时, 统一传 {@link Message}, 通过 what 字段来区分不同的方法, 在 {@link #setData(Object)}
-     * 方法中就可以 {@code switch} 做不同的操作, 这样就可以用统一的入口方法做多个不同的操作, 可以起到分发的作用
-     * <p>
-     * 调用此方法时请注意调用时 Fragment 的生命周期, 如果调用 {@link #setData(Object)} 方法时 {@link Fragment#onCreate(Bundle)} 还没执行
-     * 但在 {@link #setData(Object)} 里却调用了 Presenter 的方法, 是会报空的, 因为 Dagger 注入是在 {@link Fragment#onCreate(Bundle)} 方法中执行的
-     * 然后才创建的 Presenter, 如果要做一些初始化操作,可以不必让外部调用 {@link #setData(Object)}, 在 {@link #initData(Bundle)} 中初始化就可以了
-     * <p>
-     * Example usage:
-     * <pre>
-     * public void setData(@Nullable Object data) {
-     *     if (data != null && data instanceof Message) {
-     *         switch (((Message) data).what) {
-     *             case 0:
-     *                 loadData(((Message) data).arg1);
-     *                 break;
-     *             case 1:
-     *                 refreshUI();
-     *                 break;
-     *             default:
-     *                 //do something
-     *                 break;
-     *         }
-     *     }
-     * }
-     *
-     * // call setData(Object):
-     * Message data = new Message();
-     * data.what = 0;
-     * data.arg1 = 1;
-     * fragment.setData(data);
-     * </pre>
-     *
-     * @param data 当不需要参数时 {@code data} 可以为 {@code null}
-     */
     @Override
     public void setData(@Nullable Object data) {
 
@@ -118,4 +115,5 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void killMyself() {
 
     }
+
 }

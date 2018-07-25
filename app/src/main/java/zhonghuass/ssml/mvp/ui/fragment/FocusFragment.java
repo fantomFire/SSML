@@ -10,42 +10,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
-import zhonghuass.ssml.di.component.DaggerCompanyComponent;
-import zhonghuass.ssml.di.module.CompanyModule;
-import zhonghuass.ssml.mvp.contract.CompanyContract;
-import zhonghuass.ssml.mvp.presenter.CompanyPresenter;
+import zhonghuass.ssml.di.component.DaggerFocusComponent;
+import zhonghuass.ssml.di.module.FocusModule;
+import zhonghuass.ssml.mvp.contract.FocusContract;
+import zhonghuass.ssml.mvp.presenter.FocusPresenter;
 
 import zhonghuass.ssml.R;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class CompanyFragment extends BaseFragment<CompanyPresenter> implements CompanyContract.View {
+public class FocusFragment extends BaseFragment<FocusPresenter> implements FocusContract.View {
 
-    public static CompanyFragment newInstance() {
-        CompanyFragment fragment = new CompanyFragment();
+    public static FocusFragment newInstance() {
+        FocusFragment fragment = new FocusFragment();
         return fragment;
     }
 
-
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerCompanyComponent //如找不到该类,请编译一下项目
+        DaggerFocusComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .companyModule(new CompanyModule(this))
+                .focusModule(new FocusModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_company, container, false);
+        return inflater.inflate(R.layout.fragment_focus, container, false);
     }
 
     @Override
@@ -120,5 +118,4 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     public void killMyself() {
 
     }
-
 }

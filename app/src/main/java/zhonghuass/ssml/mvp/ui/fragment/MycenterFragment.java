@@ -48,7 +48,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        System.out.println("mycenter");
     }
 
     /**

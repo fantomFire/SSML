@@ -41,13 +41,14 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
+        System.out.println("login initVIEW");
         //setContentLayout();
         return R.layout.activity_log_in; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        System.out.println("login initDATA");
     }
 
     @Override

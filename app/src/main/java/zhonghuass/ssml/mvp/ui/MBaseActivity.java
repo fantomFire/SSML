@@ -63,7 +63,6 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
     public synchronized Cache<String, Object> provideCache() {
         if (mCache == null) {
             mCache = ArmsUtils.obtainAppComponentFromContext(this).cacheFactory().build(CacheType.ACTIVITY_CACHE);
-            String data = "安是的发烧的法师打发盛大发售";
         }
         return mCache;
     }
