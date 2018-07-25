@@ -63,8 +63,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 .mainActivityModule(new MainActivityModule(this))
                 .build()
                 .inject(this);
-
-
     }
 
 
