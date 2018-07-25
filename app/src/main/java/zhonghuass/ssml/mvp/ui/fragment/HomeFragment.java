@@ -37,6 +37,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     public static HomeFragment newInstance() {
         System.out.println("33333333333333333333333333333333");
+        System.out.println("33333333333333333333333333333333");
+        System.out.println("33333333333333333333333333333333");
+        System.out.println("33333333333333333333333333333333");
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
