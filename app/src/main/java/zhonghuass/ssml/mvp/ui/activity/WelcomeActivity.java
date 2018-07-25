@@ -24,8 +24,8 @@ public class WelcomeActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
         setContentView(R.layout.activity_welcome);
 
-        RelativeLayout layoutSplash= findViewById(R.id.rl_splash);
-        AlphaAnimation alphaAnimation=new AlphaAnimation(0.1f,1.0f);
+        RelativeLayout layoutSplash = findViewById(R.id.rl_splash);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.1f, 1.0f);
         alphaAnimation.setDuration(500);//设置动画播放时长1000毫秒（1秒）
         layoutSplash.startAnimation(alphaAnimation);
         handler = new Handler();
@@ -44,7 +44,7 @@ public class WelcomeActivity extends Activity {
                 intent.setClass(WelcomeActivity.this, GuideActivity.class);
                 startActivity(intent);
             } else {
-                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, LogInActivity.class));
             }
             finish();
         }

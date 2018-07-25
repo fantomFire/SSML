@@ -27,7 +27,6 @@ public class GuideActivity extends Activity {
 
         viewPager.setAdapter(new MyAdapter());
 
-
     }
 
     class MyAdapter extends PagerAdapter {

@@ -3,6 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="white">#ffffff</color>
-    <color name="text_color">#282828</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="tpcolorWhite">#80ffffff</color>
+    <color name="corlor28">#282828</color>
+    <color name="color88">#888888</color>
+    <color name="colorcf1313">#cf1313</color>
+    <color name="colorf5">#f5f5f5</color>
 </resources>

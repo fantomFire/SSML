@@ -131,22 +131,22 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     private BottomNavigationView.OnNavigationItemSelectedListener menuSelect = item -> {
         switch (item.getItemId()) {
-            case R.id.bottom_menu1:
-                mReplace = 0;
-                changeFragment();
-                return true; //不返回图标不变色
-            case R.id.bottom_menu2:
-                mReplace = 1;
-                changeFragment();
-                return true; //不返回图标不变色
-            case R.id.bottom_menu3:
-                mReplace = 2;
-                changeFragment();
-                return true; //不返回图标不变色
-            case R.id.bottom_menu4:
-                mReplace = 3;
-                changeFragment();
-                return true; //不返回图标不变色
+//            case R.id.bottom_menu1:
+//                mReplace = 0;
+//                changeFragment();
+//                return true; //不返回图标不变色
+//            case R.id.bottom_menu2:
+//                mReplace = 1;
+//                changeFragment();
+//                return true; //不返回图标不变色
+//            case R.id.bottom_menu3:
+//                mReplace = 2;
+//                changeFragment();
+//                return true; //不返回图标不变色
+//            case R.id.bottom_menu4:
+//                mReplace = 3;
+//                changeFragment();
+//                return true; //不返回图标不变色
         }
         return false;
     };
@@ -158,7 +158,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     @Override
     public void showLoading() {
-
     }
 
     @Override
