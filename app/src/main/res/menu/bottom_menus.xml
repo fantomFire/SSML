@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/bottom_menu1"
+        android:title="首页"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/bottom_menu2"
+        android:title="企业名录"
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/bottom_menu3"
+        android:title="每日一语"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/bottom_menu4"
+        android:title="我的"
+        app:showAsAction="withText" />
+</menu>
