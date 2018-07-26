@@ -68,7 +68,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
         return R.layout.activity_main; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
@@ -76,10 +75,9 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 //        //关闭菜单切换动画特效
-        bottomMenu.enableAnimation(false);
+      /*  bottomMenu.enableAnimation(false);
         bottomMenu.enableShiftingMode(false);
-        bottomMenu.enableItemShiftingMode(false);
-
+        bottomMenu.enableItemShiftingMode(false);*/
         toolbarBack.setVisibility(View.GONE);
         //  mPresenter.requestPermissions();
         if (mTitles == null) {
