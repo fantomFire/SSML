@@ -68,14 +68,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
         return R.layout.activity_main; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-//        //关闭菜单切换动画特效
+        //关闭菜单切换动画特效
         bottomMenu.enableAnimation(false);
         bottomMenu.enableShiftingMode(false);
         bottomMenu.enableItemShiftingMode(false);
@@ -99,7 +98,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
         HomeFragment homeFragment;
         CompanyFragment companyFragment;
-
         DialyFragment dialyFragment;
         MycenterFragment mycenterFragment;
 
@@ -131,27 +129,33 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
     private BottomNavigationView.OnNavigationItemSelectedListener menuSelect = item -> {
         switch (item.getItemId()) {
-//            case R.id.bottom_menu1:
-//                mReplace = 0;
-//                changeFragment();
-//                return true; //不返回图标不变色
-//            case R.id.bottom_menu2:
-//                mReplace = 1;
-//                changeFragment();
-//                return true; //不返回图标不变色
-//            case R.id.bottom_menu3:
-//                mReplace = 2;
-//                changeFragment();
-//                return true; //不返回图标不变色
-//            case R.id.bottom_menu4:
-//                mReplace = 3;
-//                changeFragment();
-//                return true; //不返回图标不变色
+            case R.id.bottom_menu1:
+                mReplace = 0;
+                changeFragment();
+                return true; //不返回图标不变色
+            case R.id.bottom_menu2:
+                mReplace = 1;
+                changeFragment();
+                return true; //不返回图标不变色
+            case R.id.bottom_menu3:
+                mReplace = 2;
+                changeFragment();
+                return true; //不返回图标不变色
+            case R.id.bottom_menu4:
+                mReplace = 3;
+                changeFragment();
+                return true; //不返回图标不变色
         }
         return false;
     };
 
     private void changeFragment() {
+        if (mReplace == 3) {
+            //隐藏标题栏
+            toolbar.setVisibility(View.GONE);
+        } else {
+            toolbar.setVisibility(View.VISIBLE);
+        }
         toolbarTitle.setText(mTitles.get(mReplace));
         FragmentUtils.hideAllShowFragment(mFragments.get(mReplace));
     }
