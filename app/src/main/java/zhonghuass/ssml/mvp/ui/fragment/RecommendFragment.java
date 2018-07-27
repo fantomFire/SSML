@@ -2,10 +2,10 @@ package zhonghuass.ssml.mvp.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +14,28 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerRecommendComponent;
 import zhonghuass.ssml.di.module.RecommendModule;
 import zhonghuass.ssml.mvp.contract.RecommendContract;
+import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.presenter.RecommendPresenter;
-
-import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.adapter.RecommendAdapter;
+import zhonghuass.ssml.utils.decoration.SpacesItemDecoration;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class RecommendFragment extends BaseFragment<RecommendPresenter> implements RecommendContract.View {
+
+    @BindView(R.id.recommend_rec)
+    RecyclerView recommendRec;
+    private ArrayList<RecommendBean> recommendBeans;
+    private RecommendAdapter recommendAdapter;
+
 
     public static RecommendFragment newInstance() {
         RecommendFragment fragment = new RecommendFragment();
@@ -48,45 +59,37 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        recommendBeans = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            RecommendBean recommendBean = new RecommendBean();
+            recommendBean.imgPath = "http://pic1.cxtuku.com/00/10/37/b212a9aabf1b.jpg";
+            recommendBean.companyName = "八马乐园" + i;
+            recommendBeans.add(recommendBean);
+        }
+        RecommendBean recommendBean = new RecommendBean();
+        recommendBean.imgPath = "http://pic2.cxtuku.com/00/03/24/b9931efe7466.jpg";
+        recommendBean.companyName = "花好月圆";
+        recommendBeans.add(recommendBean);
 
+
+        initRecycleView();
     }
 
-    /**
-     * 通过此方法可以使 Fragment 能够与外界做一些交互和通信, 比如说外部的 Activity 想让自己持有的某个 Fragment 对象执行一些方法,
-     * 建议在有多个需要与外界交互的方法时, 统一传 {@link Message}, 通过 what 字段来区分不同的方法, 在 {@link #setData(Object)}
-     * 方法中就可以 {@code switch} 做不同的操作, 这样就可以用统一的入口方法做多个不同的操作, 可以起到分发的作用
-     * <p>
-     * 调用此方法时请注意调用时 Fragment 的生命周期, 如果调用 {@link #setData(Object)} 方法时 {@link Fragment#onCreate(Bundle)} 还没执行
-     * 但在 {@link #setData(Object)} 里却调用了 Presenter 的方法, 是会报空的, 因为 Dagger 注入是在 {@link Fragment#onCreate(Bundle)} 方法中执行的
-     * 然后才创建的 Presenter, 如果要做一些初始化操作,可以不必让外部调用 {@link #setData(Object)}, 在 {@link #initData(Bundle)} 中初始化就可以了
-     * <p>
-     * Example usage:
-     * <pre>
-     * public void setData(@Nullable Object data) {
-     *     if (data != null && data instanceof Message) {
-     *         switch (((Message) data).what) {
-     *             case 0:
-     *                 loadData(((Message) data).arg1);
-     *                 break;
-     *             case 1:
-     *                 refreshUI();
-     *                 break;
-     *             default:
-     *                 //do something
-     *                 break;
-     *         }
-     *     }
-     * }
-     *
-     * // call setData(Object):
-     * Message data = new Message();
-     * data.what = 0;
-     * data.arg1 = 1;
-     * fragment.setData(data);
-     * </pre>
-     *
-     * @param data 当不需要参数时 {@code data} 可以为 {@code null}
-     */
+    private void initRecycleView() {
+        recommendRec.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendBeans);
+        recommendRec.setAdapter(recommendAdapter);
+        recommendRec.addItemDecoration(new SpacesItemDecoration(6,6,getResources().getColor(R.color.red)));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("adsfadfadfa");
+        recommendAdapter.addData(recommendBeans);
+        recommendAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void setData(@Nullable Object data) {
 

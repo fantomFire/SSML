@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/recommend_img"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/company_name"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        />
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="35dp">
+          <ImageView
+              android:id="@+id/company_icon"
+              android:layout_width="30dp"
+              android:layout_height="30dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="八马生命乐园"
+            android:layout_toRightOf="@id/company_icon"
+            android:layout_marginLeft="6dp"
+            android:layout_centerInParent="true"
+            android:textSize="14sp"
+            android:textColor="@color/text_c28"
+
+            />
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_centerInParent="true"
+              android:layout_marginRight="10dp"
+              android:text="2222"
+              />
+      </RelativeLayout>
+    
+</LinearLayout>
