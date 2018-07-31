@@ -1,34 +1,75 @@
 package zhonghuass.ssml.mvp.ui.fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.github.library.layoutView.CircleImageView;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
 import zhonghuass.ssml.di.component.DaggerMycenterComponent;
 import zhonghuass.ssml.di.module.MycenterModule;
+import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.MycenterContract;
 import zhonghuass.ssml.mvp.presenter.MycenterPresenter;
 
 import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.adapter.ViewPagerAdapter;
+import zhonghuass.ssml.utils.EventBusUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class MycenterFragment extends BaseFragment<MycenterPresenter> implements MycenterContract.View {
+    @BindView(R.id.tabLayout)
+    TabLayout mTabLayout;
+    @BindView(R.id.viewPager)
+    ViewPager mViewPager;
+    @BindView(R.id.iv_photo)
+    CircleImageView mPhoto;
+    @BindView(R.id.iv_setting)
+    TextView ivSetting;
+    private List<Fragment> fragments = new ArrayList<>();
+    private ViewPagerAdapter mAdapter;
+    private String[] titles = {"图文", "视频"};
 
     public static MycenterFragment newInstance() {
         MycenterFragment fragment = new MycenterFragment();
         return fragment;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mTabLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    setIndicator(mTabLayout, 70, 70);
+                }
+            });
+        }
     }
 
     @Override
@@ -48,7 +89,54 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        System.out.println("mycenter");
+
+        fragments.add(MyPicTextFragment.newInstance());
+        fragments.add(MyPicTextFragment.newInstance());
+        mAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments, titles);
+        mViewPager.setAdapter(mAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        ivSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //通知MainActivty展示mNavigationView
+                EventMsg msg = new EventMsg();
+                msg.isShowNav = true;
+                EventBusUtils.post(msg);
+            }
+        });
+    }
+
+    public void setIndicator(TabLayout tabs, int leftDip, int rightDip) {
+        Class<?> tabLayout = tabs.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayout.getDeclaredField("mTabStrip");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+        tabStrip.setAccessible(true);
+        LinearLayout llTab = null;
+        try {
+            llTab = (LinearLayout) tabStrip.get(tabs);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
+        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
+
+        for (int i = 0; i < llTab.getChildCount(); i++) {
+            View child = llTab.getChildAt(i);
+            child.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            params.leftMargin = left;
+            params.rightMargin = right;
+            child.setLayoutParams(params);
+            child.invalidate();
+        }
+
+
     }
 
     /**

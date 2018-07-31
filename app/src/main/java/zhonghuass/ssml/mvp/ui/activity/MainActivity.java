@@ -5,19 +5,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.github.library.layoutView.BottomNavigationViewEx;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +32,14 @@ import butterknife.BindView;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerMainActivityComponent;
 import zhonghuass.ssml.di.module.MainActivityModule;
+import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.MainActivityContract;
 import zhonghuass.ssml.mvp.presenter.MainActivityPresenter;
 import zhonghuass.ssml.mvp.ui.fragment.CompanyFragment;
 import zhonghuass.ssml.mvp.ui.fragment.DialyFragment;
 import zhonghuass.ssml.mvp.ui.fragment.HomeFragment;
 import zhonghuass.ssml.mvp.ui.fragment.MycenterFragment;
+import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.FragmentUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -50,10 +58,26 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     FrameLayout mainFrame;
     @BindView(R.id.bottomMenu)
     BottomNavigationViewEx bottomMenu;
+    @BindView(R.id.navigation)
+    NavigationView mNavigationView;
+    @BindView(R.id.drawerLayout)
+    DrawerLayout mDrawerLayout;
     private List<Integer> mTitles;
     private List<Fragment> mFragments;
     private List<Integer> mNavIds;
     private int mReplace = 0;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBusUtils.register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
+    }
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -71,6 +95,10 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         return R.layout.activity_main; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
+    @Override
+    public boolean useEventBus() {
+        return super.useEventBus();
+    }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
@@ -125,6 +153,11 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         toolbarTitle.setText(mTitles.get(0));//设置默认显示第一个Fragment标题
 
         bottomMenu.setOnNavigationItemSelectedListener(menuSelect);
+
+        // 设置NavigationView宽度
+        ViewGroup.LayoutParams params = mNavigationView.getLayoutParams();
+        params.width = getResources().getDisplayMetrics().widthPixels * 2 / 3;
+        mNavigationView.setLayoutParams(params);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener menuSelect = item -> {
@@ -190,6 +223,28 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(ACTIVITY_FRAGMENT_REPLACE, mReplace);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showNavigation(EventMsg eventMsg) {
+        if (eventMsg != null && eventMsg.isShowNav) {
+            Log.e("--", "收到消息了。");
+//            bottomMenu.setVisibility(View.GONE);
+            mDrawerLayout.openDrawer(mNavigationView);
+        }
+    }
+
+    private double firstTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        long secondTime = System.currentTimeMillis();
+        if (secondTime - firstTime > 2000) {
+            ArmsUtils.snackbarText("再按一次退出程序");
+            firstTime = secondTime;
+        } else {
+            ArmsUtils.exitApp();
+        }
     }
 
 }
