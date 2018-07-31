@@ -62,7 +62,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="20dp"
                 android:background="@mipmap/dian"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
 
 

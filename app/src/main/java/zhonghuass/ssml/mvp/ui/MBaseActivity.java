@@ -141,6 +141,7 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_back:
+                finish();
                 break;
             case R.id.iv_dian:
                 break;
