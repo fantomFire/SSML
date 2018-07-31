@@ -6,35 +6,28 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerPassWorldLoginComponent;
-import zhonghuass.ssml.di.module.PassWorldLoginModule;
-import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
-import zhonghuass.ssml.mvp.presenter.PassWorldLoginPresenter;
+import zhonghuass.ssml.di.component.DaggerConfirModiComponent;
+import zhonghuass.ssml.di.module.ConfirModiModule;
+import zhonghuass.ssml.mvp.contract.ConfirModiContract;
+import zhonghuass.ssml.mvp.presenter.ConfirModiPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
-
-public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresenter> implements PassWorldLoginContract.View {
+public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> implements ConfirModiContract.View {
 
     @BindView(R.id.edt_phone)
     EditText edtPhone;
-    @BindView(R.id.edt_key)
-    EditText edtKey;
-    @BindView(R.id.iv_passworld_choose)
-    ImageView ivPassworldChoose;
-    @BindView(R.id.tv_forget)
-    TextView tvForget;
+    @BindView(R.id.edt_passworld)
+    EditText edtPassworld;
     @BindView(R.id.tv_upload)
     TextView tvUpload;
     @BindView(R.id.tv_agreement)
@@ -42,22 +35,22 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerPassWorldLoginComponent //如找不到该类,请编译一下项目
+        DaggerConfirModiComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .passWorldLoginModule(new PassWorldLoginModule(this))
+                .confirModiModule(new ConfirModiModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_login_password; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
-
+        return R.layout.activity_confir_modi; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
     }
 
     @Override
@@ -87,21 +80,9 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
         finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
-    @OnClick({R.id.iv_passworld_choose, R.id.tv_forget, R.id.tv_upload, R.id.tv_agreement})
+    @OnClick({R.id.tv_upload, R.id.tv_agreement})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.iv_passworld_choose:
-                break;
-            case R.id.tv_forget:
-                ArmsUtils.startActivity(ForgetPassworldActivity.class);
-                break;
             case R.id.tv_upload:
                 break;
             case R.id.tv_agreement:
