@@ -33,6 +33,8 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     //Butterknife 插件,很多人因为没加这个而报错,切记!!!
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+//    annotationProcessor rootProject.ext.dependencies["eventbus3.0"]
+    implementation 'org.greenrobot:eventbus:3.0.0'
     //依赖插件, annotationProcessor 是 AndroidStudio 自带并用来替换 APT
     implementation 'me.drakeet.materialdialog:library:1.3.1'
     implementation 'com.github.maning0303:MNProgressHUD:V1.0.9'
@@ -41,4 +43,3 @@ dependencies {
     //包含BaseAdapter,各种头布局刷新的View等等的库。
     implementation project(':library_adapter')
 }
-
