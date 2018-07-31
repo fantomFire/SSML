@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -67,6 +68,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        llTop.setVisibility(View.GONE);
     }
 
     @Override
@@ -96,7 +98,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     }
 
 
-    @OnClick({R.id.tv_getcode, R.id.tv_register, R.id.tv_passworld_login, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement,R.id.iv_weixin, R.id.iv_qq, R.id.iv_weibo})
+    @OnClick({R.id.tv_getcode, R.id.tv_register, R.id.tv_passworld_login, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_weixin, R.id.iv_qq, R.id.iv_weibo})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
@@ -124,11 +126,5 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
 }
