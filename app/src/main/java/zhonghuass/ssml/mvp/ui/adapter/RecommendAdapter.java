@@ -6,13 +6,13 @@ import com.bumptech.glide.Glide;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 
 public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHolder> {
-    public RecommendAdapter(int layoutResId, ArrayList<RecommendBean> data) {
+    public RecommendAdapter(int layoutResId, List<RecommendBean> data) {
         super(layoutResId, data);
     }
 
