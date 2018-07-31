@@ -39,17 +39,17 @@ import static com.jess.arms.utils.ThirdViewUtil.convertAutoView;
 
 public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActivity implements IActivity, ActivityLifecycleable {
     @BindView(R.id.ll_back)
-    LinearLayout llBack;
+    public LinearLayout llBack;
     @BindView(R.id.tv_title)
-    TextView tvTitle;
+    public TextView tvTitle;
     @BindView(R.id.tv_save)
-    TextView tvSave;
+    public TextView tvSave;
     @BindView(R.id.iv_dian)
-    ImageView ivDian;
+    public ImageView ivDian;
     @BindView(R.id.ll_top)
-    LinearLayout llTop;
+    public LinearLayout llTop;
     @BindView(R.id.fl_base_activity)
-    FrameLayout flBaseActivity;
+    public FrameLayout flBaseActivity;
 
     protected final String TAG = this.getClass().getSimpleName();
     private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
@@ -81,9 +81,9 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_base);
         FrameLayout flBaseActivity = findViewById(R.id.fl_base_activity);
 

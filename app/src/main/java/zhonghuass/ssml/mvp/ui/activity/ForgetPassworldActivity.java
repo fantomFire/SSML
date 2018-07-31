@@ -53,7 +53,7 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        llTop.setVisibility(View.GONE);
     }
 
     @Override

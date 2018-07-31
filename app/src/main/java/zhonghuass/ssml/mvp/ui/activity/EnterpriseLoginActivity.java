@@ -9,7 +9,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
@@ -21,11 +20,12 @@ import zhonghuass.ssml.di.component.DaggerEnterpriseLoginComponent;
 import zhonghuass.ssml.di.module.EnterpriseLoginModule;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
 import zhonghuass.ssml.mvp.presenter.EnterpriseLoginPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class EnterpriseLoginActivity extends BaseActivity<EnterpriseLoginPresenter> implements EnterpriseLoginContract.View {
+public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresenter> implements EnterpriseLoginContract.View {
 
     @BindView(R.id.edt_phone)
     EditText edtPhone;
@@ -57,7 +57,7 @@ public class EnterpriseLoginActivity extends BaseActivity<EnterpriseLoginPresent
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        llTop.setVisibility(View.GONE);
     }
 
     @Override
@@ -85,13 +85,6 @@ public class EnterpriseLoginActivity extends BaseActivity<EnterpriseLoginPresent
     @Override
     public void killMyself() {
         finish();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @OnClick({R.id.iv_passworld_choose, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement})
