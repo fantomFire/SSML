@@ -59,6 +59,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        System.out.println("recommend");
         recommendBeans = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             RecommendBean recommendBean = new RecommendBean();
@@ -79,15 +80,17 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
         recommendRec.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendBeans);
         recommendRec.setAdapter(recommendAdapter);
-        recommendRec.addItemDecoration(new SpacesItemDecoration(6,6,getResources().getColor(R.color.red)));
+        recommendRec.addItemDecoration(new SpacesItemDecoration(10,10,getResources().getColor(R.color.colorf5)));
+
+
+        recommendAdapter.addData(recommendBeans);
+        recommendAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("adsfadfadfa");
-        recommendAdapter.addData(recommendBeans);
-        recommendAdapter.notifyDataSetChanged();
+
     }
 
     @Override

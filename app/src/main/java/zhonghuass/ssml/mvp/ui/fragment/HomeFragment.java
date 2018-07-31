@@ -1,10 +1,11 @@
 package zhonghuass.ssml.mvp.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -15,7 +16,18 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import net.lucode.hackware.magicindicator.MagicIndicator;
+import net.lucode.hackware.magicindicator.ViewPagerHelper;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator;
+import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.ColorTransitionPagerTitleView;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import zhonghuass.ssml.R;
@@ -31,11 +43,14 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements HomeFragmentContract.View {
 
     @BindView(R.id.my_indict)
-    TabLayout myIndict;
+    MagicIndicator myIndict;
     @BindView(R.id.frag_vp)
     ViewPager fragVp;
-
-    public static HomeFragment newInstance() {
+    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private View inflate;
+    private String [] mDataList = {"推荐","动态","关注"};
+    private List<String> mTitle= Arrays.asList(mDataList);
+     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
@@ -52,36 +67,64 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        System.out.println("home initview");
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        inflate = inflater.inflate(R.layout.fragment_home, container, false);
+        return inflate;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-        ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add( RecommendFragment.newInstance());
         fragments.add( DanymicFragment.newInstance());
         fragments.add(FocusFragment.newInstance());
         // 创建ViewPager适配器
-        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getActivity().getSupportFragmentManager());
+        MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getChildFragmentManager());
         myPagerAdapter.setFragments(fragments);
         // 给ViewPager设置适配器
         fragVp.setAdapter(myPagerAdapter);
 
-        // TabLayout 指示器 (记得自己手动创建4个Fragment,注意是 app包下的Fragment 还是 V4包下的 Fragment)
-        myIndict.addTab(myIndict.newTab());
-        myIndict.addTab(myIndict.newTab());
-        myIndict.addTab(myIndict.newTab());
-        // 使用 TabLayout 和 ViewPager 相关联
-        myIndict.setupWithViewPager(fragVp);
-        // TabLayout指示器添加文本
-        myIndict.getTabAt(0).setText("推荐");
-        myIndict.getTabAt(1).setText("动态");
-        myIndict.getTabAt(2).setText("关注");
-        System.out.println("--------------"+fragments.size());
-    }
 
+
+
+        MagicIndicator magicIndicator = (MagicIndicator) inflate.findViewById(R.id.my_indict);
+     //   magicIndicator.setBackgroundColor(Color.WHITE);
+        CommonNavigator commonNavigator = new CommonNavigator(getContext());
+        commonNavigator.setAdjustMode(true);
+        commonNavigator.setFollowTouch(true);
+        commonNavigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return 3;
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, int i) {
+                ColorTransitionPagerTitleView simplePagerTitleView = new ColorTransitionPagerTitleView(context);
+                simplePagerTitleView.setText(mTitle.get(i));
+                simplePagerTitleView.setTextSize(17);
+                simplePagerTitleView.setNormalColor(getResources().getColor(R.color.hui));
+                simplePagerTitleView.setSelectedColor(getResources().getColor(R.color.text_c28));
+                simplePagerTitleView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+                simplePagerTitleView.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        fragVp.setCurrentItem(i,false);
+                    }
+                });
+                return simplePagerTitleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator linePagerIndicator = new LinePagerIndicator(context);
+                linePagerIndicator.setMode(linePagerIndicator.MODE_WRAP_CONTENT);
+                linePagerIndicator.setColors(getResources().getColor(R.color.colorcf1313));
+                return linePagerIndicator;
+            }
+        });
+        magicIndicator.setNavigator(commonNavigator);
+        ViewPagerHelper.bind(magicIndicator, fragVp);
+    }
     @Override
     public void setData(@Nullable Object data) {
 
@@ -113,5 +156,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void killMyself() {
 
     }
+
 
 }

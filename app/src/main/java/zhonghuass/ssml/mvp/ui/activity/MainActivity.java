@@ -24,7 +24,6 @@ import com.jess.arms.utils.ArmsUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,6 +190,9 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         }
         toolbarTitle.setText(mTitles.get(mReplace));
         FragmentUtils.hideAllShowFragment(mFragments.get(mReplace));
+        //FragmentUtils.showFragment(mFragments.get(mReplace));
+
+
     }
 
     @Override
