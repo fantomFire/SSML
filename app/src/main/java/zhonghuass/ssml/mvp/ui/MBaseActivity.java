@@ -39,16 +39,22 @@ import static com.jess.arms.utils.ThirdViewUtil.convertAutoView;
 
 public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActivity implements IActivity, ActivityLifecycleable {
     @BindView(R.id.ll_back)
+    public
     LinearLayout llBack;
     @BindView(R.id.tv_title)
+    public
     TextView tvTitle;
     @BindView(R.id.tv_save)
+    public
     TextView tvSave;
     @BindView(R.id.iv_dian)
+    public
     ImageView ivDian;
     @BindView(R.id.ll_top)
+    public
     LinearLayout llTop;
     @BindView(R.id.fl_base_activity)
+    public
     FrameLayout flBaseActivity;
 
     protected final String TAG = this.getClass().getSimpleName();
@@ -141,6 +147,7 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_back:
+                finish();
                 break;
             case R.id.iv_dian:
                 break;

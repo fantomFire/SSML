@@ -58,6 +58,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        llTop.setVisibility(View.GONE);
     }
 
     @Override
@@ -85,13 +86,6 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     @Override
     public void killMyself() {
         finish();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 
     @OnClick({R.id.iv_passworld_choose, R.id.tv_forget, R.id.tv_upload, R.id.tv_agreement})

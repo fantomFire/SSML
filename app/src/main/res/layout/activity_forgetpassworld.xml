@@ -5,76 +5,46 @@
     android:background="@mipmap/login_bg"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="294dp"
-        android:layout_height="290dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
-        android:background="@mipmap/logo_bgs"
-        android:orientation="vertical"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="100dp"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="17dp"
-                android:layout_height="17dp"
-                android:background="@mipmap/login_icon_1" />
-
-            <EditText
-                android:id="@+id/edt_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:background="@null"
-                android:text="请输入手机号"
-                android:textColorHint="@color/corlor28"
-                android:textSize="13sp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="17dp"
-            android:background="@color/colorf5" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="bottom"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_width="294dp"
+                android:layout_height="290dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="100dp"
+                android:background="@mipmap/logo_bgs"
+                android:orientation="vertical"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="100dp"
+                    android:gravity="bottom"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="15dp"
+                        android:layout_width="17dp"
                         android:layout_height="17dp"
-                        android:background="@mipmap/login_icon_3" />
+                        android:background="@mipmap/login_icon_1" />
 
                     <EditText
-                        android:id="@+id/edt_code"
+                        android:id="@+id/edt_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="17dp"
+                        android:layout_marginLeft="15dp"
                         android:background="@null"
-                        android:text="请输入验证码"
+                        android:text="请输入手机号"
                         android:textColorHint="@color/corlor28"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -82,68 +52,107 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/colorWhite" />
+                    android:layout_marginTop="17dp"
+                    android:background="@color/colorf5" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="17dp"
+                                android:background="@mipmap/login_icon_3" />
+
+                            <EditText
+                                android:id="@+id/edt_code"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="17dp"
+                                android:background="@null"
+                                android:text="请输入验证码"
+                                android:textColorHint="@color/corlor28"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colorWhite" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_getcode"
+                        android:layout_width="87dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="13dp"
+                        android:background="@drawable/shape_corner_read"
+                        android:gravity="center"
+                        android:text="获取验证码"
+
+                        android:textColor="@color/colorWhite"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_upload"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/shape_corner_cor"
+                    android:gravity="center"
+                    android:text="验 证"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="15dp" />
+
             </LinearLayout>
 
-            <TextView
-                android:gravity="center"
-                android:textSize="10sp"
-                android:id="@+id/tv_getcode"
-                android:layout_width="87dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="13dp"
-                android:background="@drawable/shape_corner_read"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="44dp"
+                android:layout_marginTop="187dp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                android:text="获取验证码"
-                android:textColor="@color/colorWhite" />
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:background="@mipmap/login_icon_5" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="我已阅读并同意盛世名录"
+                    android:textColor="@color/colorf5"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用户协议"
+                    android:textColor="@color/colorcf1313"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
-
-        <TextView
-            android:id="@+id/tv_upload"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="35dp"
-            android:background="@drawable/shape_corner_cor"
-            android:gravity="center"
-            android:text="验 证"
-            android:textColor="@color/colorWhite"
-            android:textSize="15dp" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-    <LinearLayout
-        android:layout_marginBottom="44dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="13dp"
-            android:layout_height="13dp"
-            android:background="@mipmap/login_icon_5" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="我已阅读并同意盛世名录"
-            android:textColor="@color/colorf5"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/tv_agreement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="用户协议"
-            android:textColor="@color/colorcf1313"
-            android:textSize="12sp" />
-    </LinearLayout>
 </LinearLayout>

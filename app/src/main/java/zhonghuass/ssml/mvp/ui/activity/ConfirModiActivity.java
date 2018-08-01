@@ -50,7 +50,7 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        llTop.setVisibility(View.GONE);
     }
 
     @Override
