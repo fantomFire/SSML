@@ -1,11 +1,11 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 import static zhonghuass.ssml.utils.EventBusTags.ACTIVITY_FRAGMENT_REPLACE;
 
 
-public class MainActivity extends BaseActivity<MainActivityPresenter> implements MainActivityContract.View {
+public class MainActivity extends BaseActivity<MainActivityPresenter> implements MainActivityContract.View, View.OnClickListener {
 
     @BindView(R.id.toolbar_back)
     RelativeLayout toolbarBack;
@@ -59,9 +60,21 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     @BindView(R.id.bottomMenu)
     BottomNavigationViewEx bottomMenu;
     @BindView(R.id.navigation)
-    NavigationView mNavigationView;
+    LinearLayout mNavigationView;
     @BindView(R.id.drawerLayout)
     DrawerLayout mDrawerLayout;
+    @BindView(R.id.tv_menu1)
+    TextView tvmenu1;
+    @BindView(R.id.tv_menu2)
+    TextView tvmenu2;
+    @BindView(R.id.tv_menu3)
+    TextView tvmenu3;
+    @BindView(R.id.tv_menu4)
+    TextView tvmenu4;
+    @BindView(R.id.tv_menu5)
+    TextView tvmenu5;
+    @BindView(R.id.tv_menu6)
+    TextView tvmenu6;
     private List<Integer> mTitles;
     private List<Fragment> mFragments;
     private List<Integer> mNavIds;
@@ -154,11 +167,38 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
         bottomMenu.setOnNavigationItemSelectedListener(menuSelect);
 
+
+        //底部菜单栏图标字体点击颜色变化在这里修改
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_checked},
+                new int[]{android.R.attr.state_checked}
+        };
+        int[] colors = new int[]{getResources().getColor(R.color.corlor28),
+                getResources().getColor(R.color.colorcf1313)
+        };
+        ColorStateList csl = new ColorStateList(states, colors);
+        bottomMenu.setItemTextColor(csl);
+        bottomMenu.setItemIconTintList(csl);
+
+
         // 设置NavigationView宽度
         ViewGroup.LayoutParams params = mNavigationView.getLayoutParams();
         params.width = getResources().getDisplayMetrics().widthPixels * 2 / 3;
         mNavigationView.setLayoutParams(params);
+
+
+        initEvent();
     }
+
+    private void initEvent() {
+        tvmenu1.setOnClickListener(this);
+        tvmenu2.setOnClickListener(this);
+        tvmenu3.setOnClickListener(this);
+        tvmenu4.setOnClickListener(this);
+        tvmenu5.setOnClickListener(this);
+        tvmenu6.setOnClickListener(this);
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener menuSelect = item -> {
         switch (item.getItemId()) {
@@ -229,7 +269,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     public void showNavigation(EventMsg eventMsg) {
         if (eventMsg != null && eventMsg.isShowNav) {
             Log.e("--", "收到消息了。");
-//            bottomMenu.setVisibility(View.GONE);
             mDrawerLayout.openDrawer(mNavigationView);
         }
     }
@@ -247,4 +286,30 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_menu1:
+                Log.e("--", "11");
+                break;
+            case R.id.tv_menu2:
+                Log.e("--", "22");
+                break;
+            case R.id.tv_menu3:
+                Log.e("--", "33");
+                break;
+            case R.id.tv_menu4:
+                Log.e("--", "44");
+                break;
+            case R.id.tv_menu5:
+                Log.e("--", "55");
+                break;
+            case R.id.tv_menu6:
+                Log.e("--", "66");
+                ArmsUtils.startActivity(SettingActivity.class);
+                break;
+            default:
+                break;
+        }
+    }
 }
