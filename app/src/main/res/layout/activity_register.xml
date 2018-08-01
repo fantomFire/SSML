@@ -44,7 +44,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:background="@null"
-                        android:text="请输入手机号"
+                        android:hint="请输入手机号"
                         android:textColorHint="@color/corlor28"
                         android:textSize="13dp" />
                 </LinearLayout>
@@ -74,7 +74,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:text="请输入密码"
+                        android:hint="请输入密码"
                         android:textColorHint="@color/corlor28"
                         android:textSize="13dp" />
 
@@ -119,7 +119,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="15dp"
                                 android:background="@null"
-                                android:text="请输入验证码"
+                                android:hint="请输入验证码"
                                 android:textColorHint="@color/corlor28"
                                 android:textSize="13dp" />
                         </LinearLayout>

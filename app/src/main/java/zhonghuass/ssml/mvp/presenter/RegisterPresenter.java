@@ -46,16 +46,27 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
         this.mApplication = null;
     }
 
-    public void toLogin(String mPhone, String mPass, String mCode) {
-        mModel.toLogin(mPhone,mPass,mCode)
+    public void toRegist(String mPhone, String mPass, String mCode) {
+        mModel.toRegist(mPhone,mPass,mCode)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(rxErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
-                        System.out.println(voidBaseResponse.isSuccess());
+                        mRootView.showMessage(voidBaseResponse.getMessage());
                     }
                 });
 
 
+    }
+
+    public void getCode(String mPhone) {
+        mModel.toGetCode(mPhone)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(rxErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                    }
+                });
     }
 }

@@ -20,4 +20,7 @@ public class BaseResponse<T> implements Serializable {
             return false;
         }
     }
+    public String getMessage(){
+        return msg;
+    }
 }

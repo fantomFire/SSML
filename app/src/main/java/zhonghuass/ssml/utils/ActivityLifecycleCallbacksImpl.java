@@ -1,4 +1,4 @@
-package zhonghuass.myapplication.app;
+package zhonghuass.ssml.utils;
 
 import android.app.Activity;
 import android.app.Application;
@@ -8,8 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import zhonghuass.myapplication.R;
 import timber.log.Timber;
+import zhonghuass.ssml.R;
+
 
 /**
  * ================================================

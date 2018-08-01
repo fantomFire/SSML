@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -20,6 +22,7 @@ import zhonghuass.ssml.di.module.RegisterModule;
 import zhonghuass.ssml.mvp.contract.RegisterContract;
 import zhonghuass.ssml.mvp.presenter.RegisterPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.utils.RxUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -72,7 +75,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+        ArmsUtils.makeText(this,message);
     }
 
     @Override
@@ -91,6 +94,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
+                getRegisteCode();
                 break;
             case R.id.tv_upload:
                 toLogin();
@@ -101,11 +105,22 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         }
     }
 
+    private void getRegisteCode() {
+        String mPhone = edtPhone.getText().toString().trim();
+        if(TextUtils.isEmpty(mPhone)){
+        ArmsUtils.makeText(this,"请核对手机号码!");
+            return;
+        }
+        mPresenter.getCode(mPhone);
+
+    }
+
     private void toLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mPass = edtPassworld.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
-        mPresenter.toLogin(mPhone,mPass,mCode);
+        System.out.println(mCode);
+        mPresenter.toRegist(mPhone,mPass,mCode);
 
     }
 }

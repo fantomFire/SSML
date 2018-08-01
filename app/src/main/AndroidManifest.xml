@@ -3,6 +3,12 @@
     package="zhonghuass.ssml">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
         android:name="com.jess.arms.base.BaseApplication"
         android:allowBackup="true"
@@ -27,6 +33,10 @@
         <activity android:name=".mvp.ui.activity.MSMQActivity" />
         <activity android:name=".mvp.ui.activity.SettingActivity" />
         <activity android:name=".mvp.ui.activity.AccountInfoActivity" />
+
+        <meta-data
+            android:name="zhonghuass.ssml.utils.GlobalConfiguration"
+            android:value="ConfigModule"/>
     </application>
 
 </manifest>
