@@ -30,12 +30,69 @@
     </LinearLayout>
 
     <!--左侧导航菜单-->
-    <android.support.design.widget.NavigationView
+    <!--<android.support.design.widget.NavigationView-->
+    <!--android:id="@+id/navigation"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="left"-->
+    <!--android:background="@color/white"-->
+    <!--app:headerLayout="@layout/headlayout"-->
+    <!--app:menu="@menu/my_navigation_view" />-->
+    <LinearLayout
         android:id="@+id/navigation"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:background="@color/white"
-        app:headerLayout="@layout/headlayout"
-        app:menu="@menu/my_navigation_view" />
+        android:layout_gravity="start"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/my_headlayout"
+            layout="@layout/headlayout" />
+
+        <TextView
+            android:id="@+id/tv_menu1"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/my_menu1" />
+
+        <TextView
+            android:id="@+id/tv_menu2"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="@string/my_menu2" />
+
+        <TextView
+            android:id="@+id/tv_menu3"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="@string/my_menu3" />
+
+        <TextView
+            android:id="@+id/tv_menu4"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="@string/my_menu4" />
+
+        <TextView
+            android:id="@+id/tv_menu5"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="@string/my_menu5" />
+
+        <TextView
+            android:id="@+id/tv_menu6"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="@string/my_menu6" />
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
