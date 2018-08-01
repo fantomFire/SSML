@@ -111,6 +111,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 break;
             case R.id.tv_upload:
                 ArmsUtils.startActivity(MainActivity.class);
+               // toLogin();
                 break;
             case R.id.tv_enter://企业登录
                 ArmsUtils.startActivity(EnterpriseLoginActivity.class);
@@ -126,5 +127,16 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         }
     }
 
+    private void toLogin() {
+        String mPhone = edtPhone.getText().toString().trim();
+        String mCode = edtCode.getText().toString().trim();
+        mPresenter.toLogin(mPhone,mCode);
 
+    }
+
+
+    @Override
+    public void showContent(String message) {
+
+    }
 }

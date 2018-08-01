@@ -6,12 +6,16 @@ import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
+import com.jess.arms.utils.RxLifecycleUtils;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.LogInContract;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
@@ -37,5 +41,17 @@ public class LogInPresenter extends BasePresenter<LogInContract.Model, LogInCont
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void toLogin(String mPhone, String mCode) {
+        mModel.toLogin(mPhone,mCode)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                            mRootView.showContent(voidBaseResponse.getMessage());
+                    }
+                });
+
     }
 }

@@ -10,6 +10,9 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.LogInContract;
 
 
@@ -30,5 +33,12 @@ public class LogInModel extends BaseModel implements LogInContract.Model {
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> toLogin(String mPhone, String mCode) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .toLogin(mPhone,mCode)
+                ;
     }
 }

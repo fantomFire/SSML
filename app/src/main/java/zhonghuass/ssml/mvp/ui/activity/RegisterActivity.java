@@ -119,7 +119,6 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         String mPhone = edtPhone.getText().toString().trim();
         String mPass = edtPassworld.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
-        System.out.println(mCode);
         mPresenter.toRegist(mPhone,mPass,mCode);
 
     }

@@ -11,4 +11,6 @@ public interface ApiServer {
     //获取验证码
     @GET("/Api/Service/getyzm")
     Observable<BaseResponse<Void>> getCode(@Query("mobile") String mPhone,@Query("type") String type);
+    @GET("/Api/Login/login")
+    Observable<BaseResponse<Void>> toLogin(@Query("username")String mPhone, @Query("code")String mCode);
 }
