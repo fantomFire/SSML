@@ -1,4 +1,4 @@
-package com.github.library.pickerView.datePicker;
+package com.github.library.pickerView.scrollPicker;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -33,7 +33,7 @@ public class ScrollPickerView extends View {
     /**
      * 新增字段 控制是否首尾相接循环显示 默认为循环显示
      */
-    private boolean loop = true;
+    private boolean loop = false;
     /**
      * text之间间距和minTextSize之比
      */

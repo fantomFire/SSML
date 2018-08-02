@@ -26,10 +26,12 @@ import com.jess.arms.utils.ArmsUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerMainActivityComponent;
 import zhonghuass.ssml.di.module.MainActivityModule;
@@ -47,7 +49,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 import static zhonghuass.ssml.utils.EventBusTags.ACTIVITY_FRAGMENT_REPLACE;
 
 
-public class MainActivity extends BaseActivity<MainActivityPresenter> implements MainActivityContract.View, View.OnClickListener {
+public class MainActivity extends BaseActivity<MainActivityPresenter> implements MainActivityContract.View {
 
     @BindView(R.id.toolbar_back)
     RelativeLayout toolbarBack;
@@ -122,6 +124,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         bottomMenu.enableItemShiftingMode(false);
 
         toolbarBack.setVisibility(View.GONE);
+        toolbar.setVisibility(View.GONE);
         //  mPresenter.requestPermissions();
         if (mTitles == null) {
             mTitles = new ArrayList<>();
@@ -186,18 +189,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         ViewGroup.LayoutParams params = mNavigationView.getLayoutParams();
         params.width = getResources().getDisplayMetrics().widthPixels * 2 / 3;
         mNavigationView.setLayoutParams(params);
-
-
-        initEvent();
-    }
-
-    private void initEvent() {
-        tvmenu1.setOnClickListener(this);
-        tvmenu2.setOnClickListener(this);
-        tvmenu3.setOnClickListener(this);
-        tvmenu4.setOnClickListener(this);
-        tvmenu5.setOnClickListener(this);
-        tvmenu6.setOnClickListener(this);
     }
 
 
@@ -224,7 +215,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     };
 
     private void changeFragment() {
-        if (mReplace == 3) {
+        if (mReplace == 3 || mReplace == 0) {
             //隐藏标题栏
             toolbar.setVisibility(View.GONE);
         } else {
@@ -232,9 +223,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         }
         toolbarTitle.setText(mTitles.get(mReplace));
         FragmentUtils.hideAllShowFragment(mFragments.get(mReplace));
-        //FragmentUtils.showFragment(mFragments.get(mReplace));
-
-
     }
 
     @Override
@@ -290,29 +278,21 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+
+    @OnClick({R.id.civ_photo, R.id.tv_menu1, R.id.tv_menu2, R.id.tv_menu3, R.id.tv_menu4, R.id.tv_menu5, R.id.tv_menu6})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.civ_photo:
+                ArmsUtils.startActivity(MyInfoActivity.class);
+                break;
             case R.id.tv_menu1:
-                Log.e("--", "11");
+                Log.e("--", "1");
                 break;
             case R.id.tv_menu2:
-                Log.e("--", "22");
-                break;
-            case R.id.tv_menu3:
-                Log.e("--", "33");
-                break;
-            case R.id.tv_menu4:
-                Log.e("--", "44");
-                break;
-            case R.id.tv_menu5:
-                Log.e("--", "55");
+                Log.e("--", "2");
                 break;
             case R.id.tv_menu6:
-                Log.e("--", "66");
-                ArmsUtils.startActivity(SettingActivity.class);
-                break;
-            default:
+                ArmsUtils.startActivity(MySettingActivityActivity.class);
                 break;
         }
     }

@@ -61,7 +61,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     public void initData(@Nullable Bundle savedInstanceState) {
         System.out.println("recommend");
         recommendBeans = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 9; i++) {
             RecommendBean recommendBean = new RecommendBean();
             recommendBean.imgPath = "http://pic1.cxtuku.com/00/10/37/b212a9aabf1b.jpg";
             recommendBean.companyName = "八马乐园" + i;
