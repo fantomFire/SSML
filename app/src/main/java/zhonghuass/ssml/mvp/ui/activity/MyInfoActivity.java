@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -49,6 +50,8 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        initToolBar("编辑资料", true, "保存");
+
         cityPicker = new CustomCityPicker(this, new CustomCityPicker.ResultHandler() {
             @Override
             public void handle(String result) {
@@ -87,12 +90,15 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
     }
 
 
-    @OnClick({R.id.ll_area})
+    @OnClick({R.id.ll_area, R.id.tv_right})
     public void onViewClicked(View view) {
         super.onViewClicked(view);
         switch (view.getId()) {
             case R.id.ll_area:
                 cityPicker.show("陕西省-西安市-雁塔区");
+                break;
+            case R.id.tv_right:
+                Log.e("--", "保存");
                 break;
         }
     }

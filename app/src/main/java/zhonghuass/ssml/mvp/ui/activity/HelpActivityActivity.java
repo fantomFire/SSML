@@ -42,7 +42,7 @@ public class HelpActivityActivity extends MBaseActivity<HelpActivityPresenter> i
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        initToolBar("帮助反馈");
     }
 
     @Override

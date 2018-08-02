@@ -43,7 +43,8 @@
         <activity android:name=".mvp.ui.activity.MyInfoActivity" />
         <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
         <activity android:name=".mvp.ui.activity.HowToRealNameActivityActivity" />
-        <activity android:name=".mvp.ui.activity.FeedBackActivityActivity"></activity>
+        <activity android:name=".mvp.ui.activity.FeedBackActivityActivity" />
+        <activity android:name=".mvp.ui.activity.RealNameActivityActivity"></activity>
     </application>
 
 </manifest>

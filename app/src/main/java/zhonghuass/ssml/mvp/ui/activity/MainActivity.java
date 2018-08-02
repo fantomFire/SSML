@@ -258,7 +258,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showNavigation(EventMsg eventMsg) {
         if (eventMsg != null && eventMsg.isShowNav) {
-            Log.e("--", "收到消息了。");
             mDrawerLayout.openDrawer(mNavigationView);
         }
     }
@@ -288,6 +287,9 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 break;
             case R.id.tv_menu2:
                 Log.e("--", "2");
+                break;
+            case R.id.tv_menu4:
+                ArmsUtils.startActivity(RealNameActivityActivity.class);
                 break;
             case R.id.tv_menu5:
                 ArmsUtils.startActivity(HelpActivityActivity.class);

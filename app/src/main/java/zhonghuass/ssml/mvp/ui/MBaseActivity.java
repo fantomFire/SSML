@@ -14,13 +14,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.base.delegate.IActivity;
-import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.integration.cache.Cache;
 import com.jess.arms.integration.cache.CacheType;
 import com.jess.arms.integration.lifecycle.ActivityLifecycleable;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.mvp.IPresenter;
 import com.jess.arms.utils.ArmsUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
@@ -44,12 +41,12 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
     @BindView(R.id.tv_title)
     public
     TextView tvTitle;
-    @BindView(R.id.tv_save)
+    @BindView(R.id.tv_right)
     public
-    TextView tvSave;
-    @BindView(R.id.iv_dian)
+    TextView tvRight;
+    @BindView(R.id.iv_right)
     public
-    ImageView ivDian;
+    ImageView ivRight;
     @BindView(R.id.ll_top)
     public
     LinearLayout llTop;
@@ -85,6 +82,32 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
         View view = convertAutoView(name, context, attrs);
         return view == null ? super.onCreateView(name, context, attrs) : view;
     }
+
+    public void initToolBar(String title) {
+        tvTitle.setText(title);
+    }
+
+    public void initToolBar(String title, boolean showRightImg, int icon) {
+        tvTitle.setText(title);
+        if (showRightImg) {
+            ivRight.setVisibility(View.VISIBLE);
+        } else {
+            ivRight.setVisibility(View.GONE);
+        }
+        ivRight.setImageResource(icon);
+    }
+
+    public void initToolBar(String title, boolean showRightTv, String rightTv) {
+        tvTitle.setText(title);
+        if (showRightTv) {
+            tvRight.setVisibility(View.VISIBLE);
+        } else {
+            tvRight.setVisibility(View.GONE);
+        }
+        tvRight.setText(rightTv);
+    }
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,13 +166,11 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
         return true;
     }
 
-    @OnClick({R.id.ll_back, R.id.iv_dian})
+    @OnClick({R.id.ll_back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_back:
                 finish();
-                break;
-            case R.id.iv_dian:
                 break;
         }
     }
