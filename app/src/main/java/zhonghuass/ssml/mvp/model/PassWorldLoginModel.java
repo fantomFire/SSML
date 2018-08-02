@@ -10,6 +10,9 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
 
 
@@ -30,5 +33,10 @@ public class PassWorldLoginModel extends BaseModel implements PassWorldLoginCont
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> pwtoLogin(String mPhone, String mPassworld) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toLogin(mPhone,mPassworld,"1");
     }
 }

@@ -14,15 +14,22 @@ public interface ApiServer {
     Observable<BaseResponse<Void>> getCode(@Query("mobile") String mPhone, @Query("type") String type);
 
     @GET("/Api/Login/login")
-    Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone, @Query("code") String mCode);
+    Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone,
+                                           @Query("code") String mCode,
+                                           @Query("type")String s);
 
     //验证验证码正确
     @GET("/Api/Login/forgetpwd")
-    Observable<BaseResponse<Void>> toForgetPassworldVerification(@Query("mobile") String mPhone, @Query("code") String mCode);
+    Observable<BaseResponse<Void>> toForgetPassworldVerification(@Query("mobile") String mPhone,
+                                                                 @Query("code") String mCode);
 
     @GET("/Api/Login/forgetpwd")
     Observable<BaseResponse<Void>> toConfirModi(@Query("mobile") String phone
             , @Query("code ") String code
             , @Query("pwd") String newpw
             , @Query("pwds") String oldpw);
+
+
+
+
 }

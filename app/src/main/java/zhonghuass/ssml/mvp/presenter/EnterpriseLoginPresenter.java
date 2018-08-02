@@ -11,7 +11,10 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
@@ -37,5 +40,16 @@ public class EnterpriseLoginPresenter extends BasePresenter<EnterpriseLoginContr
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void eptoLogin(String mPhone, String mPassworld) {
+        mModel.eptoLogin(mPhone, mPassworld)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                    }
+                });
     }
 }
