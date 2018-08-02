@@ -6,9 +6,10 @@
     android:orientation="vertical">
 
     <com.github.library.layoutView.CircleImageView
-        android:layout_marginTop="30dp"
+        android:id="@+id/civ_photo"
         android:layout_width="110dp"
         android:layout_height="110dp"
+        android:layout_marginTop="30dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/meizi" />
 

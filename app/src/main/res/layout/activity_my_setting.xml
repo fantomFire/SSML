@@ -4,8 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--<include layout="@layout/include_title" />-->
-
     <LinearLayout
         android:id="@+id/ll_account_info"
         android:layout_width="match_parent"
@@ -22,16 +20,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="账户信息"
-            android:textSize="15sp" />
+            android:text="账户信息" />
 
         <ImageView
             android:layout_width="8dp"
             android:layout_height="12dp"
-            android:background="@mipmap/cp_ic_back" />
+            android:background="@mipmap/cp_ic_go" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_update"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/white"
@@ -44,19 +42,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="检查更新"
-            android:textSize="15sp" />
+            android:text="检查更新" />
 
         <ImageView
             android:layout_width="8dp"
             android:layout_height="12dp"
-            android:background="@mipmap/cp_ic_back" />
+            android:background="@mipmap/cp_ic_go" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_clear"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_marginTop="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -67,10 +65,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="清楚缓存"
-            android:textSize="15sp" />
+            android:text="清除缓存" />
 
         <TextView
+            android:id="@+id/tv_clear_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5.6M"
@@ -82,6 +80,9 @@
         android:layout_height="47dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
-        android:text="安全退出" />
+        android:background="@drawable/shape_corner_login"
+        android:text="安全退出"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
 
 </LinearLayout>

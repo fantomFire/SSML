@@ -31,12 +31,14 @@
         <activity android:name=".mvp.ui.activity.WelcomeActivity" />
         <activity android:name=".mvp.ui.activity.RegisterActivity" />
         <activity android:name=".mvp.ui.activity.MSMQActivity" />
-        <activity android:name=".mvp.ui.activity.SettingActivity" />
-        <activity android:name=".mvp.ui.activity.AccountInfoActivity" />
 
         <meta-data
             android:name="zhonghuass.ssml.utils.GlobalConfiguration"
             android:value="ConfigModule"/>
+        <activity android:name=".mvp.ui.activity.MySettingActivityActivity" />
+        <activity android:name=".mvp.ui.activity.MyAccountInfoActivityActivity" />
+        <activity android:name=".mvp.ui.activity.MyAppUpdateActivity" />
+        <activity android:name=".mvp.ui.activity.MyInfoActivity" />
     </application>
 
 </manifest>
