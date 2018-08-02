@@ -71,7 +71,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
+        llTop.setVisibility(View.GONE);
     }
 
     @Override
@@ -125,16 +125,16 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         }
         tvGetcode.setEnabled(false);
         mPresenter.getCode(mPhone);
-        mDispos = Flowable.interval(1,1, TimeUnit.SECONDS)
+        mDispos = Flowable.interval(1, 1, TimeUnit.SECONDS)
                 .take(60)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((aLong) -> {
                     tvGetcode.setText("重新获取(" + (60 - aLong) + ")");
                 })
                 .doOnComplete(() -> {
-                            tvGetcode.setEnabled(true);
-                            tvGetcode.setText("获取验证码");
-                        } )
+                    tvGetcode.setEnabled(true);
+                    tvGetcode.setText("获取验证码");
+                })
                 .doOnError((throwable) ->
                         throwable.printStackTrace()
                 )
@@ -162,8 +162,8 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     @Override
     public void toNewActivity() {
         Intent intent = new Intent(this, LogInActivity.class);
-        intent.putExtra("mPhone",mPhone);
-        intent.putExtra("mPass",mPass);
+        intent.putExtra("mPhone", mPhone);
+        intent.putExtra("mPass", mPass);
         launchActivity(intent);
     }
 }

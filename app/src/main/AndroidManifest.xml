@@ -33,6 +33,10 @@
         <activity android:name=".mvp.ui.activity.MSMQActivity" />
         <activity android:name=".mvp.ui.activity.SettingActivity" />
         <activity android:name=".mvp.ui.activity.AccountInfoActivity" />
+        <activity android:name=".mvp.ui.activity.ConfirModiActivity"/>
+        <activity android:name=".mvp.ui.activity.ForgetPassworldActivity"/>
+        <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity"/>
+        <activity android:name=".mvp.ui.activity.PassWorldLoginActivity"/>
 
         <meta-data
             android:name="zhonghuass.ssml.utils.GlobalConfiguration"

@@ -31,6 +31,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
     @Inject
     AppManager mAppManager;
     private RxErrorHandler rxErrorHandler;
+
     @Inject
     public RegisterPresenter(RegisterContract.Model model, RegisterContract.View rootView, RxErrorHandler rxErrorHandler) {
         super(model, rootView);
@@ -47,7 +48,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
     }
 
     public void toRegist(String mPhone, String mPass, String mCode) {
-        mModel.toRegist(mPhone,mPass,mCode)
+        mModel.toRegist(mPhone, mPass, mCode)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(rxErrorHandler) {
                     @Override
