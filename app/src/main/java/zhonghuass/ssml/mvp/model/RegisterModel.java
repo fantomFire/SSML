@@ -40,10 +40,11 @@ public class RegisterModel extends BaseModel implements RegisterContract.Model {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .toRegist(mPhone,mPass,mCode);
     }
-
+    //rxjava 访问网络 返回数据
     @Override
     public Observable<BaseResponse<Void>> toGetCode(String mPhone) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .getCode(mPhone,"1");
+
     }
 }

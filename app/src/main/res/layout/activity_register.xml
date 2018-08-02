@@ -79,6 +79,7 @@
                         android:textSize="13dp" />
 
                     <ImageView
+                        android:id="@+id/iv_see"
                         android:layout_width="17dp"
                         android:layout_height="10dp"
                         android:background="@mipmap/login_icon_4" />
@@ -160,10 +161,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_marginTop="142dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="44dp"
+                android:layout_marginTop="142dp"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 

@@ -10,6 +10,9 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.ForgetPassworldContract;
 
 
@@ -30,5 +33,15 @@ public class ForgetPassworldModel extends BaseModel implements ForgetPassworldCo
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> toForgetPassworldVerification(String mPhone, String mCode) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toForgetPassworldVerification(mPhone, mCode);
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> getCode(String mPhone) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getCode(mPhone,"2");
     }
 }

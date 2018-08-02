@@ -11,7 +11,10 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.ConfirModiContract;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
@@ -37,5 +40,19 @@ public class ConfirModiPresenter extends BasePresenter<ConfirModiContract.Model,
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void toConfirModi(String phone, String code, String newpw, String oldpw) {
+        mModel.toConfirModi(phone, code, newpw,oldpw)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                        if (voidBaseResponse.isSuccess()){
+                            mRootView.toNewActivity();
+                        }
+                    }
+                });
     }
 }

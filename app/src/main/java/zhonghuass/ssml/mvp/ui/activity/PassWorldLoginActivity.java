@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -97,9 +98,23 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
                 ArmsUtils.startActivity(ForgetPassworldActivity.class);
                 break;
             case R.id.tv_upload:
+                pwtoLogin();
                 break;
             case R.id.tv_agreement:
                 break;
         }
+    }
+
+    private void pwtoLogin() {
+        String mPhone = edtPhone.getText().toString().trim();
+        String mPassworld = edtKey.getText().toString().trim();
+        if (TextUtils.isEmpty(mPhone)) {
+            ArmsUtils.makeText(this, "请输入手机号码!");
+            return;
+        }
+        if (TextUtils.isEmpty(mPassworld)) {
+            ArmsUtils.makeText(this, "请核输入密码");
+        }
+        mPresenter.pwtoLogin(mPhone, mPassworld);
     }
 }

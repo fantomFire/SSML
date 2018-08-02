@@ -10,6 +10,9 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.ConfirModiContract;
 
 
@@ -30,5 +33,10 @@ public class ConfirModiModel extends BaseModel implements ConfirModiContract.Mod
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> toConfirModi(String phone, String code, String newpw, String oldpw) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toConfirModi(phone,code,newpw,oldpw);
     }
 }

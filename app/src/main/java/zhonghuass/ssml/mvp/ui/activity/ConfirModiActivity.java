@@ -84,9 +84,25 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_upload:
+                toConfirModi();
                 break;
             case R.id.tv_agreement:
                 break;
         }
+    }
+
+    private void toConfirModi() {
+        Intent intent = getIntent();
+        String phone = intent.getStringExtra("forgetmPhone");
+        String code = intent.getStringExtra("forgetmmCode");
+        String newpw = edtPhone.getText().toString().trim();
+        String oldpw = edtPassworld.getText().toString().trim();
+        mPresenter.toConfirModi(phone, code, newpw, oldpw);
+
+    }
+
+    @Override
+    public void toNewActivity() {
+        ArmsUtils.startActivity(LogInActivity.class);
     }
 }
