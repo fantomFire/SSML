@@ -3,12 +3,13 @@
     package="zhonghuass.ssml">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:name="com.jess.arms.base.BaseApplication"
         android:allowBackup="true"
@@ -34,11 +35,15 @@
 
         <meta-data
             android:name="zhonghuass.ssml.utils.GlobalConfiguration"
-            android:value="ConfigModule"/>
+            android:value="ConfigModule" />
+
         <activity android:name=".mvp.ui.activity.MySettingActivityActivity" />
         <activity android:name=".mvp.ui.activity.MyAccountInfoActivityActivity" />
         <activity android:name=".mvp.ui.activity.MyAppUpdateActivity" />
         <activity android:name=".mvp.ui.activity.MyInfoActivity" />
+        <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
+        <activity android:name=".mvp.ui.activity.HowToRealNameActivityActivity" />
+        <activity android:name=".mvp.ui.activity.FeedBackActivityActivity"></activity>
     </application>
 
 </manifest>

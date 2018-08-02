@@ -289,6 +289,9 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
             case R.id.tv_menu2:
                 Log.e("--", "2");
                 break;
+            case R.id.tv_menu5:
+                ArmsUtils.startActivity(HelpActivityActivity.class);
+                break;
             case R.id.tv_menu6:
                 ArmsUtils.startActivity(MySettingActivityActivity.class);
                 break;

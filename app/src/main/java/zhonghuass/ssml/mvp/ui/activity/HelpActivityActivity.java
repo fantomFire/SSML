@@ -1,62 +1,48 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.TextView;
 
-import com.github.library.pickerView.scrollPicker.CustomCityPicker;
+import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
-import butterknife.BindView;
 import butterknife.OnClick;
+import zhonghuass.ssml.di.component.DaggerHelpActivityComponent;
+import zhonghuass.ssml.di.module.HelpActivityModule;
+import zhonghuass.ssml.mvp.contract.HelpActivityContract;
+import zhonghuass.ssml.mvp.presenter.HelpActivityPresenter;
+
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerMyInfoComponent;
-import zhonghuass.ssml.di.module.MyInfoModule;
-import zhonghuass.ssml.mvp.contract.MyInfoContract;
-import zhonghuass.ssml.mvp.presenter.MyInfoPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
+
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements MyInfoContract.View {
-
-    @BindView(R.id.tv_area)
-    TextView tvArea;
-
-    private CustomCityPicker cityPicker;
-    private Dialog cityPickerDialog;
+public class HelpActivityActivity extends MBaseActivity<HelpActivityPresenter> implements HelpActivityContract.View {
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerMyInfoComponent //如找不到该类,请编译一下项目
+        DaggerHelpActivityComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .myInfoModule(new MyInfoModule(this))
+                .helpActivityModule(new HelpActivityModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_my_info; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        return R.layout.activity_help; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        cityPicker = new CustomCityPicker(this, new CustomCityPicker.ResultHandler() {
-            @Override
-            public void handle(String result) {
-                tvArea.setText(result);
-            }
-        });
-        //提前初始化数据，这样可以加载快一些。
-        cityPicker.initJson();
+
     }
 
     @Override
@@ -86,13 +72,19 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
         finish();
     }
 
-
-    @OnClick({R.id.ll_area})
+    @OnClick({R.id.ll_real_name, R.id.ll_what_everyday, R.id.ll_edit_tel, R.id.tv_feedback})
     public void onViewClicked(View view) {
         super.onViewClicked(view);
         switch (view.getId()) {
-            case R.id.ll_area:
-                cityPicker.show("陕西省-西安市-雁塔区");
+            case R.id.ll_real_name:
+                ArmsUtils.startActivity(HowToRealNameActivityActivity.class);
+                break;
+            case R.id.ll_what_everyday:
+                break;
+            case R.id.ll_edit_tel:
+                break;
+            case R.id.tv_feedback:
+                ArmsUtils.startActivity(FeedBackActivityActivity.class);
                 break;
         }
     }

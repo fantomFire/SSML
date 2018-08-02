@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/divider_gray_e6"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="如何完成实名认证？"
+        android:textColor="@color/text_c28"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/white"
+        android:gravity="start"
+        android:padding="@dimen/dp_10"
+        android:lineSpacingExtra="5dp"
+        android:paddingLeft="10dp"
+        android:text="      在“我的”>“实名认证”，提交身份信息资料，系统会在3-5个工作日内完成审核"
+        android:textColor="@color/color66"
+        android:textSize="13sp" />
+
+</LinearLayout>
