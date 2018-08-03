@@ -5,4 +5,98 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:gravity="center"
+        android:text="企业名录"
+        android:textColor="@color/text_c28"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:background="@color/viewbg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="4dp"
+                android:layout_height="17dp"
+                android:background="@mipmap/ml_icon_1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="企业名录篇"
+                android:textStyle="bold"
+                android:textColor="@color/text_c28"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="区域"
+                android:textStyle="bold"
+                android:textColor="@color/text_c28"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/icon_area"
+                android:layout_width="9dp"
+                android:layout_height="6dp"
+                android:layout_marginLeft="7dp"
+                android:background="@mipmap/ml_icon_2" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_trade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:gravity="center_vertical"
+            android:layout_marginRight="60dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="行业"
+                android:textStyle="bold"
+                android:textColor="@color/text_c28"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/icon_trade"
+                android:layout_width="9dp"
+                android:layout_height="6dp"
+                android:layout_marginLeft="7dp"
+                android:background="@mipmap/ml_icon_2" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/trade_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" />
 </LinearLayout>

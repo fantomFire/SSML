@@ -23,4 +23,20 @@ public class BaseResponse<T> implements Serializable {
     public String getMessage(){
         return msg;
     }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

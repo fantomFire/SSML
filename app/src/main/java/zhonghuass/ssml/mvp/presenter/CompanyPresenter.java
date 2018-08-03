@@ -7,10 +7,16 @@ import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyContract;
+import zhonghuass.ssml.mvp.model.appbean.TradeBean;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @FragmentScope
@@ -36,5 +42,23 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.Model, Compa
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getTradeData(String area, String type, int currentPage, int pagesize) {
+        mModel.getTradeData(area,type,currentPage,pagesize)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<TradeBean>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<List<TradeBean>> listBaseResponse) {
+                        if (listBaseResponse.isSuccess()) {
+                            mRootView.showTradeData(listBaseResponse.getData());
+
+                        } else {
+                            mRootView.showMessage(listBaseResponse.getMessage());
+                        }
+                    }
+                });
+
+
     }
 }

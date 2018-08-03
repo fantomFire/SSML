@@ -1,8 +1,12 @@
 package zhonghuass.ssml.http;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
+import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
 public interface ApiServer {
     @GET("/Api/Register/register")
@@ -14,6 +18,12 @@ public interface ApiServer {
     Observable<BaseResponse<Void>> getCode(@Query("mobile") String mPhone, @Query("type") String type);
 
     @GET("/Api/Login/login")
+    Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone, @Query("code") String mCode);
+    //企业名录
+    @GET("Api/Enterprise/homepage")
+    Observable<BaseResponse<List<TradeBean>>> getTradeData(@Query("areaid") String area, @Query("servicetype") String type,
+                                                          @Query("page") String page, @Query("pagesize") String pagesize);
+
     Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone,
                                            @Query("code") String mCode,
                                            @Query("type")String s);

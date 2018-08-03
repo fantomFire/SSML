@@ -3,6 +3,8 @@ package zhonghuass.ssml.mvp.ui.adapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 
@@ -18,12 +20,16 @@ public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper, RecommendBean item) {
-        System.out.println("item.companyName"+item.companyName);
-        helper.setText(R.id.company_name,item.companyName);
+
+        helper.setText(R.id.company_name, item.companyName);
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.override(Target.SIZE_ORIGINAL);
+        requestOptions.dontAnimate();
 
         Glide.with(mContext)
                 .load(item.imgPath)
-                .into((ImageView)helper.getView(R.id.recommend_img));
+                .apply(requestOptions)
+                .into((ImageView) helper.getView(R.id.recommend_img));
 
     }
 }

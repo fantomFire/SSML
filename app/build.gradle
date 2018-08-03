@@ -33,6 +33,8 @@ dependencies {
     annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
     //Butterknife 插件,很多人因为没加这个而报错,切记!!!
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
+    annotationProcessor rootProject.ext.dependencies["glide"]
+
 //    annotationProcessor rootProject.ext.dependencies["eventbus3.0"]
     //依赖插件, annotationProcessor 是 AndroidStudio 自带并用来替换 APT
     implementation 'org.greenrobot:eventbus:3.0.0'
