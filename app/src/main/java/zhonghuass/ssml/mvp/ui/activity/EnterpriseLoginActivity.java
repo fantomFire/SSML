@@ -113,6 +113,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
         }
         if (TextUtils.isEmpty(mPassworld)) {
             ArmsUtils.makeText(this, "请核输入密码");
+            return;
         }
         mPresenter.eptoLogin(mPhone,mPassworld);
     }

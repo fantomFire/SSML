@@ -144,9 +144,19 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
 
     private void toLogin() {
         mPhone = edtPhone.getText().toString().trim();
-
         mPass = edtPassworld.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
+        if (TextUtils.isEmpty(mPhone)) {
+            ArmsUtils.makeText(this, "请输入手机号码!");
+            return;
+        }
+        if (TextUtils.isEmpty(mPass)) {
+            ArmsUtils.makeText(this, "请核输入密码");
+            return;
+        }
+        if (TextUtils.isEmpty(mCode)){
+            ArmsUtils.makeText(this, "请核手机号验证码");
+        }
         mPresenter.toRegist(mPhone, mPass, mCode);
 
     }

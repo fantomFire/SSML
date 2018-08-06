@@ -9,24 +9,32 @@ import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
 public interface ApiServer {
+    //注册
     @GET("/Api/Register/register")
     Observable<BaseResponse<Void>> toRegist(@Query("mobile") String mPhone,
-                                            @Query("password") String mPass, @Query("code") String mCode);
+                                            @Query("password") String mPass,
+                                            @Query("code") String mCode);
 
     //获取验证码
     @GET("/Api/Service/getyzm")
     Observable<BaseResponse<Void>> getCode(@Query("mobile") String mPhone, @Query("type") String type);
 
-    @GET("/Api/Login/login")
-    Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone, @Query("code") String mCode);
     //企业名录
     @GET("Api/Enterprise/homepage")
     Observable<BaseResponse<List<TradeBean>>> getTradeData(@Query("areaid") String area, @Query("servicetype") String type,
-                                                          @Query("page") String page, @Query("pagesize") String pagesize);
+                                                           @Query("page") String page, @Query("pagesize") String pagesize);
 
+    //手机号验证码登录
+    @GET("/Api/Login/login")
     Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone,
                                            @Query("code") String mCode,
-                                           @Query("type")String s);
+                                           @Query("type") String s);
+
+    //密码登录,企业登录
+    @GET("/Api/Login/login")
+    Observable<BaseResponse<Void>> topwLogin(@Query("username") String mPhone,
+                                             @Query("password") String mPassworld,
+                                             @Query("type") String s);
 
     //验证验证码正确
     @GET("/Api/Login/forgetpwd")
@@ -38,8 +46,5 @@ public interface ApiServer {
             , @Query("code ") String code
             , @Query("pwd") String newpw
             , @Query("pwds") String oldpw);
-
-
-
 
 }

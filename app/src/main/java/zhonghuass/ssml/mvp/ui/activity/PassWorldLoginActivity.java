@@ -114,6 +114,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
         }
         if (TextUtils.isEmpty(mPassworld)) {
             ArmsUtils.makeText(this, "请核输入密码");
+            return;
         }
         mPresenter.pwtoLogin(mPhone, mPassworld);
     }

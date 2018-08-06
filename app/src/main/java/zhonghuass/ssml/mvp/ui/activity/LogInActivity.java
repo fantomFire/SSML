@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -109,7 +110,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 break;
             case R.id.tv_upload:
                 ArmsUtils.startActivity(MainActivity.class);
-               // toLogin();
+                // toLogin();
                 break;
             case R.id.tv_enter://企业登录
                 ArmsUtils.startActivity(EnterpriseLoginActivity.class);
@@ -128,7 +129,15 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     private void toLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
-        mPresenter.toLogin(mPhone,mCode);
+        if (TextUtils.isEmpty(mPhone)) {
+            ArmsUtils.makeText(this, "请输入手机号码！");
+            return;
+        }
+        if (TextUtils.isEmpty(mCode)) {
+            ArmsUtils.makeText(this, "请输入手机号验证码！");
+            return;
+        }
+        mPresenter.toLogin(mPhone, mCode);
 
     }
 
