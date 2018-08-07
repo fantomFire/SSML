@@ -11,6 +11,7 @@
         android:background="@color/divider_gray_e6" />
 
     <LinearLayout
+        android:id="@+id/ll_communique"
         android:layout_width="match_parent"
         android:layout_height="67dp"
         android:orientation="horizontal">
@@ -33,15 +34,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="2.5dp"
                 android:textColor="@color/text_c28"
                 android:textSize="15dp"
                 android:text="官方公告" />
 
             <TextView
+                android:id="@+id/tv_communique_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2.5dp"
                 android:textColor="@color/black_7"
                 android:lines="1"
                 android:ellipsize="end"
@@ -50,6 +52,7 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_communique_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -58,4 +61,121 @@
             android:layout_marginRight="@dimen/dp_10"
             android:text="2018-04-16" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray_e6" />
+
+    <LinearLayout
+        android:id="@+id/ll_editors"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/news_icon_8"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="@dimen/sp_12"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2.5dp"
+                android:textColor="@color/text_c28"
+                android:textSize="15dp"
+                android:text="小编推荐" />
+
+            <TextView
+                android:id="@+id/tv_editors_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.5dp"
+                android:textColor="@color/black_7"
+                android:lines="1"
+                android:ellipsize="end"
+                android:text="盛世时代全新约拍神器已上线" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_editors_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_7"
+            android:textSize="11dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="2018-04-16" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray_e6" />
+
+    <LinearLayout
+        android:id="@+id/ll_cute_hand"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@mipmap/news_icon_9"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="@dimen/sp_12"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2.5dp"
+                android:textColor="@color/text_c28"
+                android:textSize="15dp"
+                android:text="小V智能助手" />
+
+            <TextView
+                android:id="@+id/tv_cute_hand_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.5dp"
+                android:textColor="@color/black_7"
+                android:lines="1"
+                android:ellipsize="end"
+                android:text="盛世时代全新约拍神器已上线" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cute_hand_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black_7"
+            android:textSize="11dp"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="2018-04-16" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_gray_e6" />
+
 </LinearLayout>

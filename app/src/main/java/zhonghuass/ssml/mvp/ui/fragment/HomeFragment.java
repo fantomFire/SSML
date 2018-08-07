@@ -11,11 +11,12 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -31,11 +32,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerHomeFragmentComponent;
 import zhonghuass.ssml.di.module.HomeFragmentModule;
 import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
+import zhonghuass.ssml.mvp.ui.activity.MSMQActivity;
+import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -47,11 +53,17 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     MagicIndicator myIndict;
     @BindView(R.id.frag_vp)
     ViewPager fragVp;
+    @BindView(R.id.tv_search)
+    TextView tvSearch;
+    @BindView(R.id.home_mess)
+    ImageView homeMess;
+    Unbinder unbinder;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private View inflate;
-    private String [] mDataList = {"推荐","动态","关注"};
-    private List<String> mTitle= Arrays.asList(mDataList);
-     public static HomeFragment newInstance() {
+    private String[] mDataList = {"推荐", "动态", "关注"};
+    private List<String> mTitle = Arrays.asList(mDataList);
+
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
@@ -74,8 +86,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        fragments.add( RecommendFragment.newInstance());
-        fragments.add( DanymicFragment.newInstance());
+        fragments.add(RecommendFragment.newInstance());
+        fragments.add(DanymicFragment.newInstance());
         fragments.add(FocusFragment.newInstance());
         // 创建ViewPager适配器
         MyPagerAdapter myPagerAdapter = new MyPagerAdapter(getChildFragmentManager());
@@ -84,10 +96,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         fragVp.setAdapter(myPagerAdapter);
 
 
-
-
         MagicIndicator magicIndicator = (MagicIndicator) inflate.findViewById(R.id.my_indict);
-     //   magicIndicator.setBackgroundColor(Color.WHITE);
+        //   magicIndicator.setBackgroundColor(Color.WHITE);
         CommonNavigator commonNavigator = new CommonNavigator(getContext());
         commonNavigator.setAdjustMode(true);
         commonNavigator.setFollowTouch(true);
@@ -109,7 +119,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
                     @Override
                     public void onClick(View v) {
-                        fragVp.setCurrentItem(i,false);
+                        fragVp.setCurrentItem(i, false);
                     }
                 });
                 return simplePagerTitleView;
@@ -126,6 +136,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, fragVp);
     }
+
     @Override
     public void setData(@Nullable Object data) {
 
@@ -158,5 +169,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     }
 
-
+    @OnClick({R.id.tv_search, R.id.home_mess})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_search:
+                break;
+            case R.id.home_mess:
+                ArmsUtils.startActivity(MSMQActivity.class);
+                break;
+        }
+    }
 }

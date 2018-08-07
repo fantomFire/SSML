@@ -49,6 +49,11 @@
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
         <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
         <activity android:name=".mvp.ui.activity.TradeDetailActivity"></activity>
+        <activity android:name=".mvp.ui.activity.ConcernActivity" />
+        <activity android:name=".mvp.ui.activity.PraiseActivity" />
+        <activity android:name=".mvp.ui.activity.CommentActivity" />
+        <activity android:name=".mvp.ui.activity.ShareMeActivity" />
+        <activity android:name=".mvp.ui.activity.MessageListActivity" />
     </application>
 
 </manifest>
