@@ -1,5 +1,7 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
+import android.content.Intent;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -11,6 +13,7 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
+import zhonghuass.ssml.mvp.ui.activity.TradeDetailActivity;
 
 public class TradeAdapter extends BaseQuickAdapter<TradeBean,BaseViewHolder> {
     public TradeAdapter(int trade_item,List<TradeBean> data) {
@@ -27,7 +30,13 @@ public class TradeAdapter extends BaseQuickAdapter<TradeBean,BaseViewHolder> {
         Glide.with(mContext)
                 .load(item.getLogo())
                 .into((ImageView)helper.getView(R.id.trade_log));
+        helper.convertView.setOnClickListener((v) ->{
+            Intent intent = new Intent(mContext, TradeDetailActivity.class);
+            intent.putExtra("eid",item.getEid());
+            mContext.startActivity(intent);
+                }
 
 
+        );
     }
 }

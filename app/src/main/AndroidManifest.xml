@@ -47,6 +47,8 @@
         <activity android:name=".mvp.ui.activity.RealNameActivityActivity"></activity>
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
+        <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
+        <activity android:name=".mvp.ui.activity.TradeDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -14,43 +14,42 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
-import zhonghuass.ssml.di.component.DaggerDanymicComponent;
-import zhonghuass.ssml.di.module.DanymicModule;
-import zhonghuass.ssml.mvp.contract.DanymicContract;
-import zhonghuass.ssml.mvp.presenter.DanymicPresenter;
+import zhonghuass.ssml.di.component.DaggerCompanyRecommendComponent;
+import zhonghuass.ssml.di.module.CompanyRecommendModule;
+import zhonghuass.ssml.mvp.contract.CompanyRecommendContract;
+import zhonghuass.ssml.mvp.presenter.CompanyRecommendPresenter;
 
 import zhonghuass.ssml.R;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class DanymicFragment extends BaseFragment<DanymicPresenter> implements DanymicContract.View {
+public class CompanyRecommendFragment extends BaseFragment<CompanyRecommendPresenter> implements CompanyRecommendContract.View {
 
-    public static DanymicFragment newInstance() {
-        DanymicFragment fragment = new DanymicFragment();
+    public static CompanyRecommendFragment newInstance() {
+        CompanyRecommendFragment fragment = new CompanyRecommendFragment();
         return fragment;
     }
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerDanymicComponent //如找不到该类,请编译一下项目
+        DaggerCompanyRecommendComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .danymicModule(new DanymicModule(this))
+                .companyRecommendModule(new CompanyRecommendModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_danymic, container, false);
+        return inflater.inflate(R.layout.fragment_company_recommend, container, false);
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
     }
-
 
     @Override
     public void setData(@Nullable Object data) {
