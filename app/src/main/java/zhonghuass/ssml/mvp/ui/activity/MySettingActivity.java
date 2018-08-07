@@ -23,7 +23,7 @@ import zhonghuass.ssml.mvp.presenter.MySettingActivityPresenter;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class MySettingActivityActivity extends MBaseActivity<MySettingActivityPresenter> implements MySettingActivityContract.View {
+public class MySettingActivity extends MBaseActivity<MySettingActivityPresenter> implements MySettingActivityContract.View {
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.ll_account_info)
@@ -81,7 +81,7 @@ public class MySettingActivityActivity extends MBaseActivity<MySettingActivityPr
         super.onViewClicked(view);
         switch (view.getId()) {
             case R.id.ll_account_info:
-                ArmsUtils.startActivity(MyAccountInfoActivityActivity.class);
+                ArmsUtils.startActivity(MyAccountInfoActivity.class);
                 break;
             case R.id.ll_update:
                 ArmsUtils.startActivity(MyAppUpdateActivity.class);

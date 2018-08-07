@@ -6,11 +6,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +33,7 @@ import zhonghuass.ssml.mvp.contract.MycenterContract;
 import zhonghuass.ssml.mvp.presenter.MycenterPresenter;
 
 import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.activity.PicEditActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ViewPagerAdapter;
 import zhonghuass.ssml.utils.EventBusUtils;
 
@@ -89,6 +88,13 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
+        mPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArmsUtils.startActivity(PicEditActivity.class);
+            }
+        });
 
         fragments.add(MyPicTextFragment.newInstance());
         fragments.add(MyPicTextFragment.newInstance());

@@ -25,11 +25,11 @@
         android:layout_height="35dp">
 
         <com.github.library.layoutView.CircleImageView
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_centerVertical="true"
             android:id="@+id/company_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
             android:src="@mipmap/meizi" />
 
         <TextView

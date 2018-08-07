@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
@@ -77,7 +76,7 @@ public class HelpActivityActivity extends MBaseActivity<HelpActivityPresenter> i
         super.onViewClicked(view);
         switch (view.getId()) {
             case R.id.ll_real_name:
-                ArmsUtils.startActivity(HowToRealNameActivityActivity.class);
+                ArmsUtils.startActivity(HowToRealNameActivity.class);
                 break;
             case R.id.ll_what_everyday:
                 break;

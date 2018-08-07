@@ -291,13 +291,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 Log.e("--", "2");
                 break;
             case R.id.tv_menu4:
-                ArmsUtils.startActivity(RealNameActivityActivity.class);
+                ArmsUtils.startActivity(RealNameActivity.class);
                 break;
             case R.id.tv_menu5:
                 ArmsUtils.startActivity(HelpActivityActivity.class);
                 break;
             case R.id.tv_menu6:
-                ArmsUtils.startActivity(MySettingActivityActivity.class);
+                ArmsUtils.startActivity(MySettingActivity.class);
                 break;
         }
     }
