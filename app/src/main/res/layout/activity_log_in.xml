@@ -80,6 +80,7 @@
                                 android:background="@mipmap/login_icon_3" />
 
                             <EditText
+                                android:inputType="number"
                                 android:id="@+id/edt_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

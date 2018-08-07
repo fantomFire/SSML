@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     TextView tvUpload;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    private boolean isChecked;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -93,6 +96,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_passworld_choose:
+                toChoose();
                 break;
             case R.id.tv_forget:
                 ArmsUtils.startActivity(ForgetPassworldActivity.class);
@@ -104,7 +108,17 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
                 break;
         }
     }
-
+    private void toChoose() {
+        if (isChecked) {
+            //如果选中，显示密码
+            edtKey.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            isChecked = false;
+        } else {
+            //否则隐藏密码
+            edtKey.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            isChecked = true;
+        }
+    }
     private void pwtoLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mPassworld = edtKey.getText().toString().trim();

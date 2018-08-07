@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,6 +42,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     TextView tvEnter;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    private boolean isChecked = true;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -92,6 +95,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_passworld_choose:
+                toChoose();
                 break;
             case R.id.tv_upload:
                 eptoLogin();
@@ -101,6 +105,18 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
                 break;
             case R.id.tv_agreement:
                 break;
+        }
+    }
+
+    private void toChoose() {
+        if (isChecked) {
+            //如果选中，显示密码
+            edtKey.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            isChecked = false;
+        } else {
+            //否则隐藏密码
+            edtKey.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            isChecked = true;
         }
     }
 
@@ -115,6 +131,6 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
             ArmsUtils.makeText(this, "请核输入密码");
             return;
         }
-        mPresenter.eptoLogin(mPhone,mPassworld);
+        mPresenter.eptoLogin(mPhone, mPassworld);
     }
 }
