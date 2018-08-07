@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class AreaGridAdapter extends BaseAdapter {
     private Context mContext;
-    private List<ProvinceInfo.CityInfo.CountiesBean> mAreas;
+    private List<String> mAreas;
 
-    public AreaGridAdapter(Context context, List<ProvinceInfo.CityInfo.CountiesBean> list) {
+    public AreaGridAdapter(Context context, List<String> list) {
         this.mContext = context;
         mAreas = new ArrayList<>();
         mAreas.addAll(list);
@@ -33,7 +33,7 @@ public class AreaGridAdapter extends BaseAdapter {
 
     @Override
     public String getItem(int position) {
-        return mAreas == null ? null : mAreas.get(position).getAreaName();
+        return mAreas == null ? null : mAreas.get(position);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class AreaGridAdapter extends BaseAdapter {
         } else {
             holder = (HotCityViewHolder) view.getTag();
         }
-        holder.name.setText(mAreas.get(position).getAreaName());
+        holder.name.setText(mAreas.get(position));
         return view;
     }
 
