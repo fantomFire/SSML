@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerConfirModiComponent;
@@ -32,6 +36,12 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     TextView tvUpload;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    @BindView(R.id.tv_passworld_new)
+    ImageView tvPassworldNew;
+    @BindView(R.id.tv_passworld_old)
+    ImageView tvPassworldOld;
+    private boolean isChecked;
+    private boolean isChecked2;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -80,7 +90,7 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
         finish();
     }
 
-    @OnClick({R.id.tv_upload, R.id.tv_agreement})
+    @OnClick({R.id.tv_upload, R.id.tv_agreement, R.id.tv_passworld_new, R.id.tv_passworld_old})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_upload:
@@ -88,9 +98,39 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
                 break;
             case R.id.tv_agreement:
                 break;
+            case R.id.tv_passworld_new:
+                toChoosenew();
+                break;
+            case R.id.tv_passworld_old:
+                toChooseold();
+                break;
         }
     }
 
+
+
+    private void toChoosenew() {
+        if (isChecked) {
+            //如果选中，显示密码
+            edtPhone.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            isChecked = false;
+        } else {
+            //否则隐藏密码
+            edtPhone.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            isChecked = true;
+        }
+    }
+    private void toChooseold() {
+        if (isChecked2) {
+            //如果选中，显示密码
+            edtPassworld.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            isChecked2 = false;
+        } else {
+            //否则隐藏密码
+            edtPassworld.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            isChecked2 = true;
+        }
+    }
     private void toConfirModi() {
         Intent intent = getIntent();
         String phone = intent.getStringExtra("forgetmPhone");
@@ -105,4 +145,12 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     public void toNewActivity() {
         ArmsUtils.startActivity(LogInActivity.class);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
 }
