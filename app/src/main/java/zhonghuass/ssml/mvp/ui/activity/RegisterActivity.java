@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -19,19 +21,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerRegisterComponent;
 import zhonghuass.ssml.di.module.RegisterModule;
 import zhonghuass.ssml.mvp.contract.RegisterContract;
 import zhonghuass.ssml.mvp.presenter.RegisterPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
-import zhonghuass.ssml.utils.RxUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -50,9 +47,12 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     TextView tvUpload;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    @BindView(R.id.iv_see)
+    ImageView ivSee;
     private Disposable mDispos;
     private String mPhone;
     private String mPass;
+    private boolean isChecked;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -102,7 +102,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     }
 
 
-    @OnClick({R.id.tv_getcode, R.id.tv_upload, R.id.tv_agreement})
+    @OnClick({R.id.tv_getcode, R.id.tv_upload, R.id.tv_agreement, R.id.iv_see})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
@@ -114,6 +114,21 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
             case R.id.tv_agreement:
 
                 break;
+            case R.id.iv_see:
+                toChoose();
+                break;
+        }
+    }
+
+    private void toChoose() {
+        if (isChecked) {
+            //如果选中，显示密码
+            edtPassworld.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            isChecked = false;
+        } else {
+            //否则隐藏密码
+            edtPassworld.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            isChecked = true;
         }
     }
 
@@ -154,7 +169,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
             ArmsUtils.makeText(this, "请核输入密码");
             return;
         }
-        if (TextUtils.isEmpty(mCode)){
+        if (TextUtils.isEmpty(mCode)) {
             ArmsUtils.makeText(this, "请核手机号验证码");
         }
         mPresenter.toRegist(mPhone, mPass, mCode);
@@ -175,5 +190,12 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         intent.putExtra("mPhone", mPhone);
         intent.putExtra("mPass", mPass);
         launchActivity(intent);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

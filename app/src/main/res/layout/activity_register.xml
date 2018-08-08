@@ -68,6 +68,7 @@
                         android:background="@mipmap/login_icon_2" />
 
                     <EditText
+                        android:inputType="textPassword"
                         android:id="@+id/edt_passworld"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -115,6 +116,7 @@
                                 android:background="@mipmap/login_icon_3" />
 
                             <EditText
+                                android:inputType="number"
                                 android:id="@+id/edt_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

@@ -35,6 +35,7 @@ import com.github.library.pickerView.cityPicker.model.City;
 import com.github.library.pickerView.cityPicker.model.LocateState;
 import com.github.library.pickerView.cityPicker.model.ProvinceInfo;
 import com.github.library.pickerView.cityPicker.view.SideLetterBar;
+import com.github.library.pickerView.scrollPicker.CustomCityPicker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,12 +69,17 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
     private TextView mTvAreaSelecter;
     private LinearLayout mLlShowCity;
     private PopupWindow popupWindow;
-    private ArrayList<ProvinceInfo.CityInfo.CountiesBean> areasList = new ArrayList<ProvinceInfo.CityInfo.CountiesBean>();
 
     private TextView mTvArea;
     private GridView gridView;
     private AreaGridAdapter areaAdapter;
-    private RecyclerView rvArea;
+    private int provinceSelect = 0;
+    private int citySelect = 0;
+
+    private List<String> provinces = new ArrayList<>();
+    private List<List<String>> citys = new ArrayList<List<String>>();
+    private List<List<List<String>>> countys = new ArrayList<List<List<String>>>();
+    private List<CustomCityPicker.Province> provinceList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +106,8 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
             mCityAdapter.updateLocateState(LocateState.FAILED, area);
 
         }
-        initLocation();
-
+//        initLocation();
+        initJson();
     }
 
     private void initLocation() {
@@ -113,6 +119,47 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+
+    public void initJson() {
+        provinceList.clear();
+        provinces.clear();
+        citys.clear();
+        countys.clear();
+        String json = getJson(this, "city.json");
+        provinceList.addAll(JSON.parseArray(json, CustomCityPicker.Province.class));
+        int provinceSize = provinceList.size();
+        //添加省
+        for (int x = 0; x < provinceSize; x++) {
+            CustomCityPicker.Province pro;
+            pro = provinceList.get(x);
+            provinces.add(pro.getAreaName());
+            List<CustomCityPicker.City> cities = pro.getCities();
+            List<String> xCities = new ArrayList<String>();
+            List<List<String>> xCounties = new ArrayList<List<String>>();
+            int citySize = cities.size();
+            //添加地市
+            for (int y = 0; y < citySize; y++) {
+                CustomCityPicker.City cit = cities.get(y);
+                xCities.add(cit.getAreaName());
+                List<CustomCityPicker.County> counties = cit.getCounties();
+                List<String> yCounties = new ArrayList<String>();
+                int countySize = counties.size();
+                //添加区县
+                if (countySize == 0) {
+                    yCounties.add(cit.getAreaName());
+                } else {
+                    for (int z = 0; z < countySize; z++) {
+                        yCounties.add(counties.get(z).getAreaName());
+                    }
+                }
+                xCounties.add(yCounties);
+            }
+            citys.add(xCities);
+            countys.add(xCounties);
+        }
+    }
+
+
     private void initData() {
         dbManager = new DBManager(this);
         dbManager.copyDBFile();
@@ -123,7 +170,20 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onCityClick(String name) {
                 mTvCity.setText(name);
+                if (name.equals("澳门") || name.equals("台湾") || name.equals("香港")) {
+                    back(name);
+                    return;
+                }
                 mTvArea.setText("");
+                for (int i = 0; i < citys.size(); i++) {
+                    for (int j = 0; j < citys.get(i).size(); j++) {
+                        if (citys.get(i).get(j).contains(name)) {
+                            provinceSelect = i;
+                            citySelect = j;
+                        }
+                    }
+
+                }
             }
 
             @Override
@@ -211,27 +271,6 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void initAssetsJson() {
-        String cityName = mTvCity.getText().toString();
-        String str = getJson(this, "city.json");
-        JSONArray jsonArray = JSONArray.parseArray(str);
-        for (int i = 0; i < jsonArray.size(); i++) {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            ProvinceInfo proInfo = JSON.parseObject(jsonObject.toString(), ProvinceInfo.class);
-            for (ProvinceInfo.CityInfo cityInfo : proInfo.getCities()) {
-                String name = cityInfo.getAreaName();
-                if (name.contains(cityName)) {
-                    ProvinceInfo.CityInfo.CountiesBean mCityInfo = new ProvinceInfo.CityInfo.CountiesBean();
-                    mCityInfo.setAreaName("全市区");
-                    areasList.clear();
-                    areasList.add(mCityInfo);
-                    areasList.addAll(cityInfo.getCounties());
-                }
-            }
-        }
-        initPopupWindow();
-    }
-
     public static String getJson(Context mContext, String fileName) {
 
         StringBuilder sb = new StringBuilder();
@@ -270,7 +309,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
             finish();
         }
         if (i == R.id.tvAreaSelecter) {
-            initAssetsJson();
+            initPopupWindow();
         }
 
     }
@@ -282,11 +321,10 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         contentview.setFocusableInTouchMode(true);
         gridView = (GridView) contentview.findViewById(R.id.gridview_area);
 
-        areaAdapter = new AreaGridAdapter(CityPickerActivity.this, areasList);
+        areaAdapter = new AreaGridAdapter(CityPickerActivity.this, countys.get(provinceSelect).get(citySelect));
         gridView.setAdapter(areaAdapter);
         popupWindow = new PopupWindow(contentview, WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
-
 
 
         popupWindow.setBackgroundDrawable(new ColorDrawable(0x11111111));
@@ -297,7 +335,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = areasList.get(position).getAreaName();
+                String name = countys.get(provinceSelect).get(citySelect).get(position);
                 mTvArea.setText(name);
                 popupWindow.dismiss();
                 back(name);

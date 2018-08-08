@@ -18,7 +18,7 @@ import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class RealNameActivityActivity extends MBaseActivity<RealNameActivityPresenter> implements RealNameActivityContract.View {
+public class RealNameActivity extends MBaseActivity<RealNameActivityPresenter> implements RealNameActivityContract.View {
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -37,7 +37,7 @@ public class RealNameActivityActivity extends MBaseActivity<RealNameActivityPres
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        initToolBar("实名认证", true, R.mipmap.dian);
+        initToolBar("实名认证");
     }
 
     @Override

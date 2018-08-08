@@ -8,10 +8,10 @@ import zhonghuass.ssml.di.module.MyAccountInfoActivityModule;
 
 import com.jess.arms.di.scope.ActivityScope;
 
-import zhonghuass.ssml.mvp.ui.activity.MyAccountInfoActivityActivity;
+import zhonghuass.ssml.mvp.ui.activity.MyAccountInfoActivity;
 
 @ActivityScope
 @Component(modules = MyAccountInfoActivityModule.class, dependencies = AppComponent.class)
 public interface MyAccountInfoActivityComponent {
-    void inject(MyAccountInfoActivityActivity activity);
+    void inject(MyAccountInfoActivity activity);
 }

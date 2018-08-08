@@ -9,30 +9,30 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerHowToRealNameActivityComponent;
-import zhonghuass.ssml.di.module.HowToRealNameActivityModule;
-import zhonghuass.ssml.mvp.contract.HowToRealNameActivityContract;
-import zhonghuass.ssml.mvp.presenter.HowToRealNameActivityPresenter;
+import zhonghuass.ssml.di.component.DaggerMyAccountInfoActivityComponent;
+import zhonghuass.ssml.di.module.MyAccountInfoActivityModule;
+import zhonghuass.ssml.mvp.contract.MyAccountInfoActivityContract;
+import zhonghuass.ssml.mvp.presenter.MyAccountInfoActivityPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class HowToRealNameActivityActivity extends MBaseActivity<HowToRealNameActivityPresenter> implements HowToRealNameActivityContract.View {
+public class MyAccountInfoActivity extends MBaseActivity<MyAccountInfoActivityPresenter> implements MyAccountInfoActivityContract.View {
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerHowToRealNameActivityComponent //如找不到该类,请编译一下项目
+        DaggerMyAccountInfoActivityComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .howToRealNameActivityModule(new HowToRealNameActivityModule(this))
+                .myAccountInfoActivityModule(new MyAccountInfoActivityModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_how_to_real_name; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        return R.layout.activity_my_account_info; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override

@@ -8,10 +8,10 @@ import zhonghuass.ssml.di.module.HowToRealNameActivityModule;
 
 import com.jess.arms.di.scope.ActivityScope;
 
-import zhonghuass.ssml.mvp.ui.activity.HowToRealNameActivityActivity;
+import zhonghuass.ssml.mvp.ui.activity.HowToRealNameActivity;
 
 @ActivityScope
 @Component(modules = HowToRealNameActivityModule.class, dependencies = AppComponent.class)
 public interface HowToRealNameActivityComponent {
-    void inject(HowToRealNameActivityActivity activity);
+    void inject(HowToRealNameActivity activity);
 }

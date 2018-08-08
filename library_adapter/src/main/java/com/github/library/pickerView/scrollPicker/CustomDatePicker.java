@@ -1,4 +1,4 @@
-package com.github.library.pickerView.datePicker;
+package com.github.library.pickerView.scrollPicker;
 
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
@@ -360,7 +360,6 @@ public class CustomDatePicker {
         month_pv.setData(month);
         month_pv.setSelected(0);
         executeAnimator(month_pv);
-
         month_pv.postDelayed(new Runnable() {
             @Override
             public void run() {

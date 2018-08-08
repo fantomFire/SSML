@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:visibility="visible">
 
-        <com.github.library.baseAdapter.animation.widget.RefreshView
+        <com.github.library.baseAdapter.widget.RefreshView
             android:id="@+id/load_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
