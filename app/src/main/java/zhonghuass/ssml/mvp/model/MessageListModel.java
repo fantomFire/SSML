@@ -42,5 +42,6 @@ public class MessageListModel extends BaseModel implements MessageListContract.M
     public Observable<BaseResponse<List<MessageListBean>>> getMessageListData(String member_id, String member_type, int page) {
         return  mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .getMessageListData(member_id,member_type,page+"");
+
     }
 }
