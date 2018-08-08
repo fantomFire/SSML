@@ -131,6 +131,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * Use with {@link #openLoadAnimation}
      */
     public static final int SLIDEIN_BOTTOM_TOP = 0x00000007;
+    private int mMaxSize = 0;
 
 
     public void setOnLoadMoreListener(RequestLoadMoreListener requestLoadMoreListener) {
@@ -180,6 +181,10 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      * Refresh end, no more data
      */
     public void loadMoreEnd() {
+        if (mMaxSize > getItemCount()) {
+            loadMoreEnd(true);
+            return;
+        }
         loadMoreEnd(false);
     }
 
@@ -1020,6 +1025,10 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         if (autoLoadMoreSize > 1) {
             mAutoLoadMoreSize = autoLoadMoreSize;
         }
+    }
+
+    public void setNoDateShow(int size) {
+        mMaxSize = size;
     }
 
     private void autoLoadMore(int position) {
