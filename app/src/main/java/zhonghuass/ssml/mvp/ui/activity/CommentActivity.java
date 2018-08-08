@@ -68,6 +68,9 @@ public class CommentActivity extends MBaseActivity<CommentPresenter> implements 
         rvComment.setAdapter(commentAdapter);
         mPresenter.getCommentData(member_id, member_type, page);
         commentAdapter.setOnLoadMoreListener(this);
+//        int h2 = ArmsUtils.pix2dip(this, (ArmsUtils.getScreenHeidth(this) - 60));
+//        int size2 = h2 / 80;
+//        commentAdapter.setNoDateShow(size2);
         // 设置颜色属性的时候一定要注意是引用了资源文件还是直接设置16进制的颜色，因为都是int值容易搞混
         // 设置下拉进度的背景颜色，默认
         // 就是白色的
