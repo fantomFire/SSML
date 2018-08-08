@@ -17,12 +17,14 @@ package com.github.library.baseAdapter;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1027,8 +1029,52 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
         }
     }
 
-    public void setNoDateShow(int size) {
-        mMaxSize = size;
+    private int footAddViewHeidth = 64;
+
+
+    /**
+     * 此方法是当前屏幕显示数据全部加载完成时候不显示没有更多数据
+     *
+     * @param itemHeidth  item高度
+     * @param titleHeidth 标题栏高度
+     */
+    public void setNoDateGone(Context context, int itemHeidth, int titleHeidth) {
+        mContext = context;
+        int screenHeidth = getScreenHeidth(mContext);
+        int statusHeidth = getStatusHeidth(mContext);
+        int dp = pix2dip(mContext, screenHeidth - statusHeidth);
+        mMaxSize = (dp - titleHeidth - footAddViewHeidth) / itemHeidth;
+    }
+
+    /**
+     * 获得状态栏的高度
+     */
+    private int getStatusHeidth(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    /**
+     * 获得屏幕的高度
+     */
+    private int getScreenHeidth(Context context) {
+        return getResources(context).getDisplayMetrics().heightPixels;
+    }
+
+    private Resources getResources(Context context) {
+        return context.getResources();
+    }
+
+    /**
+     * pix转dip
+     */
+    private int pix2dip(Context context, int pix) {
+        final float densityDpi = getResources(context).getDisplayMetrics().density;
+        return (int) (pix / densityDpi + 0.5f);
     }
 
     private void autoLoadMore(int position) {
