@@ -14,6 +14,7 @@ import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 
 
 @ActivityScope
@@ -36,7 +37,7 @@ public class EnterpriseLoginModel extends BaseModel implements EnterpriseLoginCo
     }
 
     @Override
-    public Observable<BaseResponse<Void>> eptoLogin(String mPhone, String mPassworld) {
+    public Observable<BaseResponse<LoginBean>> eptoLogin(String mPhone, String mPassworld) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).topwLogin(mPhone,mPassworld,"3");
     }
 }

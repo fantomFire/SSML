@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -45,10 +46,16 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
     public void pwtoLogin(String mPhone, String mPassworld) {
         mModel.pwtoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<LoginBean>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                    public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        System.out.println("t = " + t);
                     }
                 });
     }

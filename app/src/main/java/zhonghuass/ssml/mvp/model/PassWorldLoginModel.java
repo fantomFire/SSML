@@ -14,6 +14,7 @@ import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 
 
 @ActivityScope
@@ -36,7 +37,8 @@ public class PassWorldLoginModel extends BaseModel implements PassWorldLoginCont
     }
 
     @Override
-    public Observable<BaseResponse<Void>> pwtoLogin(String mPhone, String mPassworld) {
-        return mRepositoryManager.obtainRetrofitService(ApiServer.class).topwLogin(mPhone,mPassworld,"1");
+    public Observable<BaseResponse<LoginBean>> pwtoLogin(String mPhone, String mPassworld) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .topwLogin(mPhone,mPassworld,"1");
     }
 }

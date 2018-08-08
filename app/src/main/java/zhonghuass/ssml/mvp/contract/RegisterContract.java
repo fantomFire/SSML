@@ -3,7 +3,6 @@ package zhonghuass.ssml.mvp.contract;
 import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
 
-import java.util.List;
 
 import io.reactivex.Observable;
 import zhonghuass.ssml.http.BaseResponse;
@@ -22,5 +21,6 @@ public interface RegisterContract {
         Observable<BaseResponse<Void>> toRegist(String mPhone, String mPass, String mCode);
 
         Observable<BaseResponse<Void>> toGetCode(String mPhone);
+
     }
 }

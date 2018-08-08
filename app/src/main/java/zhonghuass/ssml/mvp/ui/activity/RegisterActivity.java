@@ -53,6 +53,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     private String mPhone;
     private String mPass;
     private boolean isChecked;
+    private String mCode;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -160,7 +161,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     private void toLogin() {
         mPhone = edtPhone.getText().toString().trim();
         mPass = edtPassworld.getText().toString().trim();
-        String mCode = edtCode.getText().toString().trim();
+        mCode = edtCode.getText().toString().trim();
         if (TextUtils.isEmpty(mPhone)) {
             ArmsUtils.makeText(this, "请输入手机号码!");
             return;
@@ -171,9 +172,9 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         }
         if (TextUtils.isEmpty(mCode)) {
             ArmsUtils.makeText(this, "请核手机号验证码");
+            return;
         }
-        mPresenter.toRegist(mPhone, mPass, mCode);
-
+      mPresenter.toRegist(mPhone, mPass, mCode);
     }
 
     @Override
@@ -192,10 +193,4 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         launchActivity(intent);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

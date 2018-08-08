@@ -14,8 +14,13 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.maning.mndialoglibrary.MProgressDialog;
 
+import java.util.concurrent.TimeUnit;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerLogInComponent;
 import zhonghuass.ssml.di.module.LogInModule;
@@ -48,6 +53,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     ImageView ivQq;
     @BindView(R.id.iv_weibo)
     ImageView ivWeibo;
+    private Disposable mDispos;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -101,6 +107,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
+                getLoginCode();
                 break;
             case R.id.tv_register://注册
                 startActivity(new Intent(LogInActivity.this, RegisterActivity.class));
@@ -109,8 +116,8 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 ArmsUtils.startActivity(PassWorldLoginActivity.class);
                 break;
             case R.id.tv_upload:
-                ArmsUtils.startActivity(MainActivity.class);
-                // toLogin();
+             //   ArmsUtils.startActivity(MainActivity.class);
+                 toLogin();
                 break;
             case R.id.tv_enter://企业登录
                 ArmsUtils.startActivity(EnterpriseLoginActivity.class);
@@ -125,7 +132,30 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 break;
         }
     }
+    private void getLoginCode() {
+        String mPhone = edtPhone.getText().toString().trim();
+        if (TextUtils.isEmpty(mPhone)) {
+            ArmsUtils.makeText(this, "请核对手机号码!");
+            return;
+        }
+        tvGetcode.setEnabled(false);
+        mPresenter.getCode(mPhone);
+        mDispos = Flowable.interval(1, 1, TimeUnit.SECONDS)
+                .take(60)
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnNext((aLong) -> {
+                    tvGetcode.setText("重新获取(" + (60 - aLong) + ")");
+                })
+                .doOnComplete(() -> {
+                    tvGetcode.setEnabled(true);
+                    tvGetcode.setText("获取验证码");
+                })
+                .doOnError((throwable) ->
+                        throwable.printStackTrace()
+                )
+                .subscribe();
 
+    }
     private void toLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
