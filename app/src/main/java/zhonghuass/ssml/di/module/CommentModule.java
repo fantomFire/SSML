@@ -31,6 +31,7 @@ public class CommentModule {
     @ActivityScope
     @Provides
     CommentContract.Model provideCommentModel(CommentModel model) {
+
         return model;
     }
 }
