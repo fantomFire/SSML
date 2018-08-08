@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_marginTop="0.5dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <zhonghuass.ssml.utils.CircleImageView
+        android:id="@+id/civ_photo"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:src="@color/gray" />
+
+    <TextView
+        android:id="@+id/tv_concern_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_weight="1"
+        android:text="中华盛世"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_concern"
+        android:layout_width="60dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:background="@drawable/bg_concern_1"
+        android:gravity="center"
+        android:text="互相关注"
+        android:textColor="@color/white"
+        android:textSize="11sp" />
+
+</LinearLayout>

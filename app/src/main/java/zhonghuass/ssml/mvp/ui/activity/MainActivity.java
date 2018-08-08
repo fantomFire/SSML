@@ -285,10 +285,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 ArmsUtils.startActivity(MyInfoActivity.class);
                 break;
             case R.id.tv_menu1:
-                Log.e("--", "1");
+                ArmsUtils.startActivity(MyFansActivity.class);
                 break;
             case R.id.tv_menu2:
-                Log.e("--", "2");
+                ArmsUtils.startActivity(MyConcernActivity.class);
+                break;
+            case R.id.tv_menu3:
+                ArmsUtils.startActivity(MyFansActivity.class);
                 break;
             case R.id.tv_menu4:
                 ArmsUtils.startActivity(RealNameActivity.class);
