@@ -14,6 +14,7 @@ import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.LogInContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 
 
 @ActivityScope
@@ -36,9 +37,15 @@ public class LogInModel extends BaseModel implements LogInContract.Model {
     }
 
     @Override
-    public Observable<BaseResponse<Void>> toLogin(String mPhone, String mCode) {
+    public Observable<BaseResponse<LoginBean>> toLogin(String mPhone, String mCode) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .toLogin(mPhone,mCode,"2")
+                .toLogin(mPhone, mCode, "2")
                 ;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> getCode(String mPhone) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .getCode(mPhone, "2");
     }
 }

@@ -7,17 +7,17 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
-import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
 public interface ApiServer {
     //注册
-    @GET("/Api/Register/register")
-    Observable<BaseResponse<Void>> toRegist(@Query("mobile") String mPhone,
-                                            @Query("password") String mPass,
-                                            @Query("code") String mCode);
+    @FormUrlEncoded
+    @POST("/Api/Register/register")
+    Observable<BaseResponse<Void>> toRegist(@Field("mobile") String mPhone,
+                                            @Field("password") String mPass,
+                                            @Field("code") String mCode);
 
     //获取验证码
     @GET("/Api/Service/getyzm")
@@ -29,16 +29,18 @@ public interface ApiServer {
                                                            @Query("page") String page, @Query("pagesize") String pagesize);
 
     //手机号验证码登录
-    @GET("/Api/Login/login")
-    Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone,
-                                           @Query("code") String mCode,
-                                           @Query("type") String s);
+    @FormUrlEncoded
+    @POST("/Api/Login/login")
+    Observable<BaseResponse<LoginBean>> toLogin(@Field("username") String mPhone,
+                                                @Field("code") String mCode,
+                                                @Field("type") String s);
 
     //密码登录,企业登录
-    @GET("/Api/Login/login")
-    Observable<BaseResponse<Void>> topwLogin(@Query("username") String mPhone,
-                                             @Query("password") String mPassworld,
-                                             @Query("type") String s);
+    @FormUrlEncoded
+    @POST("/Api/Login/login")
+    Observable<BaseResponse<LoginBean>> topwLogin(@Field("username") String mPhone,
+                                             @Field("password") String mPassworld,
+                                             @Field("type") String s);
 
     //验证验证码正确
     @GET("/Api/Login/forgetpwd")

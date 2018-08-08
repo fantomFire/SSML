@@ -1,7 +1,5 @@
 package zhonghuass.ssml.mvp.model.appbean;
 
-import java.util.List;
-
 public class TradeBean {
 
         /**

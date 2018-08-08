@@ -6,9 +6,6 @@ import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
-import com.jess.arms.utils.RxLifecycleUtils;
-
-import java.sql.SQLOutput;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
@@ -50,14 +47,21 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
     public void toRegist(String mPhone, String mPass, String mCode) {
         mModel.toRegist(mPhone, mPass, mCode)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(rxErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
+                        System.out.println(voidBaseResponse.getMessage());
                         if(voidBaseResponse.isSuccess()){
                             mRootView.toNewActivity();
 
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        System.out.println(mErrorHandler);
                     }
                 });
 

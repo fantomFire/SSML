@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.LogInContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -46,12 +47,24 @@ public class LogInPresenter extends BasePresenter<LogInContract.Model, LogInCont
     public void toLogin(String mPhone, String mCode) {
         mModel.toLogin(mPhone,mCode)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<LoginBean>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<Void> voidBaseResponse) {
-                            mRootView.showContent(voidBaseResponse.getMessage());
+                    public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                        mRootView.showContent(voidBaseResponse.getMessage());
                     }
                 });
 
+    }
+
+    public void getCode(String mPhone) {
+        mModel.getCode(mPhone)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> loginBeanBaseResponse) {
+                        mRootView.showContent(loginBeanBaseResponse.getMessage());
+                    }
+                });
     }
 }

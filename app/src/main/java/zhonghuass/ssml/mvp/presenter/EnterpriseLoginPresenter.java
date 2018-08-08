@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -45,9 +46,9 @@ public class EnterpriseLoginPresenter extends BasePresenter<EnterpriseLoginContr
     public void eptoLogin(String mPhone, String mPassworld) {
         mModel.eptoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<LoginBean>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                    public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
                     }
                 });
