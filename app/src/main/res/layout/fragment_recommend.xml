@@ -8,5 +8,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recommend_rec"
         android:layout_width="match_parent"
+        android:background="@color/viewbg"
+
         android:layout_height="match_parent" />
 </LinearLayout>

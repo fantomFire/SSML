@@ -57,7 +57,7 @@ public class MyPicTextFragment extends BaseFragment<MycenterPresenter> implement
         for (int i = 0; i < 20; i++) {
             RecommendBean recommendBean = new RecommendBean();
             if (i % 2 == 0) {
-                recommendBean.imgPath = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532681290688&di=7bed793d89319d18418830c0e68a5cb8&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F4b90f603738da977f33b82f9bc51f8198718e3c8.jpg";
+                recommendBean .imgPath = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532681290688&di=7bed793d89319d18418830c0e68a5cb8&imgtype=0&src=http%3A%2F%2Fc.hiphotos.baidu.com%2Fimage%2Fpic%2Fitem%2F4b90f603738da977f33b82f9bc51f8198718e3c8.jpg";
                 recommendBean.companyName = "美女与野兽" + i;
             } else {
                 recommendBean.imgPath = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1532681353310&di=3a05928430c3412edcec58df868d74cb&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2F2e2eb9389b504fc213b73cb0e3dde71191ef6d9f.jpg";
