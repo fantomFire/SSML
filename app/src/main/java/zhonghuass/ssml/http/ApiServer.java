@@ -3,17 +3,21 @@ package zhonghuass.ssml.http;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
 public interface ApiServer {
     //注册
-    @GET("/Api/Register/register")
-    Observable<BaseResponse<Void>> toRegist(@Query("mobile") String mPhone,
-                                            @Query("password") String mPass,
-                                            @Query("code") String mCode);
+    @FormUrlEncoded
+    @POST("/Api/Register/register")
+    Observable<BaseResponse<Void>> toRegist(@Field("mobile") String mPhone,
+                                            @Field("password") String mPass,
+                                            @Field("code") String mCode);
 
     //获取验证码
     @GET("/Api/Service/getyzm")
@@ -46,5 +50,8 @@ public interface ApiServer {
             , @Query("code ") String code
             , @Query("pwd") String newpw
             , @Query("pwds") String oldpw);
-
+    //首页推荐
+    @GET("/Api/content/recommend")
+    Observable<BaseResponse<List<RecommendBean>>> getRecommendDatas(@Query("member_id") String member_id,
+                                                                    @Query("member_type") String member_type, @Query("page") String page);
 }

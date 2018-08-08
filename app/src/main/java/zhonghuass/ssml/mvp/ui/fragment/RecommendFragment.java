@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import zhonghuass.ssml.R;
@@ -33,9 +35,13 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @BindView(R.id.recommend_rec)
     RecyclerView recommendRec;
-    private ArrayList<RecommendBean> recommendBeans;
+    private ArrayList<RecommendBean> recommendDatas = new ArrayList<>();
     private RecommendAdapter recommendAdapter;
 
+    private String member_id = "1";
+    private String member_type = "1";
+    private int page = 1;
+    private boolean isloadMore = false;
 
     public static RecommendFragment newInstance() {
         RecommendFragment fragment = new RecommendFragment();
@@ -59,32 +65,24 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        System.out.println("recommend");
-        recommendBeans = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            RecommendBean recommendBean = new RecommendBean();
-            recommendBean.imgPath = "http://pic1.cxtuku.com/00/10/37/b212a9aabf1b.jpg";
-            recommendBean.companyName = "八马乐园" + i;
-            recommendBeans.add(recommendBean);
-        }
-        RecommendBean recommendBean = new RecommendBean();
-        recommendBean.imgPath = "http://pic2.cxtuku.com/00/03/24/b9931efe7466.jpg";
-        recommendBean.companyName = "花好月圆";
-        recommendBeans.add(recommendBean);
-
-
         initRecycleView();
+
+        mPresenter.getRecomendData(member_id, member_type, page);
     }
 
     private void initRecycleView() {
-        recommendRec.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendBeans);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recommendRec.setLayoutManager(staggeredGridLayoutManager);
+        recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendDatas);
         recommendRec.setAdapter(recommendAdapter);
-        recommendRec.addItemDecoration(new SpacesItemDecoration(10,10,getResources().getColor(R.color.colorf5)));
-
-
-        recommendAdapter.addData(recommendBeans);
-        recommendAdapter.notifyDataSetChanged();
+        // recommendRec.addItemDecoration(new SpacesItemDecoration(10,10,getResources().getColor(R.color.colorf5)));
+        recommendAdapter.setOnLoadMoreListener(() -> {
+                    isloadMore = true;
+                    page++;
+                    mPresenter.getRecomendData(member_id, member_type, page);
+                }
+        );
     }
 
     @Override
@@ -123,5 +121,29 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    public void setContent(List<RecommendBean> data) {
+        System.out.println("page"+page);
+        recommendAdapter.loadMoreComplete();
+        if(isloadMore){
+            recommendDatas.addAll(data);
+            recommendAdapter.notifyDataSetChanged();
+            recommendAdapter.loadMoreComplete();
+        }else {
+            recommendDatas.clear();
+            recommendDatas.addAll(data);
+            recommendAdapter.notifyDataSetChanged();
+            recommendAdapter.loadMoreComplete();
+        }
+
+
+    }
+
+    @Override
+    public void notifystate() {
+        recommendAdapter.loadMoreEnd();
+        isloadMore = false;
     }
 }
