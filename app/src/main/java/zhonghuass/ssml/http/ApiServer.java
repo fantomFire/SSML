@@ -6,6 +6,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
@@ -59,4 +60,8 @@ public interface ApiServer {
     @GET("Api/record/praise")
     Observable<BaseResponse<List<ShareMeBean>>> getPraiseData(@Query("member_id") String area, @Query("member_type") String type,
                                                                @Query("page") String page);
+    //评论我   Api/comment/record
+    @GET("Api/comment/record")
+    Observable<BaseResponse<List<CommentBean>>> getCommentData(@Query("member_id") String area, @Query("member_type") String type,
+                                                                   @Query("page") String page);
 }
