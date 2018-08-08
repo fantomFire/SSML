@@ -44,7 +44,7 @@
         <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
         <activity android:name=".mvp.ui.activity.HowToRealNameActivity" />
         <activity android:name=".mvp.ui.activity.FeedBackActivityActivity" />
-        <activity android:name=".mvp.ui.activity.RealNameActivity" />
+        <activity android:name=".mvp.ui.activity.RealNameActivity"/>
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
         <activity android:name=".mvp.ui.activity.TradeDetailActivity" />

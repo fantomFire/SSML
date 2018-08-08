@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 
-import com.jess.arms.di.scope.FragmentScope;
+import com.jess.arms.di.scope.ActivityScope;
 
 import java.util.List;
 
@@ -15,19 +15,19 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
-import zhonghuass.ssml.mvp.contract.CompanyContract;
-import zhonghuass.ssml.mvp.model.appbean.TradeBean;
+import zhonghuass.ssml.mvp.contract.ConcernContract;
+import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 
 
-@FragmentScope
-public class CompanyModel extends BaseModel implements CompanyContract.Model {
+@ActivityScope
+public class ConcernModel extends BaseModel implements ConcernContract.Model {
     @Inject
     Gson mGson;
     @Inject
     Application mApplication;
 
     @Inject
-    public CompanyModel(IRepositoryManager repositoryManager) {
+    public ConcernModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
     }
 
@@ -39,9 +39,8 @@ public class CompanyModel extends BaseModel implements CompanyContract.Model {
     }
 
     @Override
-    public Observable<BaseResponse<List<TradeBean>>> getTradeData(String area, String type, int currentPage, int pagesize) {
-
+    public Observable<BaseResponse<List<ShareMeBean>>> getConcernData(String member_id, String member_type, int page) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .getTradeData(area,type,currentPage+"",pagesize+"");
+                .getConcernData(member_id,member_type,page+"");
     }
 }

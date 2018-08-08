@@ -8,7 +8,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
@@ -51,6 +50,22 @@ public interface ApiServer {
             , @Query("code ") String code
             , @Query("pwd") String newpw
             , @Query("pwds") String oldpw);
+    //分享我
+    @GET("Api/record/share")
+    Observable<BaseResponse<List<ShareMeBean>>> getShareMeData(@Query("member_id") String area, @Query("member_type") String type,
+                                                               @Query("page") String page);
+    //关注我
+    @GET("Api/record/concern")
+    Observable<BaseResponse<List<ShareMeBean>>> getConcernData(@Query("member_id") String area, @Query("member_type") String type,
+                                                               @Query("page") String page);
+    //赞我
+    @GET("Api/record/praise")
+    Observable<BaseResponse<List<ShareMeBean>>> getPraiseData(@Query("member_id") String area, @Query("member_type") String type,
+                                                               @Query("page") String page);
+    //评论我   Api/comment/record
+    @GET("Api/comment/record")
+    Observable<BaseResponse<List<CommentBean>>> getCommentData(@Query("member_id") String area, @Query("member_type") String type,
+                                                               @Query("page") String page);
     //首页推荐
     @GET("/Api/content/recommend")
     Observable<BaseResponse<List<RecommendBean>>> getRecommendDatas(@Query("member_id") String member_id,
