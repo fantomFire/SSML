@@ -42,8 +42,8 @@ public class CommentActivity extends MBaseActivity<CommentPresenter> implements 
     private CommentAdapter commentAdapter;
     private int page=1;
     private List<CommentBean> mList=new ArrayList<>();
-    private String member_id;
-    private String member_type;
+    private String member_id="1";
+    private String member_type="0";
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -68,6 +68,7 @@ public class CommentActivity extends MBaseActivity<CommentPresenter> implements 
         rvComment.setAdapter(commentAdapter);
         mPresenter.getCommentData(member_id, member_type, page);
         commentAdapter.setOnLoadMoreListener(this);
+        commentAdapter.setNoDateGone(this,67,45);
 //        int h2 = ArmsUtils.pix2dip(this, (ArmsUtils.getScreenHeidth(this) - 60));
 //        int size2 = h2 / 80;
 //        commentAdapter.setNoDateShow(size2);
