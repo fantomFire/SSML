@@ -7,11 +7,19 @@ import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CommentContract;
+import zhonghuass.ssml.mvp.model.appbean.CommentBean;
+import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
@@ -37,5 +45,24 @@ public class CommentPresenter extends BasePresenter<CommentContract.Model, Comme
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+
+    public void getCommentData(String member_id, String member_type, int page) {
+        mModel.getCommentData(member_id, member_type, page)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<CommentBean>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<List<CommentBean>> listBaseResponse) {
+                        if (listBaseResponse.isSuccess()) {
+                            mRootView.showCommentData(listBaseResponse.getData());
+                        } else if (listBaseResponse.getStatus().equals("201")) {
+                            List<CommentBean> arrayList = new ArrayList();
+                            mRootView.showCommentData(arrayList);
+                        } else {
+                            mRootView.showMessage(listBaseResponse.getMessage());
+                        }
+                    }
+                });
     }
 }
