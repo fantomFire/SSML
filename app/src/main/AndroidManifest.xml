@@ -37,14 +37,14 @@
             android:name="zhonghuass.ssml.utils.GlobalConfiguration"
             android:value="ConfigModule" />
 
-        <activity android:name=".mvp.ui.activity.MySettingActivityActivity" />
-        <activity android:name=".mvp.ui.activity.MyAccountInfoActivityActivity" />
+        <activity android:name=".mvp.ui.activity.MySettingActivity" />
+        <activity android:name=".mvp.ui.activity.MyAccountInfoActivity" />
         <activity android:name=".mvp.ui.activity.MyAppUpdateActivity" />
         <activity android:name=".mvp.ui.activity.MyInfoActivity" />
         <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
-        <activity android:name=".mvp.ui.activity.HowToRealNameActivityActivity" />
+        <activity android:name=".mvp.ui.activity.HowToRealNameActivity" />
         <activity android:name=".mvp.ui.activity.FeedBackActivityActivity" />
-        <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
+        <activity android:name=".mvp.ui.activity.RealNameActivity"/>
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
         <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />

@@ -9,10 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
-import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
-import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
 public interface ApiServer {
@@ -80,4 +77,15 @@ public interface ApiServer {
     @GET("/Api/content/recommend")
     Observable<BaseResponse<List<RecommendBean>>> getRecommendDatas(@Query("member_id") String member_id,
                                                                     @Query("member_type") String member_type, @Query("page") String page);
+
+    //获取我的关注
+    @GET("/Api/Concern/concern")
+    Observable<BaseResponse<List<ConcernFansBean>>> getMyConcernData(@Query("member_id") String member_id,
+                                                                     @Query("member_type") String member_type,
+                                                                     @Query("page") int page);
+    //获取我的粉丝
+    @GET("/Api/Concern/fans")
+    Observable<BaseResponse<List<ConcernFansBean>>> getMyFansData(@Query("member_id") String member_id,
+                                                                  @Query("member_type") String member_type,
+                                                                  @Query("page") int page);
 }

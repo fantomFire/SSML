@@ -3,12 +3,7 @@ package com.github.library.baseAdapter.loadmore;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 
-import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
-import com.github.library.R;
-import com.github.library.baseAdapter.indicator.LoadMoreType;
-import com.github.library.baseAdapter.widget.RefreshView;
-
 
 /**
  * Created by BlingBling on 2016/11/11.
@@ -24,8 +19,6 @@ public abstract class LoadMoreView {
     private int mLoadMoreStatus = STATUS_DEFAULT;
     private boolean mLoadMoreEndGone = false;
 
-    private int mLoadingIndicator = LoadMoreType.APAY;
-
     public void setLoadMoreStatus(int loadMoreStatus) {
         this.mLoadMoreStatus = loadMoreStatus;
     }
@@ -40,7 +33,6 @@ public abstract class LoadMoreView {
                 visibleLoading(holder, true);
                 visibleLoadFail(holder, false);
                 visibleLoadEnd(holder, false);
-                startRefreshAnimator(holder);
                 break;
             case STATUS_FAIL:
                 visibleLoading(holder, false);
@@ -52,38 +44,26 @@ public abstract class LoadMoreView {
                 visibleLoadFail(holder, false);
                 visibleLoadEnd(holder, true);
                 break;
+            case STATUS_DEFAULT:
+                visibleLoading(holder, false);
+                visibleLoadFail(holder, false);
+                visibleLoadEnd(holder, false);
+                break;
         }
     }
-
-    private void startRefreshAnimator(BaseViewHolder holder) {
-        RefreshView refreshView = (RefreshView) holder.itemView.findViewById(R.id.load_more);
-        if (refreshView != null) {
-            refreshView.setIndicatorId(mLoadingIndicator);
-            if (mLoadingIndicator == LoadMoreType.APAY) {
-                refreshView.setIsDrawArrow(false);
-                refreshView.setProgress(100);
-            }
-            refreshView.startAnimator();
-        }
-    }
-
-    public void setLoadingIndicator(@LoadMoreType int loadMoreType) {
-        this.mLoadingIndicator = loadMoreType;
-    }
-
 
     private void visibleLoading(BaseViewHolder holder, boolean visible) {
-        holder.setVisible(getLoadingViewId(), visible);
+        holder.setGone(getLoadingViewId(), visible);
     }
 
     private void visibleLoadFail(BaseViewHolder holder, boolean visible) {
-        holder.setVisible(getLoadFailViewId(), visible);
+        holder.setGone(getLoadFailViewId(), visible);
     }
 
     private void visibleLoadEnd(BaseViewHolder holder, boolean visible) {
         final int loadEndViewId = getLoadEndViewId();
         if (loadEndViewId != 0) {
-            holder.setVisible(loadEndViewId, visible);
+            holder.setGone(loadEndViewId, visible);
         }
     }
 

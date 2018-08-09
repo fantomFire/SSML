@@ -12,8 +12,6 @@ import com.github.library.baseAdapter.BaseQuickAdapter;
  * {@link SimpleClickListener}
  **/
 public abstract class OnItemChildLongClickListener extends SimpleClickListener {
-
-
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
@@ -31,7 +29,8 @@ public abstract class OnItemChildLongClickListener extends SimpleClickListener {
 
     @Override
     public void onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
-        onSimpleItemChildLongClick(adapter,view,position);
+        onSimpleItemChildLongClick(adapter, view, position);
     }
+
     public abstract void onSimpleItemChildLongClick(BaseQuickAdapter adapter, View view, int position);
 }

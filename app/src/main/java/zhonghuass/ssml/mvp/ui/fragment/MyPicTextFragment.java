@@ -66,7 +66,7 @@ public class MyPicTextFragment extends BaseFragment<MycenterPresenter> implement
             recommendBeans.add(recommendBean);
         }
 
-        recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendBeans);
+//        recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendBeans);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);//定义瀑布流管理器，第一个参数是列数，第二个是方向。
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);//不设置的话，图片闪烁错位，有可能有整列错位的情况。
         mRecyclerView.setLayoutManager(layoutManager);//设置瀑布流管理器
@@ -78,7 +78,7 @@ public class MyPicTextFragment extends BaseFragment<MycenterPresenter> implement
                 layoutManager.invalidateSpanAssignments();//这行主要解决了当加载更多数据时，底部需要重绘，否则布局可能衔接不上。
             }
         });
-        mRecyclerView.setAdapter(recommendAdapter);
+//        mRecyclerView.setAdapter(recommendAdapter);
 
     }
 
