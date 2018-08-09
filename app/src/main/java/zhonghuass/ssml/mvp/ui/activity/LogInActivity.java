@@ -17,6 +17,7 @@ import com.maning.mndialoglibrary.MProgressDialog;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -53,7 +54,10 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     ImageView ivQq;
     @BindView(R.id.iv_weibo)
     ImageView ivWeibo;
+    @BindView(R.id.iv_tip_choose)
+    ImageView ivTipChoose;
     private Disposable mDispos;
+    private boolean isflag;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -103,7 +107,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     }
 
 
-    @OnClick({R.id.tv_getcode, R.id.tv_register, R.id.tv_passworld_login, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_weixin, R.id.iv_qq, R.id.iv_weibo})
+    @OnClick({R.id.tv_getcode, R.id.tv_register, R.id.tv_passworld_login, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_weixin, R.id.iv_qq, R.id.iv_weibo,R.id.iv_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
@@ -116,7 +120,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 ArmsUtils.startActivity(PassWorldLoginActivity.class);
                 break;
             case R.id.tv_upload:
-               ArmsUtils.startActivity(MainActivity.class);
+                ArmsUtils.startActivity(MainActivity.class);
                 // toLogin();
                 break;
             case R.id.tv_enter://企业登录
@@ -130,8 +134,12 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 break;
             case R.id.iv_weibo:
                 break;
+            case R.id.iv_tip_choose:
+                toAgreement();
+                break;
         }
     }
+
     private void getLoginCode() {
         String mPhone = edtPhone.getText().toString().trim();
         if (TextUtils.isEmpty(mPhone)) {
@@ -156,6 +164,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 .subscribe();
 
     }
+
     private void toLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
@@ -170,10 +179,25 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         mPresenter.toLogin(mPhone, mCode);
 
     }
-
+    private void toAgreement() {
+        if (isflag) {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            isflag = false;
+        } else {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            isflag = true;
+        }
+    }
 
     @Override
     public void showContent(String message) {
 
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

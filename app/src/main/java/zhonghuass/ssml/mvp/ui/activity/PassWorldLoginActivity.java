@@ -42,7 +42,10 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     TextView tvUpload;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    @BindView(R.id.iv_tip_choose)
+    ImageView ivTipChoose;
     private boolean isChecked;
+    private boolean isflag;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -92,7 +95,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
         finish();
     }
 
-    @OnClick({R.id.iv_passworld_choose, R.id.tv_forget, R.id.tv_upload, R.id.tv_agreement})
+    @OnClick({R.id.iv_passworld_choose, R.id.tv_forget, R.id.tv_upload, R.id.tv_agreement, R.id.iv_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_passworld_choose:
@@ -106,6 +109,19 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
                 break;
             case R.id.tv_agreement:
                 break;
+            case R.id.iv_tip_choose:
+                toAgreement();
+                break;
+        }
+    }
+
+    private void toAgreement() {
+        if (isflag) {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            isflag = false;
+        } else {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            isflag = true;
         }
     }
 
@@ -141,4 +157,6 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     public void gotoActivity() {
         ArmsUtils.startActivity(MainActivity.class);
     }
+
+
 }
