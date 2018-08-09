@@ -44,16 +44,17 @@
         <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
         <activity android:name=".mvp.ui.activity.HowToRealNameActivityActivity" />
         <activity android:name=".mvp.ui.activity.FeedBackActivityActivity" />
-        <activity android:name=".mvp.ui.activity.RealNameActivityActivity"></activity>
+        <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
         <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
-        <activity android:name=".mvp.ui.activity.TradeDetailActivity"></activity>
+        <activity android:name=".mvp.ui.activity.TradeDetailActivity" />
         <activity android:name=".mvp.ui.activity.ConcernActivity" />
         <activity android:name=".mvp.ui.activity.PraiseActivity" />
         <activity android:name=".mvp.ui.activity.CommentActivity" />
         <activity android:name=".mvp.ui.activity.ShareMeActivity" />
         <activity android:name=".mvp.ui.activity.MessageListActivity" />
+        <activity android:name=".mvp.ui.activity.SearchActivity"></activity>
     </application>
 
 </manifest>
