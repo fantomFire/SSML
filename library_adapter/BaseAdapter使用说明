@@ -1,0 +1,25 @@
+BaseQuickAdapter 使用说明
+
+item点击事件 -- setOnItemClickListener();
+itemChild点击事件 -- setOnItemChildClickListener();  需要在adapter里面  helper.addOnClickListener(R.id.xxx);
+item长按事件 -- setOnItemLongListener();
+itemChild长按事件 -- setOnItemLongClickListener();  需要在adapter里面  helper.addOnLongClickListener(R.id.xxx);
+
+加载更多 -- setOnLoadMoreListener();
+
+获取到数据后
+data.size > 0，设置loadMoreComplete()当前环节加载完毕，不然不停在加载。
+data.size = 0，设置loadMoreEnd()表示加载更多结束，会显示  “ -没有更多数据- ”。
+page = 1 时候用 setNewData()添加获取的数据;
+page > 1 时候用 addData()添加获取的新数据。
+
+在配合下拉刷新使用过程中，为了防止下拉刷新的时候还可以上拉加载
+可以先设置setEnableLoadMore(false)，然后获取到数据之后在设置setEnableLoadMore(true)。
+
+设置空布局
+setEmptyView(notDataView);
+View notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false);
+
+setEmptyView(R.layout.xxx, (ViewGroup) mRecyclerView.getParent());
+
+

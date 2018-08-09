@@ -7,10 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.github.library.baseAdapter.BaseQuickAdapter;
-import com.github.library.refreshView.internal.Utils;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
@@ -25,11 +23,14 @@ import zhonghuass.ssml.mvp.contract.MyConcernContract;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.presenter.MyConcernPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
-import zhonghuass.ssml.mvp.ui.adapter.ConcernFansAdapter;
+import zhonghuass.ssml.mvp.ui.adapter.MyConcernAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
+/**
+ * 我的关注页面
+ */
 public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> implements MyConcernContract.View, BaseQuickAdapter.RequestLoadMoreListener {
     private String mId = "1";
     private String mType = "1";
@@ -40,7 +41,7 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
     RecyclerView rvConcern;
     @BindView(R.id.srl_concern)
     SwipeRefreshLayout swipeRefreshLayout;
-    private ConcernFansAdapter mAdapter;
+    private MyConcernAdapter mAdapter;
 
 
     @Override
@@ -63,10 +64,10 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
         initToolBar("我的关注");
 
         rvConcern.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ConcernFansAdapter(R.layout.item_concern_fans, mList);
+        mAdapter = new MyConcernAdapter(R.layout.item_concern_fans, mList);
         mAdapter.setOnLoadMoreListener(this);
 
-        mAdapter.setNoDateGone(this, 80, 45);
+//        mAdapter.setNoDateGone(this, 80, 45);
 
         rvConcern.setAdapter(mAdapter);
         mPresenter.getMyConcernData(mId, mType, page);

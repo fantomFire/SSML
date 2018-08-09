@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
@@ -23,11 +25,14 @@ import zhonghuass.ssml.mvp.contract.MyFansContract;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.presenter.MyFansPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
-import zhonghuass.ssml.mvp.ui.adapter.ConcernFansAdapter;
+import zhonghuass.ssml.mvp.ui.adapter.MyFansAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
+/**
+ * 我的粉丝页面
+ */
 public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements MyFansContract.View, BaseQuickAdapter.RequestLoadMoreListener {
 
     private String mId = "1";
@@ -39,7 +44,8 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
     RecyclerView rvFans;
     @BindView(R.id.srl_fans)
     SwipeRefreshLayout swipeRefreshLayout;
-    private ConcernFansAdapter mAdapter;
+    private MyFansAdapter mAdapter;
+
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -60,18 +66,32 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
     public void initData(@Nullable Bundle savedInstanceState) {
         initToolBar("我的粉丝");
         rvFans.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ConcernFansAdapter(R.layout.item_concern_fans, mList);
+        mAdapter = new MyFansAdapter(R.layout.item_concern_fans, mList);
         mAdapter.setOnLoadMoreListener(this);
-
-        mAdapter.setNoDateGone(this, 80, 45);
 
         rvFans.setAdapter(mAdapter);
         mPresenter.getMyFansDate(mId, mType, page);
 
 
+        mAdapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
+            @Override
+            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
+                Log.e("--", "头像长按了" + "--" + position);
+                return false;
+            }
+        });
+
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Log.e("--", "view点击了" + "--" + position);
+            }
+        });
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
                 page = 1;
                 mPresenter.getMyFansDate(mId, mType, page);
             }
@@ -83,6 +103,7 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
+        mAdapter.setEnableLoadMore(true);
 
         if (data.size() > 0) {
             mAdapter.loadMoreComplete();
@@ -92,9 +113,10 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
         }
 
         if (page == 1) {
-            mList.clear();
-            mList.addAll(data);
-            mAdapter.notifyDataSetChanged();
+//            mList.clear();
+//            mList.addAll(data);
+//            mAdapter.notifyDataSetChanged();
+            mAdapter.setNewData(data);
         } else {
             mAdapter.addData(data);
         }

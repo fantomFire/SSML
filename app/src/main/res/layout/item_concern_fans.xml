@@ -32,7 +32,6 @@
         android:layout_marginLeft="@dimen/dp_10"
         android:background="@drawable/bg_concern_1"
         android:gravity="center"
-        android:text="互相关注"
         android:textColor="@color/white"
         android:textSize="11sp" />
 
