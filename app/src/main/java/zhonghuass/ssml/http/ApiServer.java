@@ -9,7 +9,11 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
+import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
+import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
 public interface ApiServer {

@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -43,6 +42,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     private int page = 1;
     private boolean isloadMore = false;
 
+
     public static RecommendFragment newInstance() {
         RecommendFragment fragment = new RecommendFragment();
         return fragment;
@@ -71,19 +71,31 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     }
 
     private void initRecycleView() {
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+      final   StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recommendRec.setLayoutManager(staggeredGridLayoutManager);
         recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendDatas);
+
+
+        recommendRec.setHasFixedSize(true);
         recommendRec.setAdapter(recommendAdapter);
-        // recommendRec.addItemDecoration(new SpacesItemDecoration(10,10,getResources().getColor(R.color.colorf5)));
-        recommendAdapter.setOnLoadMoreListener(() -> {
+        recommendRec.addItemDecoration(new SpacesItemDecoration(10,10,getResources().getColor(R.color.colorf5)));
+       recommendAdapter.setOnLoadMoreListener(() -> {
                     isloadMore = true;
                     page++;
                     mPresenter.getRecomendData(member_id, member_type, page);
                 }
         );
+        recommendRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                staggeredGridLayoutManager.invalidateSpanAssignments();
+            }
+        });
+
     }
+
 
     @Override
     public void onResume() {
@@ -126,17 +138,17 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     @Override
     public void setContent(List<RecommendBean> data) {
         System.out.println("page"+page);
-        recommendAdapter.loadMoreComplete();
-        if(isloadMore){
+
+     if(isloadMore){
             recommendDatas.addAll(data);
-            recommendAdapter.notifyDataSetChanged();
-            recommendAdapter.loadMoreComplete();
         }else {
             recommendDatas.clear();
             recommendDatas.addAll(data);
-            recommendAdapter.notifyDataSetChanged();
-            recommendAdapter.loadMoreComplete();
+
         }
+        recommendAdapter.notifyDataSetChanged();
+        recommendAdapter.loadMoreComplete();
+        isloadMore = false;
 
 
     }
@@ -146,4 +158,5 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
         recommendAdapter.loadMoreEnd();
         isloadMore = false;
     }
+
 }

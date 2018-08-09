@@ -116,8 +116,8 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 ArmsUtils.startActivity(PassWorldLoginActivity.class);
                 break;
             case R.id.tv_upload:
-             //   ArmsUtils.startActivity(MainActivity.class);
-                 toLogin();
+               ArmsUtils.startActivity(MainActivity.class);
+                // toLogin();
                 break;
             case R.id.tv_enter://企业登录
                 ArmsUtils.startActivity(EnterpriseLoginActivity.class);
