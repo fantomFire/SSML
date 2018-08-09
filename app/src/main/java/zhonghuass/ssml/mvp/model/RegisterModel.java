@@ -37,6 +37,7 @@ public class RegisterModel extends BaseModel implements RegisterContract.Model {
 
     @Override
     public Observable<BaseResponse<Void>> toRegist(String mPhone, String mPass, String mCode) {
+        System.out.println("mPhone"+mPhone);
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .toRegist(mPhone,mPass,mCode);
     }

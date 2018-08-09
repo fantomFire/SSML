@@ -8,6 +8,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
@@ -29,16 +30,18 @@ public interface ApiServer {
                                                            @Query("page") String page, @Query("pagesize") String pagesize);
 
     //手机号验证码登录
-    @GET("/Api/Login/login")
-    Observable<BaseResponse<Void>> toLogin(@Query("username") String mPhone,
-                                           @Query("code") String mCode,
-                                           @Query("type") String s);
+    @FormUrlEncoded
+    @POST("/Api/Login/login")
+    Observable<BaseResponse<LoginBean>> toLogin(@Field("username") String mPhone,
+                                                @Field("code") String mCode,
+                                                @Field("type") String s);
 
     //密码登录,企业登录
-    @GET("/Api/Login/login")
-    Observable<BaseResponse<Void>> topwLogin(@Query("username") String mPhone,
-                                             @Query("password") String mPassworld,
-                                             @Query("type") String s);
+    @FormUrlEncoded
+    @POST("/Api/Login/login")
+    Observable<BaseResponse<LoginBean>> topwLogin(@Field("username") String mPhone,
+                                             @Field("password") String mPassworld,
+                                             @Field("type") String s);
 
     //验证验证码正确
     @GET("/Api/Login/forgetpwd")
@@ -66,6 +69,10 @@ public interface ApiServer {
     @GET("Api/comment/record")
     Observable<BaseResponse<List<CommentBean>>> getCommentData(@Query("member_id") String area, @Query("member_type") String type,
                                                                @Query("page") String page);
+    //私信列表
+    @GET("")
+    Observable<BaseResponse<List<MessageListBean>>> getMessageListData(@Query("member_id") String area, @Query("member_type") String type,
+                                                                       @Query("page") String page);
     //首页推荐
     @GET("/Api/content/recommend")
     Observable<BaseResponse<List<RecommendBean>>> getRecommendDatas(@Query("member_id") String member_id,
