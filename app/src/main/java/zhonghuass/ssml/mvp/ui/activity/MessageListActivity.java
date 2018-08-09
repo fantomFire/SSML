@@ -64,7 +64,7 @@ public class MessageListActivity extends MBaseActivity<MessageListPresenter> imp
     public void initData(@Nullable Bundle savedInstanceState) {
         initToolBar("私信");
         rvMessageList.setLayoutManager(new LinearLayoutManager(this));
-        messageListAdapter = new MessageListAdapter(R.layout.share_me_item, mList);
+        messageListAdapter = new MessageListAdapter(R.layout.message_list_item, mList);
         rvMessageList.setAdapter(messageListAdapter);
         mPresenter.getMessageListData(member_id, member_type, page);
         messageListAdapter.setOnLoadMoreListener(this);

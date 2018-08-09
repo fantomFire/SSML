@@ -3,10 +3,14 @@ package zhonghuass.ssml.http;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
@@ -71,7 +75,7 @@ public interface ApiServer {
     //私信列表
     @GET("")
     Observable<BaseResponse<List<MessageListBean>>> getMessageListData(@Query("member_id") String area, @Query("member_type") String type,
-                                                                   @Query("page") String page);
+                                                                       @Query("page") String page);
     //首页推荐
     @GET("/Api/content/recommend")
     Observable<BaseResponse<List<RecommendBean>>> getRecommendDatas(@Query("member_id") String member_id,
