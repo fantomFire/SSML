@@ -50,6 +50,10 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
                     @Override
                     public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
+                        if (voidBaseResponse.isSuccess()) {
+                            mRootView.gotoActivity();
+                        }
+
                     }
 
                     @Override

@@ -50,6 +50,7 @@
         <activity android:name=".mvp.ui.activity.TradeDetailActivity" />
         <activity android:name=".mvp.ui.activity.MyConcernActivity" />
         <activity android:name=".mvp.ui.activity.MyFansActivity"/>
+        <activity android:name=".mvp.ui.activity.ForgetPassworldActivity"/>
     </application>
 
 </manifest>

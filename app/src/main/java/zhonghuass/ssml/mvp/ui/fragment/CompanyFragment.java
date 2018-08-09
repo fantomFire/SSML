@@ -28,7 +28,6 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerCompanyComponent;
 import zhonghuass.ssml.di.module.CompanyModule;
 import zhonghuass.ssml.mvp.contract.CompanyContract;
-import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 import zhonghuass.ssml.mvp.presenter.CompanyPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.TradeAdapter;

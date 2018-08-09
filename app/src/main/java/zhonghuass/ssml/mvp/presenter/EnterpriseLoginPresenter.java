@@ -50,7 +50,11 @@ public class EnterpriseLoginPresenter extends BasePresenter<EnterpriseLoginContr
                     @Override
                     public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
+                        if (voidBaseResponse.isSuccess()){
+                            mRootView.gotoActivity();
+                        }
                     }
+
                 });
     }
 }

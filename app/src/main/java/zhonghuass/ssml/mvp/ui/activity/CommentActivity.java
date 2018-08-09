@@ -25,7 +25,6 @@ import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.presenter.CommentPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.CommentAdapter;
-import zhonghuass.ssml.mvp.ui.adapter.ConcernAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 

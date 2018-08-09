@@ -112,10 +112,12 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
         if (isChecked) {
             //如果选中，显示密码
             edtKey.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            ivPassworldChoose.setImageResource(R.mipmap.login_icon_8);
             isChecked = false;
         } else {
             //否则隐藏密码
             edtKey.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            ivPassworldChoose.setImageResource(R.mipmap.login_icon_4);
             isChecked = true;
         }
     }
@@ -132,5 +134,10 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
             return;
         }
         mPresenter.eptoLogin(mPhone, mPassworld);
+    }
+
+    @Override
+    public void gotoActivity() {
+        ArmsUtils.startActivity(MainActivity.class);
     }
 }
