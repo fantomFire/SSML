@@ -70,7 +70,7 @@ public class ConcernActivity extends MBaseActivity<ConcernPresenter> implements 
         mPresenter.getConcernData(member_id, member_type, page);
         concernAdapter.setOnLoadMoreListener(this);
 
-        concernAdapter.setNoDateGone(this,67,45);
+//        concernAdapter.setNoDateGone(this,67,45);
         // 设置颜色属性的时候一定要注意是引用了资源文件还是直接设置16进制的颜色，因为都是int值容易搞混
         // 设置下拉进度的背景颜色，默认就是白色的
         srConcern.setProgressBackgroundColorSchemeResource(android.R.color.white);

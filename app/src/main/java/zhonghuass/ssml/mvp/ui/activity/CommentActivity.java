@@ -67,7 +67,7 @@ public class CommentActivity extends MBaseActivity<CommentPresenter> implements 
         rvComment.setAdapter(commentAdapter);
         mPresenter.getCommentData(member_id, member_type, page);
         commentAdapter.setOnLoadMoreListener(this);
-        commentAdapter.setNoDateGone(this,67,45);
+//        commentAdapter.setNoDateGone(this,67,45);
 //        int h2 = ArmsUtils.pix2dip(this, (ArmsUtils.getScreenHeidth(this) - 60));
 //        int size2 = h2 / 80;
 //        commentAdapter.setNoDateShow(size2);

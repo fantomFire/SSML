@@ -38,13 +38,16 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
     private String mId = "1";
     private String mType = "1";
     private int page = 1;
+    private int clickPosition = 0;
     private List<ConcernFansBean> mList = new ArrayList<>();
-
+    private List<ConcernFansBean> mAdapterData = new ArrayList<>();
     @BindView(R.id.rv_fans)
     RecyclerView rvFans;
     @BindView(R.id.srl_fans)
     SwipeRefreshLayout swipeRefreshLayout;
     private MyFansAdapter mAdapter;
+    private boolean isCancel;
+    private boolean isConcern;
 
 
     @Override
@@ -73,18 +76,25 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
         mPresenter.getMyFansDate(mId, mType, page);
 
 
-        mAdapter.setOnItemChildLongClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
-            @Override
-            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
-                Log.e("--", "头像长按了" + "--" + position);
-                return false;
-            }
-        });
-
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                Log.e("--", "view点击了" + "--" + position);
+                clickPosition = position;
+                switch (view.getId()) {
+                    case R.id.tv_concern:
+                        if (mAdapter.getData().get(position).mutual_concern.equals("1")) {
+                            //取消关注操作
+                            mPresenter.toCancelConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                        } else {
+                            //关注操作
+                            mPresenter.toConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
             }
         });
 
@@ -98,8 +108,9 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
         });
     }
 
+
     @Override
-    public void showDate(List<ConcernFansBean> data) {
+    public void showData(List<ConcernFansBean> data) {
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -112,14 +123,41 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
             return;
         }
 
+        if (isCancel || isConcern) {
+            isCancel = false;
+            isConcern = false;
+            ConcernFansBean bean = data.get(clickPosition - (page - 1) * 10);
+            mAdapter.setData(clickPosition, bean);
+            return;
+        }
+
         if (page == 1) {
-//            mList.clear();
-//            mList.addAll(data);
-//            mAdapter.notifyDataSetChanged();
             mAdapter.setNewData(data);
         } else {
             mAdapter.addData(data);
         }
+        mAdapter.disableLoadMoreIfNotFullPage(rvFans);
+
+    }
+
+    @Override
+    public void showCancelSuccess(String message) {
+        isCancel = true;
+        // 取消成功返回
+        showMessage(message);
+        // 去请求点击的item所在页的数据，准备更替刷新
+        page = (clickPosition / 10) + 1;
+        mPresenter.getMyFansDate(mId, mType, page);
+    }
+
+    @Override
+    public void showConcernSuccess(String message) {
+        isConcern = true;
+        // 取消成功返回
+        showMessage(message);
+        // 去请求点击的item所在页的数据，准备更替刷新
+        page = (clickPosition / 10) + 1;
+        mPresenter.getMyFansDate(mId, mType, page);
     }
 
     @Override

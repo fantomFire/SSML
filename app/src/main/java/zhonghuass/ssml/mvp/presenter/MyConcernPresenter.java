@@ -63,4 +63,35 @@ public class MyConcernPresenter extends BasePresenter<MyConcernContract.Model, M
                     }
                 });
     }
+
+    public void toCancelConcern(String mId, String mType, String member_id, String member_type) {
+        mModel.toCancelConcern(mId, mType, member_id, member_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (baseResponse.isSuccess()) {
+                            mRootView.showCancelSuccess(baseResponse.getMessage());
+                        } else {
+                            mRootView.showMessage(baseResponse.getMessage());
+                        }
+                    }
+                });
+
+    }
+
+    public void toConcern(String mId, String mType, String member_id, String member_type) {
+        mModel.toConcern(mId, mType, member_id, member_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (baseResponse.isSuccess()) {
+                            mRootView.showConcernSuccess(baseResponse.getMessage());
+                        } else {
+                            mRootView.showMessage(baseResponse.getMessage());
+                        }
+                    }
+                });
+    }
 }

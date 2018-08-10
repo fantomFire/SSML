@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".mvp.ui.activity.LogInActivity"
+            android:name=".mvp.ui.activity.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.ui.activity.MainActivity" />
+        <activity android:name=".mvp.ui.activity.LogInActivity" />
         <activity android:name=".mvp.ui.activity.GuideActivity" />
         <activity android:name=".mvp.ui.activity.WelcomeActivity" />
         <activity android:name=".mvp.ui.activity.RegisterActivity" />

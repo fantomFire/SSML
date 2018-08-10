@@ -453,11 +453,13 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     /**
      * If you have added headeview, the notification view refreshes.
      * Do not need to care about the number of headview, only need to pass in the position of the final view
+     *
      * @param position
      */
     public final void refreshNotifyItemChanged(int position) {
         notifyItemChanged(position + getHeaderLayoutCount());
     }
+
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
      * some initialization data.
@@ -1357,9 +1359,9 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
 
     /**
      * bind recyclerView {@link #bindToRecyclerView(RecyclerView)} before use!
-     * Recommend you to use {@link #setEmptyView(layoutResId,viewGroup)}
-     * @see #bindToRecyclerView(RecyclerView)
+     * Recommend you to use {@link #setEmptyView(layoutResId, viewGroup)}
      *
+     * @see #bindToRecyclerView(RecyclerView)
      */
     @Deprecated
     public void setEmptyView(int layoutResId) {
@@ -1573,6 +1575,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     public void openLoadAnimation() {
         this.mOpenAnimationEnable = true;
     }
+
     /**
      * To close the animation when loading
      */
@@ -2059,54 +2062,5 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     @Nullable
     public final OnItemChildLongClickListener getOnItemChildLongClickListener() {
         return mOnItemChildLongClickListener;
-    }
-
-    private int mMaxSize = 0;
-    private int footAddViewHeidth = 64;
-
-
-    /**
-     * 此方法是当前屏幕显示数据全部加载完成时候不显示没有更多数据
-     *
-     * @param itemHeidth  item高度
-     * @param titleHeidth 标题栏高度
-     */
-    public void setNoDateGone(Context context, int itemHeidth, int titleHeidth) {
-        mContext = context;
-        int screenHeidth = getScreenHeidth(mContext);
-        int statusHeidth = getStatusHeidth(mContext);
-        int dp = pix2dip(mContext, screenHeidth - statusHeidth);
-        mMaxSize = (dp - titleHeidth - footAddViewHeidth) / itemHeidth;
-    }
-
-    /**
-     * 获得状态栏的高度
-     */
-    private int getStatusHeidth(Context context) {
-        int result = 0;
-        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = context.getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    /**
-     * 获得屏幕的高度
-     */
-    private int getScreenHeidth(Context context) {
-        return getResources(context).getDisplayMetrics().heightPixels;
-    }
-
-    private Resources getResources(Context context) {
-        return context.getResources();
-    }
-
-    /**
-     * pix转dip
-     */
-    private int pix2dip(Context context, int pix) {
-        final float densityDpi = getResources(context).getDisplayMetrics().density;
-        return (int) (pix / densityDpi + 0.5f);
     }
 }

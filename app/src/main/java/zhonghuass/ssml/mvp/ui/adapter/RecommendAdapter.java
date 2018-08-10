@@ -1,7 +1,6 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 import com.github.library.layoutView.CircleImageView;
@@ -32,6 +30,7 @@ public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHo
     public RecommendAdapter(int layoutResId, List<RecommendBean> data) {
         super(layoutResId, data);
     }
+
 
     @Override
     protected void convert(BaseViewHolder helper,final RecommendBean item) {

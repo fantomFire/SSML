@@ -20,7 +20,6 @@ public class MyFansAdapter extends BaseQuickAdapter<ConcernFansBean, BaseViewHol
     @Override
     protected void convert(BaseViewHolder helper, ConcernFansBean item) {
         helper.addOnClickListener(R.id.tv_concern);
-        helper.addOnLongClickListener(R.id.civ_photo);
         TextView textView = helper.getView(R.id.tv_concern);
         helper.setText(R.id.tv_concern_name, item.member_name);
         GlideUtils.intoDefault(mContext, item.member_image, (ImageView) helper.getView(R.id.civ_photo));

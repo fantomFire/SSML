@@ -54,7 +54,6 @@ public class RecommendPresenter extends BasePresenter<RecommendContract.Model, R
                         if (listBaseResponse.isSuccess()) {
                             mRootView.setContent(listBaseResponse.getData());
                         } else if (listBaseResponse.getStatus().equals("201")) {
-
                             mRootView.notifystate();
                         } else {
                             mRootView.showMessage(listBaseResponse.getMessage());
