@@ -40,8 +40,11 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     ImageView tvPassworldNew;
     @BindView(R.id.tv_passworld_old)
     ImageView tvPassworldOld;
+    @BindView(R.id.iv_tip_choose)
+    ImageView ivTipChoose;
     private boolean isChecked;
     private boolean isChecked2;
+    private boolean isflag;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -90,7 +93,7 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
         finish();
     }
 
-    @OnClick({R.id.tv_upload, R.id.tv_agreement, R.id.tv_passworld_new, R.id.tv_passworld_old})
+    @OnClick({R.id.tv_upload, R.id.tv_agreement, R.id.tv_passworld_new, R.id.tv_passworld_old, R.id.iv_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_upload:
@@ -104,9 +107,21 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
             case R.id.tv_passworld_old:
                 toChooseold();
                 break;
+            case R.id.iv_tip_choose:
+                toAgreement();
+                break;
         }
     }
 
+    private void toAgreement() {
+        if (isflag) {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            isflag = false;
+        } else {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            isflag = true;
+        }
+    }
 
 
     private void toChoosenew() {
@@ -120,6 +135,7 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
             isChecked = true;
         }
     }
+
     private void toChooseold() {
         if (isChecked2) {
             //如果选中，显示密码
@@ -131,6 +147,7 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
             isChecked2 = true;
         }
     }
+
     private void toConfirModi() {
         Intent intent = getIntent();
         String phone = intent.getStringExtra("forgetmPhone");

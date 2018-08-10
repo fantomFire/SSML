@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jess.arms.di.component.AppComponent;
@@ -15,6 +16,7 @@ import com.jess.arms.utils.ArmsUtils;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,7 +43,10 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
     TextView tvUpload;
     @BindView(R.id.tv_agreement)
     TextView tvAgreement;
+    @BindView(R.id.iv_tip_choose)
+    ImageView ivTipChoose;
     private Disposable mDispos;
+    private boolean isflag;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -91,7 +96,7 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
     }
 
 
-    @OnClick({R.id.tv_getcode, R.id.tv_upload, R.id.tv_agreement})
+    @OnClick({R.id.tv_getcode, R.id.tv_upload, R.id.tv_agreement, R.id.iv_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode://获取验证码
@@ -102,6 +107,19 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
                 break;
             case R.id.tv_agreement:
                 break;
+            case R.id.iv_tip_choose:
+                toAgreement();
+                break;
+        }
+    }
+
+    private void toAgreement() {
+        if (isflag) {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            isflag = false;
+        } else {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            isflag = true;
         }
     }
 
@@ -129,7 +147,7 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
         //验证码倒计时
         tvGetcode.setEnabled(false);
         mPresenter.togetCode(mPhone);
-        mDispos = Flowable.interval(1,1, TimeUnit.SECONDS)
+        mDispos = Flowable.interval(1, 1, TimeUnit.SECONDS)
                 .take(60)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext((aLong) -> {
@@ -138,7 +156,7 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
                 .doOnComplete(() -> {
                     tvGetcode.setEnabled(true);
                     tvGetcode.setText("获取验证码");
-                } )
+                })
                 .doOnError((throwable) ->
                         throwable.printStackTrace()
                 )
@@ -154,11 +172,19 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
         intent.putExtra("forgetmmCode", mCode);
         ArmsUtils.startActivity(intent);
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mDispos != null) {
             mDispos.dispose();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

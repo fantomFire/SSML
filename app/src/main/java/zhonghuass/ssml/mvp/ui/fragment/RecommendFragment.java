@@ -22,7 +22,6 @@ import butterknife.BindView;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerRecommendComponent;
 import zhonghuass.ssml.di.module.RecommendModule;
-import zhonghuass.ssml.mvp.SimpleDividerItemDecoration;
 import zhonghuass.ssml.mvp.contract.RecommendContract;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.presenter.RecommendPresenter;
