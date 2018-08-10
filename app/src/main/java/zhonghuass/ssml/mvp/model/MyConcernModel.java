@@ -42,4 +42,14 @@ public class MyConcernModel extends BaseModel implements MyConcernContract.Model
     public Observable<BaseResponse<List<ConcernFansBean>>> getMyConcernData(String member_id, String member_type, int page) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).getMyConcernData(member_id, member_type, page);
     }
+
+    @Override
+    public Observable<BaseResponse<Void>> toCancelConcern(String mId, String mType, String member_id, String member_type) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toCancelConcern(mId, mType, member_id, member_type);
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> toConcern(String mId, String mType, String member_id, String member_type) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toConcern(mId, mType, member_id, member_type);
+    }
 }

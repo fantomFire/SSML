@@ -1,6 +1,5 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
-import android.content.Intent;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;

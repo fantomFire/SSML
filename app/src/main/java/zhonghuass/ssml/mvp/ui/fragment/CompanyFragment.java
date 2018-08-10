@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.github.library.baseAdapter.listener.OnItemClickListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -21,14 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerCompanyComponent;
 import zhonghuass.ssml.di.module.CompanyModule;
 import zhonghuass.ssml.mvp.contract.CompanyContract;
-import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 import zhonghuass.ssml.mvp.presenter.CompanyPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.TradeAdapter;

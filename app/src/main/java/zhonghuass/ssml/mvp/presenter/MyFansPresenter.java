@@ -53,12 +53,43 @@ public class MyFansPresenter extends BasePresenter<MyFansContract.Model, MyFansC
                     @Override
                     public void onNext(BaseResponse<List<ConcernFansBean>> listBaseResponse) {
                         if (listBaseResponse.isSuccess()) {
-                            mRootView.showDate(listBaseResponse.getData());
+                            mRootView.showData(listBaseResponse.getData());
                         } else if (listBaseResponse.getStatus().equals("201")) {
                             List<ConcernFansBean> mList = new ArrayList<>();
-                            mRootView.showDate(mList);
+                            mRootView.showData(mList);
                         } else {
                             mRootView.showMessage(listBaseResponse.getMessage());
+                        }
+                    }
+                });
+    }
+
+    public void toCancelConcern(String mId, String mType, String member_id, String member_type) {
+        mModel.toCancelConcern(mId, mType, member_id, member_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (baseResponse.isSuccess()) {
+                            mRootView.showCancelSuccess(baseResponse.getMessage());
+                        } else {
+                            mRootView.showMessage(baseResponse.getMessage());
+                        }
+                    }
+                });
+
+    }
+
+    public void toConcern(String mId, String mType, String member_id, String member_type) {
+        mModel.toConcern(mId, mType, member_id, member_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse baseResponse) {
+                        if (baseResponse.isSuccess()) {
+                            mRootView.showConcernSuccess(baseResponse.getMessage());
+                        } else {
+                            mRootView.showMessage(baseResponse.getMessage());
                         }
                     }
                 });

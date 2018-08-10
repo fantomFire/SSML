@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
+import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
@@ -44,8 +45,8 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("/Api/Login/login")
     Observable<BaseResponse<LoginBean>> topwLogin(@Field("username") String mPhone,
-                                             @Field("password") String mPassworld,
-                                             @Field("type") String s);
+                                                  @Field("password") String mPassworld,
+                                                  @Field("type") String s);
 
     //验证验证码正确
     @GET("/Api/Login/forgetpwd")
@@ -57,26 +58,32 @@ public interface ApiServer {
             , @Query("code ") String code
             , @Query("pwd") String newpw
             , @Query("pwds") String oldpw);
+
     //分享我
     @GET("Api/record/share")
     Observable<BaseResponse<List<ShareMeBean>>> getShareMeData(@Query("member_id") String area, @Query("member_type") String type,
                                                                @Query("page") String page);
+
     //关注我
     @GET("Api/record/concern")
     Observable<BaseResponse<List<ShareMeBean>>> getConcernData(@Query("member_id") String area, @Query("member_type") String type,
                                                                @Query("page") String page);
+
     //赞我
     @GET("Api/record/praise")
     Observable<BaseResponse<List<ShareMeBean>>> getPraiseData(@Query("member_id") String area, @Query("member_type") String type,
-                                                               @Query("page") String page);
+                                                              @Query("page") String page);
+
     //评论我   Api/comment/record
     @GET("Api/comment/record")
     Observable<BaseResponse<List<CommentBean>>> getCommentData(@Query("member_id") String area, @Query("member_type") String type,
                                                                @Query("page") String page);
+
     //私信列表
     @GET("")
     Observable<BaseResponse<List<MessageListBean>>> getMessageListData(@Query("member_id") String area, @Query("member_type") String type,
                                                                        @Query("page") String page);
+
     //首页推荐
     @GET("/Api/content/recommend")
     Observable<BaseResponse<List<RecommendBean>>> getRecommendDatas(@Query("member_id") String member_id,
@@ -87,9 +94,27 @@ public interface ApiServer {
     Observable<BaseResponse<List<ConcernFansBean>>> getMyConcernData(@Query("member_id") String member_id,
                                                                      @Query("member_type") String member_type,
                                                                      @Query("page") int page);
+
     //获取我的粉丝
     @GET("/Api/Concern/fans")
     Observable<BaseResponse<List<ConcernFansBean>>> getMyFansData(@Query("member_id") String member_id,
                                                                   @Query("member_type") String member_type,
                                                                   @Query("page") int page);
+
+    //取消关注
+    @FormUrlEncoded
+    @POST("/Api/Concern/cancel")
+    Observable<BaseResponse<Void>> toCancelConcern(@Field("member_id") String member_id,
+                                                   @Field("member_type") String member_type,
+                                                   @Field("target_id") String target_id,
+                                                   @Field("target_type") String target_type);
+
+    //关注
+    @FormUrlEncoded
+    @POST("/Api/Concern/add")
+    Observable<BaseResponse<Void>> toConcern(@Field("member_id") String member_id,
+                                             @Field("member_type") String member_type,
+                                             @Field("target_id") String target_id,
+                                             @Field("target_type") String target_type);
+
 }

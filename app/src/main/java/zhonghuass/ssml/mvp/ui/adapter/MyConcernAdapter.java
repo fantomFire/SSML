@@ -2,6 +2,7 @@ package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.widget.ImageView;
 
+import android.widget.TextView;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 
@@ -18,8 +19,22 @@ public class MyConcernAdapter extends BaseQuickAdapter<ConcernFansBean, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, ConcernFansBean item) {
+        helper.addOnClickListener(R.id.tv_concern);
+        TextView textView = helper.getView(R.id.tv_concern);
         helper.setText(R.id.tv_concern_name, item.member_name);
         GlideUtils.intoDefault(mContext, item.member_image, (ImageView) helper.getView(R.id.civ_photo));
+        if (item.mutual_concern.equals("0")) {
+            textView.setText("已关注");
+            textView.setBackground(mContext.getResources().getDrawable(R.drawable.bg_concern_1));
+        }
+        if (item.mutual_concern.equals("1")) {
+            textView.setText("互相关注");
+            textView.setBackground(mContext.getResources().getDrawable(R.drawable.bg_concern_1));
+        }
+        if (item.mutual_concern.equals("2")) {
+            textView.setText("+关注");
+            textView.setBackground(mContext.getResources().getDrawable(R.drawable.bg_concern_0));
+        }
     }
 
 }
