@@ -137,6 +137,7 @@ public class MessageListActivity extends MBaseActivity<MessageListPresenter> imp
 
     @Override
     public void showMessageListData(List<MessageListBean> data) {
+        messageListAdapter.setEnableLoadMore(true);
         if (srMessageList.isRefreshing()) {
             srMessageList.setRefreshing(false);
         }
@@ -147,6 +148,7 @@ public class MessageListActivity extends MBaseActivity<MessageListPresenter> imp
         } else {
             //没有更多数据
             messageListAdapter.loadMoreEnd();
+            messageListAdapter.disableLoadMoreIfNotFullPage(rvMessageList);
             return;
         }
         if (page > 1) {

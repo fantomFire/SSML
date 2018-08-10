@@ -153,6 +153,7 @@ public class CommentActivity extends MBaseActivity<CommentPresenter> implements 
         } else {
             //没有更多数据
             commentAdapter.loadMoreEnd();
+            commentAdapter.disableLoadMoreIfNotFullPage(rvComment);
             return;
         }
         if (page > 1) {

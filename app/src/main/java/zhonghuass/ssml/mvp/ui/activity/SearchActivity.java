@@ -4,24 +4,40 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import butterknife.BindView;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerSearchComponent;
 import zhonghuass.ssml.di.module.SearchModule;
 import zhonghuass.ssml.mvp.contract.SearchContract;
 import zhonghuass.ssml.mvp.presenter.SearchPresenter;
 
-import zhonghuass.ssml.R;
-import zhonghuass.ssml.mvp.ui.MBaseActivity;
-
-
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class SearchActivity extends BaseActivity<SearchPresenter> implements SearchContract.View {
+
+    @BindView(R.id.ll_search_back)
+    LinearLayout llSearchBack;
+    @BindView(R.id.edt_search)
+    EditText edtSearch;
+    @BindView(R.id.tv_search_right)
+    TextView tvSearchRight;
+    @BindView(R.id.rv_hot_search)
+    RecyclerView rvHotSearch;
+    @BindView(R.id.rv_history_delete)
+    RelativeLayout rvHistoryDelete;
+    @BindView(R.id.rv_search_history)
+    RecyclerView rvSearchHistory;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -40,6 +56,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
     }
 
     @Override

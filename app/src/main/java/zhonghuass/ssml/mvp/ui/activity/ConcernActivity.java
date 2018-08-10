@@ -136,16 +136,17 @@ public class ConcernActivity extends MBaseActivity<ConcernPresenter> implements 
 
     @Override
     public void showConcernData(List<ShareMeBean> data) {
+        concernAdapter.setEnableLoadMore(true);
         if (srConcern.isRefreshing()) {
             srConcern.setRefreshing(false);
         }
-
         if (data.size() > 0) {
             //当前环节数据加载完毕
             concernAdapter.loadMoreComplete();
         } else {
             //没有更多数据
             concernAdapter.loadMoreEnd();
+            concernAdapter.disableLoadMoreIfNotFullPage(rvConcern);
             return;
         }
         if (page > 1) {

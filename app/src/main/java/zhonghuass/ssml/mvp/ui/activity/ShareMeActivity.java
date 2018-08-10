@@ -132,6 +132,7 @@ public class ShareMeActivity extends MBaseActivity<ShareMePresenter> implements 
 
     @Override
     public void showShareMeData(List<ShareMeBean> data) {
+        shareMeAdapter.setEnableLoadMore(true);
         if (srShareMe.isRefreshing()) {
             srShareMe.setRefreshing(false);
         }
@@ -142,6 +143,7 @@ public class ShareMeActivity extends MBaseActivity<ShareMePresenter> implements 
         } else {
             //没有更多数据
             shareMeAdapter.loadMoreEnd();
+            shareMeAdapter.disableLoadMoreIfNotFullPage(rvShareMe);
             return;
         }
         if (page > 1) {
