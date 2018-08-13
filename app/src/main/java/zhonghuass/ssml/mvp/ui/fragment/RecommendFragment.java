@@ -72,7 +72,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     private void initRecycleView() {
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         recommendRec.setLayoutManager(staggeredGridLayoutManager);
         recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendDatas);
         recommendRec.setAdapter(recommendAdapter);
