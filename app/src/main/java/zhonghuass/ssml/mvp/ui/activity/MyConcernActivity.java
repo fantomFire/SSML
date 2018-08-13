@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.view.View;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -42,6 +43,10 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
     @BindView(R.id.srl_concern)
     SwipeRefreshLayout swipeRefreshLayout;
     private MyConcernAdapter mAdapter;
+    private boolean isCancel;
+    private boolean isConcern;
+    private int clickPosition = 0;
+    private List<ConcernFansBean> mAdapterData;
 
 
     @Override
@@ -67,11 +72,32 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
         mAdapter = new MyConcernAdapter(R.layout.item_concern_fans, mList);
         mAdapter.setOnLoadMoreListener(this);
 
-//        mAdapter.setNoDateGone(this, 80, 45);
-
         rvConcern.setAdapter(mAdapter);
         mPresenter.getMyConcernData(mId, mType, page);
 
+
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+
+
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                clickPosition = position;
+                switch (view.getId()) {
+                    case R.id.tv_concern:
+                        if (mAdapter.getData().get(position).mutual_concern.equals("2")) {
+                            //关注操作
+                            mPresenter.toConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                        } else {
+                            //取消关注操作
+                            mPresenter.toCancelConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -112,11 +138,10 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
 
     @Override
     public void showDate(List<ConcernFansBean> data) {
-        List<ConcernFansBean> data2 = new ArrayList<>();
-
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
+        mAdapter.setEnableLoadMore(true);
 
         if (data.size() > 0) {
             mAdapter.loadMoreComplete();
@@ -125,18 +150,35 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
             return;
         }
 
-        for (int i = 0; i < 1; i++) {
-            data2.add(data.get(i));
-        }
-
         if (page == 1) {
-            mList.clear();
-            mList.addAll(data2);
-            mAdapter.notifyDataSetChanged();
+            mAdapter.setNewData(data);
         } else {
-            mAdapter.addData(data2);
+            mAdapter.addData(data);
         }
+        mAdapterData = mAdapter.getData();
+        mAdapter.disableLoadMoreIfNotFullPage(rvConcern);
+    }
 
+    @Override
+    public void showCancelSuccess(String message) {
+        isCancel = true;
+        // 取消成功返回
+        showMessage(message);
+        ConcernFansBean bean = mAdapter.getData().get(clickPosition);
+        bean.mutual_concern_temp = bean.mutual_concern;
+        bean.mutual_concern = "2";
+        mAdapter.setData(clickPosition, bean);
+    }
+
+    @Override
+    public void showConcernSuccess(String message) {
+        isConcern = true;
+        // 关注成功返回
+        showMessage(message);
+        // 去请求点击的item所在页的数据，准备更替刷新
+        ConcernFansBean bean = mAdapterData.get(clickPosition);
+        bean.mutual_concern = bean.mutual_concern_temp;
+        mAdapter.setData(clickPosition, bean);
     }
 
     @Override

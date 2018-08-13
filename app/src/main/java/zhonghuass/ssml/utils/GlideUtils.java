@@ -62,7 +62,7 @@ public class GlideUtils {
      * 默认glide，不做任何处理，glide 从字符串中加载图片（网络地址或者本地地址）
      */
     public static void intoDefault(Context context, String url, ImageView view) {
-        Glide.with(context).load(url).apply(new GlideOptions()).into(view);
+        Glide.with(context).load(url).apply(MGlideOptions.getOptions()).into(view);
     }
 
     /**

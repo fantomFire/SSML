@@ -1,11 +1,9 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 

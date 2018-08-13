@@ -1,7 +1,6 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import com.github.library.baseAdapter.BaseQuickAdapter;
-import com.github.library.baseAdapter.BaseSectionQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 
 import java.util.List;

@@ -46,5 +46,6 @@ dependencies {
     //包含BaseAdapter,各种头布局刷新的View等等的库。
     implementation project(':library_adapter')
     implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation 'com.etsy.android.grid:library:1.0.5' // see changelog
 
 }

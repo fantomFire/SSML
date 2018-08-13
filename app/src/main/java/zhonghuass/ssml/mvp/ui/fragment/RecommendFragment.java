@@ -71,9 +71,22 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     }
 
     private void initRecycleView() {
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-        recommendRec.setLayoutManager(staggeredGridLayoutManager);
+        final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        //RecyclerView滑动过程中不断请求layout的Request，不断调整item见的间隙，并且是在item尺寸显示前预处理，因此解决RecyclerView滑动到顶部时仍会出现移动问题
+        layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);//防止item 交换位置
+        recommendRec.setLayoutManager(layoutManager);
+//        recommendRec.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        recommendRec.setPadding(0, 0, 0, 0);
+        recommendRec.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                layoutManager.invalidateSpanAssignments();//防止第一行到顶部有空白区域
+            }
+        });
+//        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        //staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        recommendRec.setLayoutManager(layoutManager);
         recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendDatas);
         recommendRec.setAdapter(recommendAdapter);
         // recommendRec.addItemDecoration(new SpacesItemDecoration(10,10,getResources().getColor(R.color.colorf5)));
@@ -125,17 +138,22 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void setContent(List<RecommendBean> data) {
-        System.out.println("page"+page);
+        System.out.println("page" + page);
+//        recommendAdapter.loadMoreComplete();
+
         recommendAdapter.loadMoreComplete();
-        if(isloadMore){
-            recommendDatas.addAll(data);
-            recommendAdapter.notifyDataSetChanged();
-            recommendAdapter.loadMoreComplete();
-        }else {
-            recommendDatas.clear();
-            recommendDatas.addAll(data);
-            recommendAdapter.notifyDataSetChanged();
-            recommendAdapter.loadMoreComplete();
+
+        if (isloadMore) {
+            recommendAdapter.addData(data);
+//            recommendDatas.addAll(data);
+//            recommendAdapter.notifyDataSetChanged();
+//            recommendAdapter.loadMoreComplete();
+        } else {
+            recommendAdapter.setNewData(data);
+//            recommendDatas.clear();
+//            recommendDatas.addAll(data);
+//            recommendAdapter.notifyDataSetChanged();
+//            recommendAdapter.loadMoreComplete();
         }
 
 

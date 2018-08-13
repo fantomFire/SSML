@@ -1,18 +1,17 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.graphics.Color;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 import com.github.library.layoutView.CircleImageView;
@@ -25,13 +24,18 @@ import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 
 
 public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHolder> {
+
+    private List<RecommendBean> mDataList;
+
     public RecommendAdapter(int layoutResId, List<RecommendBean> data) {
         super(layoutResId, data);
     }
 
-    @Override
-    protected void convert(BaseViewHolder helper, RecommendBean item) {
 
+    @Override
+    protected void convert(BaseViewHolder helper,final RecommendBean item) {
+       final String cover_width = item.getCover_width();
+      final   String cover_height = item.getCover_height();
         helper.setText(R.id.company_name, item.getMember_name())
                 .setText(R.id.company_name, item.getContent_title());
 
@@ -49,21 +53,24 @@ public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHo
         RequestOptions requestOptions = new RequestOptions();
        // requestOptions.override(Target.SIZE_ORIGINAL);
 
-        requestOptions.dontAnimate();
+        //requestOptions.set();
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
         int imgWidth = (screenWidth -30)/2;
-        int resize = Integer.parseInt(item.getCover_width())/imgWidth;
-        int imghight = Integer.parseInt(item.getCover_height())/resize;
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(imgWidth,imghight);
-        helper.getView(R.id.recommend_img).setLayoutParams(params);
+        int resize = Integer.parseInt(cover_width)/imgWidth;
+        int imghight = Integer.parseInt(cover_height)/resize;
 
-        requestOptions.override(ArmsUtils.pix2dip(mContext,imgWidth),ArmsUtils.pix2dip(mContext,imghight));
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) helper.getView(R.id.recommend_img).getLayoutParams();
+        layoutParams.width = imgWidth;
+        layoutParams.height = imghight;
+        helper.getView(R.id.recommend_img).setLayoutParams(layoutParams);
 
-        System.out.println("imgWidth"+imgWidth);
-        System.out.println("imghight"+imghight);
+       /* RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(imgWidth,imghight);
+        helper.getView(R.id.recommend_img).setLayoutParams(params);*/
+
+
         Glide.with(mContext)
                 .load(item.getContent_cover())
-              .apply(requestOptions)
+             // .apply(requestOptions)
                 .into((ImageView) helper.getView(R.id.recommend_img));
         Glide.with(mContext)
                 .load(item.getMember_image())
@@ -71,4 +78,6 @@ public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHo
                 .into((CircleImageView) helper.getView(R.id.company_icon));
 
     }
+
+
 }
