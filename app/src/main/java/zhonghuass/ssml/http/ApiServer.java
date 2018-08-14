@@ -11,6 +11,7 @@ import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
@@ -136,5 +137,8 @@ public interface ApiServer {
                                              @Field("member_type") String member_type,
                                              @Field("target_id") String target_id,
                                              @Field("target_type") String target_type);
+    //每日一语排行  /Api/content/themecount
+    @GET("/Api/content/themecount")
+    Observable<BaseResponse<List<DailyBean>>> getDailyData();
 
 }

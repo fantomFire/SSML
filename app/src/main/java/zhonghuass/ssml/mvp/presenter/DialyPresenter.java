@@ -7,10 +7,18 @@ import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.DialyContract;
+import zhonghuass.ssml.mvp.model.appbean.CommentBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyBean;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @FragmentScope
@@ -36,5 +44,22 @@ public class DialyPresenter extends BasePresenter<DialyContract.Model, DialyCont
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getDailyData() {
+        mModel.getDailyData()
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<DailyBean>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<List<DailyBean>> listBaseResponse) {
+                        if (listBaseResponse.isSuccess()) {
+                            mRootView.showDailyData(listBaseResponse.getData());
+                        }  else {
+                            mRootView.showMessage(listBaseResponse.getMessage());
+                        }
+                    }
+                });
+
+
     }
 }

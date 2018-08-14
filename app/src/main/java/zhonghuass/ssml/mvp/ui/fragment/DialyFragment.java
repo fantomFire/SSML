@@ -6,25 +6,54 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.List;
+
+import butterknife.BindView;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerDialyComponent;
 import zhonghuass.ssml.di.module.DialyModule;
 import zhonghuass.ssml.mvp.contract.DialyContract;
+import zhonghuass.ssml.mvp.model.appbean.DailyBean;
 import zhonghuass.ssml.mvp.presenter.DialyPresenter;
-
-import zhonghuass.ssml.R;
+import zhonghuass.ssml.utils.CircleImageView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class DialyFragment extends BaseFragment<DialyPresenter> implements DialyContract.View {
+
+    @BindView(R.id.tv_label)
+    TextView tvLabel;
+    @BindView(R.id.civ_second_icon)
+    CircleImageView civSecondIcon;
+    @BindView(R.id.tv_second_name)
+    TextView tvSecondName;
+    @BindView(R.id.tv_second_intro)
+    TextView tvSecondIntro;
+    @BindView(R.id.tv_first_icon)
+    CircleImageView tvFirstIcon;
+    @BindView(R.id.tv_first_name)
+    TextView tvFirstName;
+    @BindView(R.id.tv_first_intro)
+    TextView tvFirstIntro;
+    @BindView(R.id.civ_thirdly_icon)
+    CircleImageView civThirdlyIcon;
+    @BindView(R.id.tv_thirdly_name)
+    TextView tvThirdlyName;
+    @BindView(R.id.tv_thirdly_intro)
+    TextView tvThirdlyIntro;
+    @BindView(R.id.rv_daily)
+    RecyclerView rvDaily;
 
     public static DialyFragment newInstance() {
         DialyFragment fragment = new DialyFragment();
@@ -48,7 +77,9 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        System.out.println("eeeeeeee");
+
+        System.out.println("sssss");
+        mPresenter.getDailyData();
     }
 
     /**
@@ -119,4 +150,8 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
 
     }
 
+    @Override
+    public void showDailyData(List<DailyBean> data) {
+        System.out.println("data"+data);
+    }
 }
