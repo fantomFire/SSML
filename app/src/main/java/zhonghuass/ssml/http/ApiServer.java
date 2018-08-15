@@ -13,6 +13,8 @@ import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.model.appbean.DailyBean;
 import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
+import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
+import zhonghuass.ssml.mvp.model.appbean.FocusBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
@@ -156,6 +158,6 @@ public interface ApiServer {
                                                                  @Query("page") String page);
     @GET("/Api/content/concern")
     Observable<BaseResponse<List<FocusBean>>> getFocusData(@Query("member_id")String member_id,
-                                                     @Query("member_type")String member_type,
-                                                     @Query("page") String page);
+                                                           @Query("member_type")String member_type,
+                                                           @Query("page") String page);
 }
