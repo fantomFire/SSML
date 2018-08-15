@@ -2,26 +2,27 @@ package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.http.imageloader.ImageLoader;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
-import zhonghuass.ssml.mvp.contract.CommentContract;
-import zhonghuass.ssml.mvp.model.appbean.CommentBean;
+import zhonghuass.ssml.mvp.contract.SearchContract;
+import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
+import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
-public class CommentPresenter extends BasePresenter<CommentContract.Model, CommentContract.View> {
+public class SearchPresenter extends BasePresenter<SearchContract.Model, SearchContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -32,7 +33,7 @@ public class CommentPresenter extends BasePresenter<CommentContract.Model, Comme
     AppManager mAppManager;
 
     @Inject
-    public CommentPresenter(CommentContract.Model model, CommentContract.View rootView) {
+    public SearchPresenter(SearchContract.Model model, SearchContract.View rootView) {
         super(model, rootView);
     }
 
@@ -45,22 +46,19 @@ public class CommentPresenter extends BasePresenter<CommentContract.Model, Comme
         this.mApplication = null;
     }
 
-
-    public void getCommentData(String member_id, String member_type, int page) {
-        mModel.getCommentData(member_id, member_type, page)
+    public void getSearchHistoryData(String member_id, String member_type) {
+        mModel.getSearchHistoryData(member_id,member_type)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<CommentBean>>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<HistoryBean>>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<List<CommentBean>> listBaseResponse) {
+                    public void onNext(BaseResponse<List<HistoryBean>> listBaseResponse) {
                         if (listBaseResponse.isSuccess()) {
-                            mRootView.showCommentData(listBaseResponse.getData());
-                        } else if (listBaseResponse.getStatus().equals("201")) {
-                            List<CommentBean> arrayList = new ArrayList();
-                            mRootView.showCommentData(arrayList);
+                            mRootView.setSearchHistory(listBaseResponse.getData());
                         } else {
                             mRootView.showMessage(listBaseResponse.getMessage());
                         }
                     }
                 });
+
     }
 }

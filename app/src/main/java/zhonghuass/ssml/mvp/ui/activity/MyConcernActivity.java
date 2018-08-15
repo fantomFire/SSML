@@ -25,6 +25,7 @@ import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.presenter.MyConcernPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyConcernAdapter;
+import zhonghuass.ssml.utils.CustomDialog;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -47,6 +48,7 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
     private boolean isConcern;
     private int clickPosition = 0;
     private List<ConcernFansBean> mAdapterData;
+    private CustomDialog dialog;
 
 
     @Override
@@ -75,6 +77,8 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
         rvConcern.setAdapter(mAdapter);
         mPresenter.getMyConcernData(mId, mType, page);
 
+        dialog = new CustomDialog(this);
+
 
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
 
@@ -88,8 +92,16 @@ public class MyConcernActivity extends MBaseActivity<MyConcernPresenter> impleme
                             //关注操作
                             mPresenter.toConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
                         } else {
-                            //取消关注操作
-                            mPresenter.toCancelConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                            dialog.setContent("确定不再关注此人？");
+                            dialog.show();
+                            dialog.tvYes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //取消关注操作
+                                    mPresenter.toCancelConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                                    dialog.dismiss();
+                                }
+                            });
                         }
                         break;
                     default:

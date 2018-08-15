@@ -11,11 +11,17 @@ import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
-import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
-import zhonghuass.ssml.mvp.model.appbean.FocusBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
+import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
+import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
+import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
+import zhonghuass.ssml.mvp.model.appbean.SearchBean;
 import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 
@@ -103,6 +109,23 @@ public interface ApiServer {
                                                                   @Query("member_type") String member_type,
                                                                   @Query("page") int page);
 
+    //搜索内容  Api/search/search
+    @GET("/Api/search/search")
+    Observable<BaseResponse<List<SearchBean>>> getSearchData(@Query("search_content") String search_content,
+                                                             @Query("member_id") String member_id,
+                                                             @Query("member_type") String member_type,
+                                                             @Query("page") String page);
+
+    //历史搜索
+    @GET("/Api/search/history")
+    Observable<BaseResponse<List<HistoryBean>>> getHistoryData(@Query("member_id") String member_id,
+                                                               @Query("member_type") String member_type);
+
+    @POST("/Api/search/delete")
+    Observable<BaseResponse<Void>> deleteSearchHistory(@Query("member_id") String member_id,
+                                                       @Query("member_type") String member_type);
+
+
     //取消关注
     @FormUrlEncoded
     @POST("/Api/Concern/cancel")
@@ -118,6 +141,15 @@ public interface ApiServer {
                                              @Field("member_type") String member_type,
                                              @Field("target_id") String target_id,
                                              @Field("target_type") String target_type);
+    //每日一语排行  /Api/content/themecount
+    @GET("/Api/content/themecount")
+    Observable<DailyBean> getDailyHeaderData();
+
+    //获取我的粉丝
+    @GET("/Api/content/theme")
+    Observable<BaseResponse<List<DailyChoicenessBean>>> getDailyData(@Query("member_id") String member_id,
+                                                                     @Query("member_type") String member_type,
+                                                                     @Query("page") String page);
     @GET("/Api/content/trends")
     Observable<BaseResponse<List<DanynimicBean>>> getDanymicData(@Query("member_id")String member_id,
                                                                  @Query("member_type")String member_type,

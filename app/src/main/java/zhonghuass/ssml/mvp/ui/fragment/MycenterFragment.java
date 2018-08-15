@@ -33,6 +33,9 @@ import zhonghuass.ssml.mvp.contract.MycenterContract;
 import zhonghuass.ssml.mvp.presenter.MycenterPresenter;
 
 import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.activity.MyConcernActivity;
+import zhonghuass.ssml.mvp.ui.activity.MyFansActivity;
+import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
 import zhonghuass.ssml.mvp.ui.activity.PicEditActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ViewPagerAdapter;
 import zhonghuass.ssml.utils.EventBusUtils;
@@ -49,6 +52,12 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     CircleImageView mPhoto;
     @BindView(R.id.iv_setting)
     TextView ivSetting;
+    @BindView(R.id.ll_concern)
+    LinearLayout llConcern;
+    @BindView(R.id.ll_fans)
+    LinearLayout llFans;
+    @BindView(R.id.ll_good)
+    LinearLayout llGood;
     private List<Fragment> fragments = new ArrayList<>();
     private ViewPagerAdapter mAdapter;
     private String[] titles = {"图文", "视频"};
@@ -92,7 +101,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
         mPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArmsUtils.startActivity(PicEditActivity.class);
+                ArmsUtils.startActivity(MyInfoActivity.class);
             }
         });
 
@@ -108,6 +117,19 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
                 EventMsg msg = new EventMsg();
                 msg.isShowNav = true;
                 EventBusUtils.post(msg);
+            }
+        });
+
+        llConcern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArmsUtils.startActivity(MyConcernActivity.class);
+            }
+        });
+        llFans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArmsUtils.startActivity(MyFansActivity.class);
             }
         });
     }
@@ -212,4 +234,6 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     public void killMyself() {
 
     }
+
+
 }
