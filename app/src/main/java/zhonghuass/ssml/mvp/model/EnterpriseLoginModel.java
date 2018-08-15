@@ -37,7 +37,7 @@ public class EnterpriseLoginModel extends BaseModel implements EnterpriseLoginCo
     }
 
     @Override
-    public Observable<BaseResponse<LoginBean>> eptoLogin(String mPhone, String mPassworld) {
+    public Observable<LoginBean> eptoLogin(String mPhone, String mPassworld) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).topwLogin(mPhone,mPassworld,"3");
     }
 }

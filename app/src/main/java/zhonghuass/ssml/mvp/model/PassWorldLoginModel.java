@@ -37,7 +37,7 @@ public class PassWorldLoginModel extends BaseModel implements PassWorldLoginCont
     }
 
     @Override
-    public Observable<BaseResponse<LoginBean>> pwtoLogin(String mPhone, String mPassworld) {
+    public Observable<LoginBean> pwtoLogin(String mPhone, String mPassworld) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .topwLogin(mPhone,mPassworld,"1");
     }

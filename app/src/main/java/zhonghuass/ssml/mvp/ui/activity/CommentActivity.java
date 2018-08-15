@@ -32,17 +32,17 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
  * 消息-与我相关--评论我的页面
  */
 public class CommentActivity extends MBaseActivity<CommentPresenter> implements CommentContract.View,
-        BaseQuickAdapter.RequestLoadMoreListener  {
+        BaseQuickAdapter.RequestLoadMoreListener {
 
     @BindView(R.id.rv_comment)
     RecyclerView rvComment;
     @BindView(R.id.sr_comment)
     SwipeRefreshLayout srComment;
     private CommentAdapter commentAdapter;
-    private int page=1;
-    private List<CommentBean> mList=new ArrayList<>();
-    private String member_id="1";
-    private String member_type="0";
+    private int page = 1;
+    private List<CommentBean> mList = new ArrayList<>();
+    private String member_id = "1";
+    private String member_type = "0";
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {

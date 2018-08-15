@@ -16,14 +16,16 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerPassWorldLoginComponent;
 import zhonghuass.ssml.di.module.PassWorldLoginModule;
 import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.presenter.PassWorldLoginPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -154,7 +156,9 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     }
 
     @Override
-    public void gotoActivity() {
+    public void gotoActivity(LoginBean voidBaseResponse) {
+        PrefUtils.putString(PassWorldLoginActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
+        PrefUtils.putString(PassWorldLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
         ArmsUtils.startActivity(MainActivity.class);
     }
 

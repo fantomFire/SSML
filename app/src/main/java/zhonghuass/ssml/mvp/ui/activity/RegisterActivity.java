@@ -49,11 +49,14 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     TextView tvAgreement;
     @BindView(R.id.iv_see)
     ImageView ivSee;
+    @BindView(R.id.iv_tip_choose)
+    ImageView ivTipChoose;
     private Disposable mDispos;
     private String mPhone;
     private String mPass;
     private boolean isChecked;
     private String mCode;
+    private boolean isflag;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -103,7 +106,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
     }
 
 
-    @OnClick({R.id.tv_getcode, R.id.tv_upload, R.id.tv_agreement, R.id.iv_see})
+    @OnClick({R.id.tv_getcode, R.id.tv_upload, R.id.tv_agreement, R.id.iv_see,R.id.iv_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
@@ -118,6 +121,19 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
             case R.id.iv_see:
                 toChoose();
                 break;
+            case R.id.iv_tip_choose:
+                toAgreement();
+                break;
+        }
+    }
+
+    private void toAgreement() {
+        if (isflag) {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            isflag = false;
+        } else {
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            isflag = true;
         }
     }
 
@@ -125,10 +141,12 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         if (isChecked) {
             //如果选中，显示密码
             edtPassworld.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            ivSee.setBackgroundResource(R.mipmap.login_icon_8);
             isChecked = false;
         } else {
             //否则隐藏密码
             edtPassworld.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            ivSee.setBackgroundResource(R.mipmap.login_icon_4);
             isChecked = true;
         }
     }
@@ -174,7 +192,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
             ArmsUtils.makeText(this, "请核手机号验证码");
             return;
         }
-      mPresenter.toRegist(mPhone, mPass, mCode);
+        mPresenter.toRegist(mPhone, mPass, mCode);
     }
 
     @Override
@@ -193,4 +211,10 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         launchActivity(intent);
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

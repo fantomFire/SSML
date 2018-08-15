@@ -47,14 +47,14 @@ public interface ApiServer {
     //手机号验证码登录
     @FormUrlEncoded
     @POST("/Api/Login/login")
-    Observable<BaseResponse<LoginBean>> toLogin(@Field("username") String mPhone,
+    Observable<LoginBean> toLogin(@Field("username") String mPhone,
                                                 @Field("code") String mCode,
                                                 @Field("type") String s);
 
     //密码登录,企业登录
     @FormUrlEncoded
     @POST("/Api/Login/login")
-    Observable<BaseResponse<LoginBean>> topwLogin(@Field("username") String mPhone,
+    Observable<LoginBean> topwLogin(@Field("username") String mPhone,
                                                   @Field("password") String mPassworld,
                                                   @Field("type") String s);
 

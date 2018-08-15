@@ -2,6 +2,8 @@ package zhonghuass.ssml.http;
 
 import java.io.Serializable;
 
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+
 public class BaseResponse<T> implements Serializable {
     private T data;
     private String status;
@@ -20,9 +22,6 @@ public class BaseResponse<T> implements Serializable {
             return false;
         }
     }
-    public String getMessage(){
-        return msg;
-    }
 
     public T getData() {
         return data;
@@ -38,5 +37,12 @@ public class BaseResponse<T> implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getMessage() {
+        return msg;
+    }
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

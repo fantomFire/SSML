@@ -46,15 +46,14 @@ public class EnterpriseLoginPresenter extends BasePresenter<EnterpriseLoginContr
     public void eptoLogin(String mPhone, String mPassworld) {
         mModel.eptoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<LoginBean>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
-                        mRootView.showMessage(voidBaseResponse.getMessage());
-                        if (voidBaseResponse.isSuccess()){
+                    public void onNext(LoginBean voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.msg);
+                        if (voidBaseResponse.status.equals("200")){
                             mRootView.gotoActivity();
                         }
                     }
-
                 });
     }
 }

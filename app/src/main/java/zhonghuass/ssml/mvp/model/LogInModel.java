@@ -37,10 +37,9 @@ public class LogInModel extends BaseModel implements LogInContract.Model {
     }
 
     @Override
-    public Observable<BaseResponse<LoginBean>> toLogin(String mPhone, String mCode) {
+    public Observable<LoginBean> toLogin(String mPhone, String mCode) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .toLogin(mPhone, mCode, "2")
-                ;
+                .toLogin(mPhone, mCode, "2");
     }
 
     @Override

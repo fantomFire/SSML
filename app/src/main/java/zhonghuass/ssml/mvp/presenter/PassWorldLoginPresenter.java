@@ -2,6 +2,7 @@ package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
 
+import com.google.gson.JsonObject;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
@@ -15,6 +16,9 @@ import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.ui.activity.PassWorldLoginActivity;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -46,12 +50,24 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
     public void pwtoLogin(String mPhone, String mPassworld) {
         mModel.pwtoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<LoginBean>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
+//                    @Override
+//                    public void onNext(LoginBean voidBaseResponse) {
+//
+//                        mRootView.showMessage(voidBaseResponse.msg);
+//                        String status = voidBaseResponse.status;
+//                        if (status.equals(200)) {
+//                            mRootView.gotoActivity(voidBaseResponse);
+//                        }
+//
+//                    }
+
                     @Override
-                    public void onNext(BaseResponse<LoginBean> voidBaseResponse) {
-                        mRootView.showMessage(voidBaseResponse.getMessage());
-                        if (voidBaseResponse.isSuccess()) {
-                            mRootView.gotoActivity();
+                    public void onNext(LoginBean loginBeanBaseResponse) {
+                        mRootView.showMessage(loginBeanBaseResponse.msg);
+                        String status = loginBeanBaseResponse.status;
+                        if (status.equals(200)) {
+                            mRootView.gotoActivity(loginBeanBaseResponse);
                         }
 
                     }
@@ -59,7 +75,6 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        System.out.println("t = " + t);
                     }
                 });
     }

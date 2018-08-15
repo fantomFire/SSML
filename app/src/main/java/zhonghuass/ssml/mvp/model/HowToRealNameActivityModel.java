@@ -23,6 +23,7 @@ public class HowToRealNameActivityModel extends BaseModel implements HowToRealNa
     @Inject
     public HowToRealNameActivityModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
+
     }
 
     @Override
