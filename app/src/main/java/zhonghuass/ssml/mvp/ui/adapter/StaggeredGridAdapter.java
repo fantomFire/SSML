@@ -52,7 +52,7 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean> {
     @Override
     protected void convert(final BaseViewHolder holder, final RecommendBean item) {
         holder.setText(R.id.company_name, item.getMember_name())
-                .setText(R.id.company_name, item.getContent_title())
+                .setText(R.id.company_title, item.getContent_title())
                 .setText(R.id.like_num,item.getAmount_of_praise());
 
         //设置红心
