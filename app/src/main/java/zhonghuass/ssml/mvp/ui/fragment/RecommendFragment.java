@@ -29,7 +29,7 @@ import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.RecommendContract;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.presenter.RecommendPresenter;
-import zhonghuass.ssml.mvp.ui.adapter.RecommendAdapter;
+
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.StaggeredGridAdapter;
 

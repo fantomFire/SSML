@@ -23,7 +23,6 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.contract.MycenterContract;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.presenter.MycenterPresenter;
-import zhonghuass.ssml.mvp.ui.adapter.RecommendAdapter;
 import zhonghuass.ssml.utils.decoration.SpacesItemDecoration;
 
 
@@ -32,8 +31,6 @@ public class MyPicTextFragment extends BaseFragment<MycenterPresenter> implement
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private List<RecommendBean> recommendBeans;
-    private RecommendAdapter recommendAdapter;
-
 
     public static MyPicTextFragment newInstance() {
         MyPicTextFragment fragment = new MyPicTextFragment();
@@ -66,7 +63,6 @@ public class MyPicTextFragment extends BaseFragment<MycenterPresenter> implement
             recommendBeans.add(recommendBean);
         }
 
-//        recommendAdapter = new RecommendAdapter(R.layout.recommend_item, recommendBeans);
         final StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);//定义瀑布流管理器，第一个参数是列数，第二个是方向。
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);//不设置的话，图片闪烁错位，有可能有整列错位的情况。
         mRecyclerView.setLayoutManager(layoutManager);//设置瀑布流管理器
