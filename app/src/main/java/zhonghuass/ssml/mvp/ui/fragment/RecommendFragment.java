@@ -25,10 +25,11 @@ import butterknife.BindView;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerRecommendComponent;
 import zhonghuass.ssml.di.module.RecommendModule;
+import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.RecommendContract;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.presenter.RecommendPresenter;
-import zhonghuass.ssml.mvp.ui.adapter.RecommendAdapter;
+
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.StaggeredGridAdapter;
 
@@ -71,8 +72,8 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initRecycleView();
-
         mPresenter.getRecomendData(member_id, member_type, page);
+
     }
 
     private void initRecycleView() {
@@ -89,6 +90,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
         recommendSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 mAdapter.enableLoadMore(false);
                 page = 1;
                 mPresenter.getRecomendData(member_id, member_type, page);
@@ -104,6 +106,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void setData(@Nullable Object data) {
+        System.out.println((int)data+"ppppppppp");
 
     }
 
@@ -147,10 +150,12 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
             mAdapter.updateItems(data);
         }
 
+
     }
 
     @Override
     public void notifystate() {
         mAdapter.noMoreData();
+        mAdapter.disableLoadMoreIfNotFullPage(recommendRec);
     }
 }

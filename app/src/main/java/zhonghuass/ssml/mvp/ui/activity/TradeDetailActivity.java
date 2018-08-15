@@ -98,8 +98,8 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
     public void initData(@Nullable Bundle savedInstanceState) {
         String eid = getIntent().getStringExtra("eid");
 
-        fragments.add(CompanyRecommendFragment.newInstance());
         fragments.add(CompanyDanymicFragment.newInstance());
+        fragments.add(CompanyRecommendFragment.newInstance());
         fragments.add(CompanyInviteFragment.newInstance());
         fragments.add(CompanyBriefFragment.newInstance());
         // 创建ViewPager适配器

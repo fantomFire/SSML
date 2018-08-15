@@ -1,8 +1,15 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.dl7.recycler.adapter.BaseQuickAdapter;
@@ -45,7 +52,31 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean> {
     @Override
     protected void convert(final BaseViewHolder holder, final RecommendBean item) {
         holder.setText(R.id.company_name, item.getMember_name())
-                .setText(R.id.company_name, item.getContent_title());
+                .setText(R.id.company_name, item.getContent_title())
+                .setText(R.id.like_num,item.getAmount_of_praise());
+
+        //设置红心
+        ImageView likeImg = holder.getView(R.id.iflike);
+        if(item.isPraise_tag()){
+            likeImg.setBackgroundResource(R.mipmap.home_icon_4);
+        }else {
+            likeImg.setBackgroundResource(R.mipmap.home_icon_3);
+        }
+
+    //设置theme
+        TextView flag = holder.getView(R.id.tv_flag);
+        String theme_title = item.getTheme_title();
+        if (theme_title != null && !theme_title.equals("")) {
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(theme_title);
+            spannableStringBuilder.setSpan(new ForegroundColorSpan(Color.parseColor("#ffd800")), 0, 1, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            flag.setVisibility(View.VISIBLE);
+            flag.setText(spannableStringBuilder);
+        } else {
+            flag.setVisibility(View.GONE);
+        }
+
+
+
 
         final String cover_width = item.getCover_width();
         final String cover_height = item.getCover_height();
@@ -58,6 +89,7 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean> {
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();
         layoutParams.width = imgWidth;
         layoutParams.height = imghight;
+        iv.setLayoutParams(layoutParams);
         iv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.shape_iv_bg));
         iv.setInitSize(imgWidth, imghight);
 

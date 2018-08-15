@@ -2,29 +2,51 @@ package zhonghuass.ssml.mvp.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.dl7.recycler.helper.RecyclerViewHelper;
+import com.github.library.baseAdapter.animation.SlideInBottomAnimation;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerFocusComponent;
 import zhonghuass.ssml.di.module.FocusModule;
 import zhonghuass.ssml.mvp.contract.FocusContract;
+import zhonghuass.ssml.mvp.model.appbean.FocusBean;
 import zhonghuass.ssml.mvp.presenter.FocusPresenter;
-
-import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.adapter.FocusAdapter;
+import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class FocusFragment extends BaseFragment<FocusPresenter> implements FocusContract.View {
+    private boolean state = false;
+    @BindView(R.id.fo_recy)
+    RecyclerView foRecy;
+    @BindView(R.id.refresh_fo)
+    SwipeRefreshLayout refreshFo;
+    Unbinder unbinder;
+    private List<FocusBean> mList = new ArrayList<>();
+    private FocusAdapter focusAdapter;
+    private int page;
+    private String member_id="1";
+    private String member_type = "1";
 
     public static FocusFragment newInstance() {
         FocusFragment fragment = new FocusFragment();
@@ -48,45 +70,47 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        initRecycleView();
+        mPresenter.getFocusData(member_id,member_type,page);
+
+
 
     }
 
-    /**
-     * 通过此方法可以使 Fragment 能够与外界做一些交互和通信, 比如说外部的 Activity 想让自己持有的某个 Fragment 对象执行一些方法,
-     * 建议在有多个需要与外界交互的方法时, 统一传 {@link Message}, 通过 what 字段来区分不同的方法, 在 {@link #setData(Object)}
-     * 方法中就可以 {@code switch} 做不同的操作, 这样就可以用统一的入口方法做多个不同的操作, 可以起到分发的作用
-     * <p>
-     * 调用此方法时请注意调用时 Fragment 的生命周期, 如果调用 {@link #setData(Object)} 方法时 {@link Fragment#onCreate(Bundle)} 还没执行
-     * 但在 {@link #setData(Object)} 里却调用了 Presenter 的方法, 是会报空的, 因为 Dagger 注入是在 {@link Fragment#onCreate(Bundle)} 方法中执行的
-     * 然后才创建的 Presenter, 如果要做一些初始化操作,可以不必让外部调用 {@link #setData(Object)}, 在 {@link #initData(Bundle)} 中初始化就可以了
-     * <p>
-     * Example usage:
-     * <pre>
-     * public void setData(@Nullable Object data) {
-     *     if (data != null && data instanceof Message) {
-     *         switch (((Message) data).what) {
-     *             case 0:
-     *                 loadData(((Message) data).arg1);
-     *                 break;
-     *             case 1:
-     *                 refreshUI();
-     *                 break;
-     *             default:
-     *                 //do something
-     *                 break;
-     *         }
-     *     }
-     * }
-     *
-     * // call setData(Object):
-     * Message data = new Message();
-     * data.what = 0;
-     * data.arg1 = 1;
-     * fragment.setData(data);
-     * </pre>
-     *
-     * @param data 当不需要参数时 {@code data} 可以为 {@code null}
-     */
+    private void initRecycleView() {
+        focusAdapter = new FocusAdapter(getActivity(), mList);
+        SlideInBottomAdapter slideInBottomAdapter = new SlideInBottomAdapter(focusAdapter);
+        RecyclerViewHelper.initRecyclerViewSV(getActivity(),foRecy,slideInBottomAdapter,2);
+        foRecy.setAdapter(focusAdapter);
+        refreshFo.setOnRefreshListener(()->{
+            focusAdapter.enableLoadMore(false);
+            page = 1;
+            mPresenter.getFocusData(member_id,member_type,page);
+
+        });
+        focusAdapter.setRequestDataListener(()->{
+            page++;
+            mPresenter.getFocusData(member_id,member_type,page);
+
+        });
+        foRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy>0){
+
+                    state = true;
+                }
+            }
+        });
+    }
+
+
     @Override
     public void setData(@Nullable Object data) {
 
@@ -118,4 +142,31 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
     public void killMyself() {
 
     }
+
+    @Override
+    public void notifystate() {
+
+        focusAdapter.noMoreDataToast();
+        if(state){
+
+            Toast.makeText(getActivity(),"没有更多数据,请稍后尝试!",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void setContent(List<FocusBean> data) {
+        if(refreshFo.isRefreshing()){
+            refreshFo.setRefreshing(false);
+        }
+        focusAdapter.enableLoadMore(true);
+        focusAdapter.loadComplete();
+        if(page>1){
+            focusAdapter.addItems(data);
+        }else {
+            focusAdapter.updateItems(data);
+        }
+       // focusAdapter.disableLoadMoreIfNotFullPage(foRecy);
+    }
+
 }

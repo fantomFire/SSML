@@ -6,12 +6,20 @@ import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.FragmentScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
+import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.RxLifecycleUtils;
+
+import java.util.List;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyDanymicContract;
+import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @FragmentScope
@@ -38,4 +46,5 @@ public class CompanyDanymicPresenter extends BasePresenter<CompanyDanymicContrac
         this.mImageLoader = null;
         this.mApplication = null;
     }
+
 }

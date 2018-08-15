@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 
 import com.github.library.baseAdapter.BaseQuickAdapter;
@@ -26,6 +27,7 @@ import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.presenter.MyFansPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyFansAdapter;
+import zhonghuass.ssml.utils.CustomDialog;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -48,6 +50,7 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
     private MyFansAdapter mAdapter;
     private boolean isCancel;
     private boolean isConcern;
+    private CustomDialog dialog;
 
 
     @Override
@@ -75,6 +78,7 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
         rvFans.setAdapter(mAdapter);
         mPresenter.getMyFansDate(mId, mType, page);
 
+        dialog = new CustomDialog(this);
 
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
@@ -83,8 +87,17 @@ public class MyFansActivity extends MBaseActivity<MyFansPresenter> implements My
                 switch (view.getId()) {
                     case R.id.tv_concern:
                         if (mAdapter.getData().get(position).mutual_concern.equals("1")) {
-                            //取消关注操作
-                            mPresenter.toCancelConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                            dialog.setContent("确定不再关注此人？");
+                            dialog.show();
+
+                            dialog.tvYes.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //取消关注操作
+                                    mPresenter.toCancelConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);
+                                    dialog.dismiss();
+                                }
+                            });
                         } else {
                             //关注操作
                             mPresenter.toConcern(mId, mType, mAdapter.getData().get(position).member_id, mAdapter.getData().get(position).member_type);

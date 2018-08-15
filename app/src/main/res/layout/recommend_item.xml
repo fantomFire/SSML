@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/whiteSmoke"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whiteSmoke"
+    android:orientation="vertical">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp">
 
         <zhonghuass.ssml.mvp.ui.ScaleImageView
-                android:id="@+id/recommend_img"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-        />
-
+            android:id="@+id/recommend_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            />
         <TextView
-                android:id="@+id/tv_flag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="6dp"
-                android:layout_marginRight="3dp"
-                android:background="@drawable/daily_style"
-                android:paddingBottom="1dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="1dp"
-                android:text="#每日一语"
-                android:textColor="@color/white"
-                android:textSize="13sp"
-                android:visibility="gone"
+            android:id="@+id/tv_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="6dp"
+            android:background="@drawable/daily_style"
+            android:paddingBottom="1dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="1dp"
+            android:text="#每日一语"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:visibility="visible" />
 
-        />
 
     </RelativeLayout>
 
 
     <TextView
-            android:id="@+id/company_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+        android:id="@+id/company_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="35dp">
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
 
         <com.github.library.layoutView.CircleImageView
-                android:id="@+id/company_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_10"/>
+            android:id="@+id/company_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginLeft="6dp"
-                android:layout_toRightOf="@id/company_icon"
-                android:text="333333333"
-                android:textColor="@color/text_c28"
-                android:textSize="14sp"/>
+            android:id="@+id/company_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="6dp"
+            android:layout_toRightOf="@id/company_icon"
+            android:text="333333333"
+            android:textColor="@color/text_c28"
+            android:textSize="14sp" />
 
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="10dp"/>
+            android:id="@+id/like_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"
+            android:text="2222" />
+
+        <ImageView
+            android:id="@+id/iflike"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:background="@mipmap/home_icon_3"
+            android:layout_toLeftOf="@+id/like_num"
+            android:layout_marginRight="10dp"
+            />
     </RelativeLayout>
 
 </LinearLayout>

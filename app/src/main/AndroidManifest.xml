@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name="com.jess.arms.base.BaseApplication"
+        android:name=".utils.MyApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".mvp.ui.activity.LogInActivity"
+            android:name=".mvp.ui.activity.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".mvp.ui.activity.WelcomeActivity" />
+        <activity android:name=".mvp.ui.activity.LogInActivity" />
         <activity android:name=".mvp.ui.activity.GuideActivity" />
-        <activity android:name=".mvp.ui.activity.MainActivity" />
+        <activity android:name=".mvp.ui.activity.WelcomeActivity" />
         <activity android:name=".mvp.ui.activity.RegisterActivity" />
         <activity android:name=".mvp.ui.activity.MSMQActivity" />
 
@@ -44,13 +44,18 @@
         <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
         <activity android:name=".mvp.ui.activity.HowToRealNameActivity" />
         <activity android:name=".mvp.ui.activity.FeedBackActivityActivity" />
-        <activity android:name=".mvp.ui.activity.RealNameActivity"/>
+        <activity android:name=".mvp.ui.activity.RealNameActivity" />
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
+        <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
         <activity android:name=".mvp.ui.activity.TradeDetailActivity" />
-        <activity android:name=".mvp.ui.activity.MyConcernActivity" />
-        <activity android:name=".mvp.ui.activity.MyFansActivity"/>
-        <activity android:name=".mvp.ui.activity.ForgetPassworldActivity"/>
+        <activity android:name=".mvp.ui.activity.ConcernActivity" />
+        <activity android:name=".mvp.ui.activity.PraiseActivity" />
+        <activity android:name=".mvp.ui.activity.CommentActivity" />
+        <activity android:name=".mvp.ui.activity.ShareMeActivity" />
+        <activity android:name=".mvp.ui.activity.MessageListActivity" />
+        <activity android:name=".mvp.ui.activity.SearchActivity" />
+        <activity android:name=".mvp.ui.activity.ChattingActivity"></activity>
     </application>
 
 </manifest>
