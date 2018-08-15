@@ -44,7 +44,7 @@
         <activity android:name=".mvp.ui.activity.HelpActivityActivity" />
         <activity android:name=".mvp.ui.activity.HowToRealNameActivity" />
         <activity android:name=".mvp.ui.activity.FeedBackActivityActivity" />
-        <activity android:name=".mvp.ui.activity.RealNameActivity"/>
+        <activity android:name=".mvp.ui.activity.RealNameActivity" />
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
         <activity android:name=".mvp.ui.activity.RealNameActivityActivity" />
@@ -54,7 +54,8 @@
         <activity android:name=".mvp.ui.activity.CommentActivity" />
         <activity android:name=".mvp.ui.activity.ShareMeActivity" />
         <activity android:name=".mvp.ui.activity.MessageListActivity" />
-        <activity android:name=".mvp.ui.activity.SearchActivity"></activity>
+        <activity android:name=".mvp.ui.activity.SearchActivity" />
+        <activity android:name=".mvp.ui.activity.ChattingActivity"></activity>
     </application>
 
 </manifest>
