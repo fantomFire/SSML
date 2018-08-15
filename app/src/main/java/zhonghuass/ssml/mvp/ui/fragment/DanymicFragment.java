@@ -157,6 +157,6 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
     @Override
     public void notifystate() {
         danymicAdapter.noMoreDataToast();
-        Toast.makeText(getActivity(),"1111111111,请稍后尝试!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"没有更多数据,请稍后尝试!",Toast.LENGTH_SHORT).show();
     }
 }

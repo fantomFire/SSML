@@ -137,7 +137,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         });
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, fragVp);
-
+        fragVp.setOffscreenPageLimit(2);
     }
 
     @Override

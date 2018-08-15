@@ -149,7 +149,7 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
         focusAdapter.noMoreDataToast();
         if(state){
 
-            Toast.makeText(getActivity(),"没有更多数据333333333,请稍后尝试!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"没有更多数据,请稍后尝试!",Toast.LENGTH_SHORT).show();
         }
 
     }

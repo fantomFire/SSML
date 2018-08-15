@@ -349,7 +349,6 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                 }
             }, 3000);
         }
-        Toast.makeText(mContext,"5165165165,请稍后尝试!",Toast.LENGTH_SHORT).show();
     }
 
     private boolean isFullScreen(LinearLayoutManager llm) {
