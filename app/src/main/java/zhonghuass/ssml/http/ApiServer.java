@@ -11,6 +11,8 @@ import retrofit2.http.Query;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
+import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
+import zhonghuass.ssml.mvp.model.appbean.FocusBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
@@ -116,5 +118,12 @@ public interface ApiServer {
                                              @Field("member_type") String member_type,
                                              @Field("target_id") String target_id,
                                              @Field("target_type") String target_type);
-
+    @GET("/Api/content/trends")
+    Observable<BaseResponse<List<DanynimicBean>>> getDanymicData(@Query("member_id")String member_id,
+                                                                 @Query("member_type")String member_type,
+                                                                 @Query("page") String page);
+    @GET("/Api/content/concern")
+    Observable<BaseResponse<List<FocusBean>>> getFocusData(@Query("member_id")String member_id,
+                                                     @Query("member_type")String member_type,
+                                                     @Query("page") String page);
 }

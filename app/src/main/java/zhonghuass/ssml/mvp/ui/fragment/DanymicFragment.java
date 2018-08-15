@@ -2,30 +2,53 @@ package zhonghuass.ssml.mvp.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.dl7.recycler.helper.RecyclerViewHelper;
+import com.dl7.recycler.listener.OnRequestDataListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerDanymicComponent;
 import zhonghuass.ssml.di.module.DanymicModule;
 import zhonghuass.ssml.mvp.contract.DanymicContract;
+import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 import zhonghuass.ssml.mvp.presenter.DanymicPresenter;
-
-import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.adapter.DanymicAdapter;
+import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class DanymicFragment extends BaseFragment<DanymicPresenter> implements DanymicContract.View {
 
+
+    @BindView(R.id.recommend_dny)
+    RecyclerView recommendDny;
+    @BindView(R.id.dany_refresh)
+    SwipeRefreshLayout danyRefresh;
+    Unbinder unbinder;
+    private String member_id = "1";
+    private String member_type = "1";
+    private int page = 1;
+    private DanymicAdapter danymicAdapter;
+    List<DanynimicBean> mlist = new ArrayList<>();
     public static DanymicFragment newInstance() {
         DanymicFragment fragment = new DanymicFragment();
         return fragment;
@@ -48,9 +71,41 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        initRecycleView();
 
+        mPresenter.getDanymicData(member_id, member_type, page);
     }
 
+    private void initRecycleView() {
+        danymicAdapter = new DanymicAdapter(getActivity(),mlist);
+        SlideInBottomAdapter slideAdapter = new SlideInBottomAdapter(danymicAdapter);
+        RecyclerViewHelper.initRecyclerViewSV(getContext(), recommendDny, slideAdapter, 2);
+      recommendDny.setAdapter(danymicAdapter);
+
+        danymicAdapter.setRequestDataListener(()->{
+            page++;
+            mPresenter.getDanymicData(member_id, member_type, page);
+        });
+        danyRefresh.setOnRefreshListener(()->{
+            page=1;
+            danymicAdapter.enableLoadMore(false);
+            mPresenter.getDanymicData(member_id, member_type, page);
+
+        });
+        recommendDny.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                System.out.println("====="+dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                System.out.println("state"+newState);
+            }
+        });
+    }
 
     @Override
     public void setData(@Nullable Object data) {
@@ -82,5 +137,26 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    public void setContent(List<DanynimicBean> listDamnymic) {
+      if(danyRefresh.isRefreshing()){
+          danyRefresh.setRefreshing(false);
+      }
+        danymicAdapter.enableLoadMore(true);
+        danymicAdapter.loadComplete();
+        if (page > 1) {
+            danymicAdapter.addItems(listDamnymic);
+        } else {
+            danymicAdapter.updateItems(listDamnymic);
+        }
+
+
+    }
+    @Override
+    public void notifystate() {
+        danymicAdapter.noMoreDataToast();
+        Toast.makeText(getActivity(),"1111111111,请稍后尝试!",Toast.LENGTH_SHORT).show();
     }
 }

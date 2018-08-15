@@ -8,9 +8,15 @@ import com.jess.arms.mvp.BaseModel;
 
 import com.jess.arms.di.scope.FragmentScope;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyDanymicContract;
+import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 
 
 @FragmentScope
@@ -31,4 +37,6 @@ public class CompanyDanymicModel extends BaseModel implements CompanyDanymicCont
         this.mGson = null;
         this.mApplication = null;
     }
+
+
 }

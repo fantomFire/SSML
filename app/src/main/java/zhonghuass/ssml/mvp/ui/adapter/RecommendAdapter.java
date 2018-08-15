@@ -5,13 +5,14 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
 import com.github.library.layoutView.CircleImageView;
@@ -21,12 +22,7 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
-
-
 public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHolder> {
-
-    private List<RecommendBean> mDataList;
-
     public RecommendAdapter(int layoutResId, List<RecommendBean> data) {
         super(layoutResId, data);
     }
@@ -34,8 +30,32 @@ public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHo
 
     @Override
     protected void convert(BaseViewHolder helper,final RecommendBean item) {
-       final String cover_width = item.getCover_width();
-      final   String cover_height = item.getCover_height();
+
+
+       ImageView logImage = (ImageView) helper.getView(R.id.recommend_img);
+        int screenWidth = ArmsUtils.getScreenWidth(mContext);
+       int imgwidth =  (screenWidth-10)/2;
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)logImage.getLayoutParams();
+        float ratio = Integer.parseInt(item.getCover_height())*1.0f /Integer.parseInt(item.getCover_width()) ;
+        layoutParams.width = imgwidth;
+        layoutParams.height = (int) (layoutParams.width*ratio);
+        logImage.setLayoutParams(layoutParams);
+        System.out.println("path"+item.getContent_cover());
+        System.out.println("ratio"+ratio);
+//https://blog.csdn.net/qq_33808060/article/details/59116624
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+        requestOptions.dontAnimate();
+        Glide.with(mContext)
+                .load(item.getContent_cover())
+                 .apply(requestOptions)
+                .into(logImage);
+        Glide.with(mContext)
+                .load(item.getMember_image())
+                //.apply(requestOptions)
+                .into((CircleImageView) helper.getView(R.id.company_icon));
+
         helper.setText(R.id.company_name, item.getMember_name())
                 .setText(R.id.company_name, item.getContent_title());
 
@@ -50,34 +70,8 @@ public class RecommendAdapter extends BaseQuickAdapter<RecommendBean, BaseViewHo
             flag.setVisibility(View.GONE);
         }
 
-        RequestOptions requestOptions = new RequestOptions();
-       // requestOptions.override(Target.SIZE_ORIGINAL);
 
-        //requestOptions.set();
-        int screenWidth = ArmsUtils.getScreenWidth(mContext);
-        int imgWidth = (screenWidth -30)/2;
-        int resize = Integer.parseInt(cover_width)/imgWidth;
-        int imghight = Integer.parseInt(cover_height)/resize;
-
-        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) helper.getView(R.id.recommend_img).getLayoutParams();
-        layoutParams.width = imgWidth;
-        layoutParams.height = imghight;
-        helper.getView(R.id.recommend_img).setLayoutParams(layoutParams);
-
-       /* RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(imgWidth,imghight);
-        helper.getView(R.id.recommend_img).setLayoutParams(params);*/
-
-
-        Glide.with(mContext)
-                .load(item.getContent_cover())
-             // .apply(requestOptions)
-                .into((ImageView) helper.getView(R.id.recommend_img));
-        Glide.with(mContext)
-                .load(item.getMember_image())
-                //.apply(requestOptions)
-                .into((CircleImageView) helper.getView(R.id.company_icon));
 
     }
-
 
 }

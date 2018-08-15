@@ -1,10 +1,21 @@
 package zhonghuass.ssml.mvp.model.appbean;
 
+import android.support.v7.widget.RecyclerView;
+
 import java.util.List;
 
-public class RecommendBean {
+public class RecommendBean  {
     public String companyName;
 
+    public float getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(float ratio) {
+        this.ratio = ratio;
+    }
+
+    private float ratio;
     public String getCompanyName() {
         return companyName;
     }

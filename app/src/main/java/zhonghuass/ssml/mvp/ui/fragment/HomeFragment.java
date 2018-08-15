@@ -38,11 +38,13 @@ import butterknife.Unbinder;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerHomeFragmentComponent;
 import zhonghuass.ssml.di.module.HomeFragmentModule;
+import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
 import zhonghuass.ssml.mvp.ui.activity.MSMQActivity;
 import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
+import zhonghuass.ssml.utils.EventBusUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -135,6 +137,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         });
         magicIndicator.setNavigator(commonNavigator);
         ViewPagerHelper.bind(magicIndicator, fragVp);
+
     }
 
     @Override
