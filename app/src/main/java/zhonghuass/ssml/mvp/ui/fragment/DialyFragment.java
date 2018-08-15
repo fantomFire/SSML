@@ -6,16 +6,21 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.dl7.recycler.helper.RecyclerViewHelper;
+import com.dl7.recycler.listener.OnRequestDataListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,7 +29,10 @@ import zhonghuass.ssml.di.component.DaggerDialyComponent;
 import zhonghuass.ssml.di.module.DialyModule;
 import zhonghuass.ssml.mvp.contract.DialyContract;
 import zhonghuass.ssml.mvp.model.appbean.DailyBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
 import zhonghuass.ssml.mvp.presenter.DialyPresenter;
+import zhonghuass.ssml.mvp.ui.adapter.DailyAdapter;
+import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.utils.CircleImageView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -32,28 +40,18 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 public class DialyFragment extends BaseFragment<DialyPresenter> implements DialyContract.View {
 
-    @BindView(R.id.tv_label)
-    TextView tvLabel;
-    @BindView(R.id.civ_second_icon)
-    CircleImageView civSecondIcon;
-    @BindView(R.id.tv_second_name)
-    TextView tvSecondName;
-    @BindView(R.id.tv_second_intro)
-    TextView tvSecondIntro;
-    @BindView(R.id.tv_first_icon)
-    CircleImageView tvFirstIcon;
-    @BindView(R.id.tv_first_name)
-    TextView tvFirstName;
-    @BindView(R.id.tv_first_intro)
-    TextView tvFirstIntro;
-    @BindView(R.id.civ_thirdly_icon)
-    CircleImageView civThirdlyIcon;
-    @BindView(R.id.tv_thirdly_name)
-    TextView tvThirdlyName;
-    @BindView(R.id.tv_thirdly_intro)
-    TextView tvThirdlyIntro;
     @BindView(R.id.rv_daily)
     RecyclerView rvDaily;
+    @BindView(R.id.srl_daily)
+    SwipeRefreshLayout srlDaily;
+    private DailyAdapter mAdapter;
+    private List<DailyBean.DataBean.RankingListBean> mData = new ArrayList<>();
+    private List<DailyChoicenessBean> mList = new ArrayList<>();
+    private TextView tvLabel, tvFirstName, tvFirstIntro, tvSecondName, tvSecondIntro, tvThirdlyIntro, tvThirdlyName;
+    private CircleImageView civFirstIcon, civSecondIcon, civThirdlyIcon;
+    private String member_id = "1", member_type = "1";
+    private int page = 1;
+
 
     public static DialyFragment newInstance() {
         DialyFragment fragment = new DialyFragment();
@@ -77,9 +75,50 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        initRecycleView();
+        //请求每日一语排行数据
+        mPresenter.getDailyHeaderData();
+        //请求每日一语精选数据
+        mPresenter.getDailyData(member_id, member_type, page);
+    }
 
-        System.out.println("sssss");
-        mPresenter.getDailyData();
+    /**
+     * 初始化RecycleView及Adapter
+     * 为RecycleView添加头布局
+     */
+    private void initRecycleView() {
+        mAdapter = new DailyAdapter(getContext(), mList);
+        View headerView = getLayoutInflater().inflate(R.layout.daily_header, null);
+        headerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        tvLabel = headerView.findViewById(R.id.tv_label);
+        civFirstIcon = headerView.findViewById(R.id.civ_first_icon);
+        civSecondIcon = headerView.findViewById(R.id.civ_second_icon);
+        civThirdlyIcon = headerView.findViewById(R.id.civ_thirdly_icon);
+        tvFirstName = headerView.findViewById(R.id.tv_first_name);
+        tvFirstIntro = headerView.findViewById(R.id.tv_first_intro);
+        tvSecondName = headerView.findViewById(R.id.tv_second_name);
+        tvSecondIntro = headerView.findViewById(R.id.tv_second_intro);
+        tvThirdlyIntro = headerView.findViewById(R.id.tv_thirdly_intro);
+        tvThirdlyName = headerView.findViewById(R.id.tv_thirdly_name);
+        mAdapter.addHeaderView(headerView);
+        SlideInBottomAdapter slideAdapter = new SlideInBottomAdapter(mAdapter);
+        RecyclerViewHelper.initRecyclerViewSV(getContext(), rvDaily, slideAdapter, 2);
+        mAdapter.setRequestDataListener(new OnRequestDataListener() {
+            @Override
+            public void onLoadMore() {
+                page++;
+                mPresenter.getDailyData(member_id, member_type, page);
+            }
+        });
+        srlDaily.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.enableLoadMore(false);
+                page = 1;
+                mPresenter.getDailyHeaderData();
+                mPresenter.getDailyData(member_id, member_type, page);
+            }
+        });
     }
 
     /**
@@ -150,8 +189,50 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
 
     }
 
+
     @Override
-    public void showDailyData(List<DailyBean> data) {
-        System.out.println("data"+data);
+    public void showDailyHeaderData(DailyBean data) {
+        tvLabel.setText(data.getData().getTheme_title());
+        mData = data.getData().getRanking_list();
+        if (mData.size() > 0) {
+            Glide.with(getContext())
+                    .load(mData.get(0).getMember_image())
+                    .into(civSecondIcon);
+            tvSecondName.setText(mData.get(0).getMember_name());
+            tvSecondIntro.setText(mData.get(0).getContent_title());
+        }
+        if (mData.size() > 1) {
+            Glide.with(getContext())
+                    .load(mData.get(1).getMember_image())
+                    .into(civFirstIcon);
+            tvFirstName.setText(mData.get(1).getMember_name());
+            tvFirstIntro.setText(mData.get(1).getContent_title());
+        }
+        if (mData.size() > 2) {
+            Glide.with(getContext())
+                    .load(mData.get(2).getMember_image())
+                    .into(civThirdlyIcon);
+            tvThirdlyName.setText(mData.get(2).getMember_name());
+            tvThirdlyIntro.setText(mData.get(2).getContent_title());
+        }
+    }
+
+    @Override
+    public void showDailyData(List<DailyChoicenessBean> data) {
+        if (srlDaily.isRefreshing()) {
+            srlDaily.setRefreshing(false);
+        }
+        mAdapter.enableLoadMore(true);
+        mAdapter.loadComplete();
+        if (page > 1) {
+            mAdapter.addItems(data);
+        } else {
+            mAdapter.updateItems(data);
+        }
+    }
+
+    @Override
+    public void notifystate() {
+        mAdapter.noMoreData();
     }
 }

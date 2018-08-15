@@ -2,23 +2,21 @@ package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.mvp.BasePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CommentContract;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
-import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 

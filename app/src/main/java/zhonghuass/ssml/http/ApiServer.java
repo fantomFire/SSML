@@ -12,6 +12,7 @@ import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.CommentBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.model.appbean.DailyBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
 import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
@@ -110,7 +111,7 @@ public interface ApiServer {
     Observable<BaseResponse<List<SearchBean>>> getSearchData(@Query("search_content") String search_content,
                                                              @Query("member_id") String member_id,
                                                              @Query("member_type") String member_type,
-                                                             @Query("page") int page);
+                                                             @Query("page") String page);
 
     //历史搜索
     @GET("/Api/search/history")
@@ -139,6 +140,11 @@ public interface ApiServer {
                                              @Field("target_type") String target_type);
     //每日一语排行  /Api/content/themecount
     @GET("/Api/content/themecount")
-    Observable<BaseResponse<List<DailyBean>>> getDailyData();
+    Observable<DailyBean> getDailyHeaderData();
 
+    //获取我的粉丝
+    @GET("/Api/content/theme")
+    Observable<BaseResponse<List<DailyChoicenessBean>>> getDailyData(@Query("member_id") String member_id,
+                                                                     @Query("member_type") String member_type,
+                                                                     @Query("page") String page);
 }

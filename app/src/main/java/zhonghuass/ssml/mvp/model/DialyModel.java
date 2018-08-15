@@ -17,6 +17,7 @@ import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.DialyContract;
 import zhonghuass.ssml.mvp.model.appbean.DailyBean;
+import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
 
 
 @FragmentScope
@@ -38,8 +39,15 @@ public class DialyModel extends BaseModel implements DialyContract.Model {
         this.mApplication = null;
     }
 
+
     @Override
-    public Observable<BaseResponse<List<DailyBean>>> getDailyData() {
-        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getDailyData();
+    public Observable<BaseResponse<List<DailyChoicenessBean>>> getDailyData(String member_id, String member_type, int page) {
+        return  mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .getDailyData(member_id,member_type,page+"");
+    }
+
+    @Override
+    public Observable<DailyBean> getDailyHeaderData() {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getDailyHeaderData();
     }
 }
