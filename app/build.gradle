@@ -50,4 +50,6 @@ dependencies {
 
     // recyclerview-animators
     implementation 'jp.wasabeef:recyclerview-animators:2.2.3'
+    //聊天气泡
+    compile 'com.github.lguipeng:BubbleView:1.0.1'
 }
