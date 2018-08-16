@@ -21,12 +21,12 @@ import com.jess.arms.utils.ArmsUtils;
 import java.util.List;
 
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.mvp.model.appbean.FocusBean;
+import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
 import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
-public class FocusAdapter  extends BaseQuickAdapter<FocusBean>{
-    public FocusAdapter(Context context, List<FocusBean> mList) {
-        super(context,mList);
+public class VedioAdapter extends BaseQuickAdapter<PhotoBean> {
+    public VedioAdapter(Context activity, List<PhotoBean> mList) {
+        super(activity,mList);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class FocusAdapter  extends BaseQuickAdapter<FocusBean>{
     }
 
     @Override
-    protected void convert(BaseViewHolder holder, FocusBean item) {
+    protected void convert(BaseViewHolder holder, PhotoBean item) {
         holder.setText(R.id.company_title,item.getContent_title() )
                 .setText(R.id.company_name, item.getMember_name());
         //设置theme

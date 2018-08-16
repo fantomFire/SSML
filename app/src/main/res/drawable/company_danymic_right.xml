@@ -4,7 +4,7 @@
     <stroke
         android:width="2dp"
         android:color="@color/viewbg" />
-    <corners android:topLeftRadius="17dp"
-        android:bottomLeftRadius="17dp"
+    <corners android:topRightRadius="17dp"
+        android:bottomRightRadius="17dp"
         />
 </shape>
