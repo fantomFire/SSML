@@ -21,6 +21,7 @@ import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
+import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
 import zhonghuass.ssml.mvp.model.appbean.SearchBean;
@@ -158,6 +159,11 @@ public interface ApiServer {
                                                                  @Query("page") String page);
     @GET("/Api/content/concern")
     Observable<BaseResponse<List<FocusBean>>> getFocusData(@Query("member_id")String member_id,
+                                                           @Query("member_type")String member_type,
+                                                           @Query("page") String page);
+    @GET("/Api/content/access")
+    Observable<BaseResponse<List<PhotoBean>>> getPhotoData(@Query("target_id")String eid,@Query("target_type") String target_type, @Query("content_type")String content_type,
+                                                           @Query("member_id")String member_id,
                                                            @Query("member_type")String member_type,
                                                            @Query("page") String page);
 }

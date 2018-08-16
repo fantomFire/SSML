@@ -43,8 +43,8 @@ public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean> {
 
     @Override
     protected void convert(BaseViewHolder holder, DanynimicBean item) {
-        holder.setText(R.id.company_title, item.getMember_name())
-                .setText(R.id.company_name, item.getContent_title());
+        holder.setText(R.id.company_name, item.getMember_name())
+                .setText(R.id.company_title, item.getContent_title());
         //设置theme
         TextView flag = holder.getView(R.id.tv_flag);
         String theme_title = item.getTheme_title();

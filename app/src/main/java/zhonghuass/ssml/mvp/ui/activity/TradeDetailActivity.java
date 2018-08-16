@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
@@ -44,6 +45,7 @@ import zhonghuass.ssml.mvp.ui.fragment.CompanyRecommendFragment;
 import zhonghuass.ssml.mvp.ui.fragment.DanymicFragment;
 import zhonghuass.ssml.mvp.ui.fragment.FocusFragment;
 import zhonghuass.ssml.mvp.ui.fragment.RecommendFragment;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -97,7 +99,10 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         String eid = getIntent().getStringExtra("eid");
-
+        if(eid==null){
+            Toast.makeText(this, "eid=null", Toast.LENGTH_SHORT).show();
+        }
+        PrefUtils.putString(this,"eid",eid);
         fragments.add(CompanyDanymicFragment.newInstance());
         fragments.add(CompanyRecommendFragment.newInstance());
         fragments.add(CompanyInviteFragment.newInstance());
