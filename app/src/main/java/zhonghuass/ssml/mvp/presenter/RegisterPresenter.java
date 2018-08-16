@@ -51,17 +51,14 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.Model, Reg
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
-                        System.out.println(voidBaseResponse.getMessage());
                         if(voidBaseResponse.isSuccess()){
                             mRootView.toNewActivity();
-
                         }
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         super.onError(t);
-                        System.out.println(mErrorHandler);
                     }
                 });
 

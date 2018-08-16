@@ -209,6 +209,7 @@ public class RegisterActivity extends MBaseActivity<RegisterPresenter> implement
         intent.putExtra("mPhone", mPhone);
         intent.putExtra("mPass", mPass);
         launchActivity(intent);
+        RegisterActivity.this.finish();
     }
 
     @Override

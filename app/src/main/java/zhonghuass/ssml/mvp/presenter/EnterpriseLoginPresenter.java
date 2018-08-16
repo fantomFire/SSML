@@ -51,7 +51,7 @@ public class EnterpriseLoginPresenter extends BasePresenter<EnterpriseLoginContr
                     public void onNext(LoginBean voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.msg);
                         if (voidBaseResponse.status.equals("200")){
-                            mRootView.gotoActivity();
+                            mRootView.gotoActivity(voidBaseResponse);
                         }
                     }
                 });

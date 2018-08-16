@@ -51,7 +51,6 @@ public interface ApiServer {
     Observable<LoginBean> toLogin(@Field("username") String mPhone,
                                                 @Field("code") String mCode,
                                                 @Field("type") String s);
-
     //密码登录,企业登录
     @FormUrlEncoded
     @POST("/Api/Login/login")

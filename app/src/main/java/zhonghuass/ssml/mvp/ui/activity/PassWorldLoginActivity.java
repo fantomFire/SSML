@@ -83,7 +83,8 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+//        ArmsUtils.snackbarText(message);
+        ArmsUtils.makeText(this,message);
     }
 
     @Override
@@ -160,6 +161,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
         PrefUtils.putString(PassWorldLoginActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
         PrefUtils.putString(PassWorldLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
         ArmsUtils.startActivity(MainActivity.class);
+        PassWorldLoginActivity.this.finish();
     }
 
 

@@ -22,8 +22,11 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerEnterpriseLoginComponent;
 import zhonghuass.ssml.di.module.EnterpriseLoginModule;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
+import zhonghuass.ssml.mvp.model.appbean.LoginBean;
 import zhonghuass.ssml.mvp.presenter.EnterpriseLoginPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -94,7 +97,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
         finish();
     }
 
-    @OnClick({R.id.iv_passworld_choose, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement,R.id.iv_tip_choose})
+    @OnClick({R.id.iv_passworld_choose, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_passworld_choose:
@@ -153,14 +156,13 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     }
 
     @Override
-    public void gotoActivity() {
+    public void gotoActivity(LoginBean voidBaseResponse) {
+        PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_ID, voidBaseResponse.data.eid);
+        PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_NAME, voidBaseResponse.data.name);
+        PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_MAILBOX, voidBaseResponse.data.mailbox);
+        PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_IDE, voidBaseResponse.data.identity);
         ArmsUtils.startActivity(MainActivity.class);
+        EnterpriseLoginActivity.this.finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

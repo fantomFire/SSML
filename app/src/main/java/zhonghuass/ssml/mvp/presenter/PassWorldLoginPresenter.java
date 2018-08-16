@@ -51,16 +51,6 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
         mModel.pwtoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
-//                    @Override
-//                    public void onNext(LoginBean voidBaseResponse) {
-//
-//                        mRootView.showMessage(voidBaseResponse.msg);
-//                        String status = voidBaseResponse.status;
-//                        if (status.equals(200)) {
-//                            mRootView.gotoActivity(voidBaseResponse);
-//                        }
-//
-//                    }
 
                     @Override
                     public void onNext(LoginBean loginBeanBaseResponse) {

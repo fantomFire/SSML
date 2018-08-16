@@ -161,6 +161,7 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     @Override
     public void toNewActivity() {
         ArmsUtils.startActivity(LogInActivity.class);
+        ConfirModiActivity.this.finish();
     }
 
     @Override

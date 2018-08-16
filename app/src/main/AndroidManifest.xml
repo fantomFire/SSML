@@ -54,6 +54,7 @@
         <activity android:name=".mvp.ui.activity.ShareMeActivity" />
         <activity android:name=".mvp.ui.activity.MessageListActivity" />
         <activity android:name=".mvp.ui.activity.SearchActivity" />
+        <activity android:name=".mvp.ui.activity.ForgetPassworldActivity"/>
         <activity android:name=".mvp.ui.activity.ChattingActivity"></activity>
     </application>
 
