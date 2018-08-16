@@ -95,7 +95,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
 
     @Override
     public void showMessage(@NonNull String message) {
-
+        ArmsUtils.makeText(this, message);
     }
 
     @Override
