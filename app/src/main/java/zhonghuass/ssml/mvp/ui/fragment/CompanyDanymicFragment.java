@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -45,8 +46,9 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
     FrameLayout frameLayout;
     private PhotoFragment fragmentPhoto;
     private VideoFragment videoFragment;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+
     public static CompanyDanymicFragment newInstance() {
         CompanyDanymicFragment fragment = new CompanyDanymicFragment();
         return fragment;
@@ -72,10 +74,10 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
         fragmentPhoto = PhotoFragment.newInstance();
         videoFragment = VideoFragment.newInstance();
 
-        fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragmentPhoto);
-        fragmentTransaction.commit();
+        fm = getFragmentManager();
+        ft =fm.beginTransaction();
+        ft.replace(R.id.frame_layout,fragmentPhoto);
+        ft.commit();
 
     }
 
@@ -120,23 +122,24 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
 
     @OnClick({R.id.tv_photo, R.id.tv_av})
     public void onViewClicked(View view) {
+        fm = getFragmentManager();
+        ft = fm.beginTransaction();
         switch (view.getId()) {
             case R.id.tv_photo:
                 chooseColor(tvPhoto, tvAv);
                 tvPhoto.setBackground(getResources().getDrawable(R.drawable.company_danymic));
                 tvAv.setBackground(getResources().getDrawable(R.drawable.company_danymic_right_gray));
-                FragmentManager fm1 = getActivity().getSupportFragmentManager();
-                fm1.beginTransaction().replace(R.id.frame_layout, fragmentPhoto).commit();
-
+                ft.replace(R.id.frame_layout,fragmentPhoto);
                 break;
             case R.id.tv_av:
                 chooseColor(tvAv, tvPhoto);
                 tvPhoto.setBackground(getResources().getDrawable(R.drawable.company_danymic_gray));
                 tvAv.setBackground(getResources().getDrawable(R.drawable.company_danymic_right));
-                FragmentManager fm2 = getActivity().getSupportFragmentManager();
-                fm2.beginTransaction().replace(R.id.frame_layout, videoFragment).commit();
+                ft.replace(R.id.frame_layout,videoFragment);
                 break;
+
         }
+        ft.commit();
     }
 
     private void chooseColor(TextView tvPhoto, TextView tvAv) {
@@ -144,5 +147,9 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
         tvAv.setTextColor(Color.parseColor("#666666"));
 
     }
+
+
+
+
 
 }

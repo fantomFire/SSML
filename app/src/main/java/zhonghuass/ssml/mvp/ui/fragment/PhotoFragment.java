@@ -75,8 +75,10 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         eid = PrefUtils.getString(getActivity(), "eid", "1");
+        System.out.println("photo"+eid);
         eid="1";
         initRecycle();
+
         mPresenter.getPhotoData(eid,target_type,content_type,member_id,member_type,page);
     }
 
