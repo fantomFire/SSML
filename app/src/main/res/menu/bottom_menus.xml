@@ -4,19 +4,23 @@
     <item
         android:id="@+id/bottom_menu1"
         android:title="首页"
+        android:icon="@mipmap/home_menu_5"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/bottom_menu2"
+        android:icon="@mipmap/home_menu_2"
         android:title="企业名录"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/bottom_menu3"
         android:title="每日一语"
+        android:icon="@mipmap/home_menu_3"
         app:showAsAction="withText" />
     <item
         android:id="@+id/bottom_menu4"
         android:title="我的"
+        android:icon="@mipmap/home_menu_4"
         app:showAsAction="withText" />
 </menu>

@@ -23,9 +23,12 @@
         <com.github.library.layoutView.BottomNavigationViewEx
             android:id="@+id/bottomMenu"
             android:layout_width="match_parent"
+
             android:layout_height="60dp"
             android:layout_gravity="bottom"
             android:background="@color/white"
+            app:itemIconTint="@drawable/bottom_item_icon_tint_1"
+            app:itemTextColor="@drawable/bottom_item_icon_tint_1"
             app:menu="@menu/bottom_menus" />
     </LinearLayout>
 

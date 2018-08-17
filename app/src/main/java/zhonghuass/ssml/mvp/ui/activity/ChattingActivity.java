@@ -4,24 +4,44 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
-import com.jess.arms.base.BaseActivity;
+import com.dl7.recycler.adapter.BaseMultiItemQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerChattingComponent;
 import zhonghuass.ssml.di.module.ChattingModule;
 import zhonghuass.ssml.mvp.contract.ChattingContract;
+import zhonghuass.ssml.mvp.model.appbean.ChatBean;
 import zhonghuass.ssml.mvp.presenter.ChattingPresenter;
-
-import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
-
+import zhonghuass.ssml.mvp.ui.adapter.ChattingAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class ChattingActivity extends MBaseActivity<ChattingPresenter> implements ChattingContract.View {
+
+    @BindView(R.id.rv_sms)
+    RecyclerView rvSms;
+    @BindView(R.id.btn_add_emoji)
+    ImageView btnAddEmoji;
+    @BindView(R.id.edtSms)
+    EditText edtSms;
+    @BindView(R.id.btn_add_photo)
+    ImageView btnAddPhoto;
+    @BindView(R.id.btnSms)
+    Button btnSms;
+    private List<ChatBean> mList=new ArrayList<>();
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -40,6 +60,7 @@ public class ChattingActivity extends MBaseActivity<ChattingPresenter> implement
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        new ChattingAdapter(this,mList);
         initToolBar("");
 
     }

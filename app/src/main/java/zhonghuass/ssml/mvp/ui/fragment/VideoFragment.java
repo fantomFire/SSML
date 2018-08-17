@@ -74,7 +74,9 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        page=1;
         eid = PrefUtils.getString(getActivity(), "eid", "1");
+        System.out.println("photo"+eid);
         eid="1";
         initRecycle();
         mPresenter.getPhotoData(eid,target_type,content_type,member_id,member_type,page);

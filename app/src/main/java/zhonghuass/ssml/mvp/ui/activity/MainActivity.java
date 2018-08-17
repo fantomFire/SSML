@@ -173,16 +173,16 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
 
         //底部菜单栏图标字体点击颜色变化在这里修改
-        int[][] states = new int[][]{
-                new int[]{-android.R.attr.state_checked},
-                new int[]{android.R.attr.state_checked}
-        };
-        int[] colors = new int[]{getResources().getColor(R.color.corlor28),
-                getResources().getColor(R.color.colorcf1313)
-        };
-        ColorStateList csl = new ColorStateList(states, colors);
-        bottomMenu.setItemTextColor(csl);
-        bottomMenu.setItemIconTintList(csl);
+//        int[][] states = new int[][]{
+//                new int[]{-android.R.attr.state_checked},
+//                new int[]{android.R.attr.state_checked}
+//        };
+//        int[] colors = new int[]{getResources().getColor(R.color.corlor28),
+//                getResources().getColor(R.color.colorcf1313)
+//        };
+//        ColorStateList csl = new ColorStateList(states, colors);
+//        bottomMenu.setItemTextColor(csl);
+//        bottomMenu.setItemIconTintList(csl);
 
 
         // 设置NavigationView宽度
