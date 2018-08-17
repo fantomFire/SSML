@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.library.pickerView.scrollPicker.CustomCityPicker;
@@ -29,6 +33,10 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
 
     @BindView(R.id.tv_area)
     TextView tvArea;
+    @BindView(R.id.tv_num)
+    TextView tvNum;
+    @BindView(R.id.et_about_my)
+    EditText etMy;
 
     private CustomCityPicker cityPicker;
     private Dialog cityPickerDialog;
@@ -60,6 +68,24 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
         });
         //提前初始化数据，这样可以加载快一些。
         cityPicker.initJson();
+
+        etMy.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.e("--", "输入：" + s);
+                tvNum.setText(s.length() + "/140");
+            }
+        });
     }
 
     @Override
@@ -95,10 +121,9 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
         super.onViewClicked(view);
         switch (view.getId()) {
             case R.id.ll_area:
-                cityPicker.show("陕西省-西安市-雁塔区");
+                cityPicker.show();
                 break;
             case R.id.tv_right:
-                Log.e("--", "保存");
                 break;
         }
     }
