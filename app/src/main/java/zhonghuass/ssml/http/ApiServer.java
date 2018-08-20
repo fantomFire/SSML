@@ -27,14 +27,15 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("/Api/Login/login")
     Observable<LoginBean> toLogin(@Field("username") String mPhone,
-                                                @Field("code") String mCode,
-                                                @Field("type") String s);
+                                  @Field("code") String mCode,
+                                  @Field("type") String s);
+
     //密码登录,企业登录
     @FormUrlEncoded
     @POST("/Api/Login/login")
     Observable<LoginBean> topwLogin(@Field("username") String mPhone,
-                                                  @Field("password") String mPassworld,
-                                                  @Field("type") String s);
+                                    @Field("password") String mPassworld,
+                                    @Field("type") String s);
 
     //验证验证码正确
     @GET("/Api/Login/forgetpwd")
@@ -121,6 +122,7 @@ public interface ApiServer {
                                              @Field("member_type") String member_type,
                                              @Field("target_id") String target_id,
                                              @Field("target_type") String target_type);
+
     //每日一语排行  /Api/content/themecount
     @GET("/Api/content/themecount")
     Observable<DailyBean> getDailyHeaderData();
@@ -140,10 +142,11 @@ public interface ApiServer {
     Observable<BaseResponse<List<FocusBean>>> getFocusData(@Query("member_id") String member_id,
                                                            @Query("member_type") String member_type,
                                                            @Query("page") String page);
+
     @GET("/Api/content/access")
-    Observable<BaseResponse<List<PhotoBean>>> getPhotoData(@Query("target_id")String eid,@Query("target_type") String target_type, @Query("content_type")String content_type,
-                                                           @Query("member_id")String member_id,
-                                                           @Query("member_type")String member_type,
+    Observable<BaseResponse<List<PhotoBean>>> getPhotoData(@Query("target_id") String eid, @Query("target_type") String target_type, @Query("content_type") String content_type,
+                                                           @Query("member_id") String member_id,
+                                                           @Query("member_type") String member_type,
                                                            @Query("page") String page);
 
     //获取我的收藏
@@ -156,8 +159,13 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("/Api/content/cancelcollection")
     Observable<BaseResponse<Void>> toCancelCollection(@Field("member_id") String member_id,
-                                                   @Field("member_type") String member_type,
-                                                   @Field("content_id") String content_id);
+                                                      @Field("member_type") String member_type,
+                                                      @Field("content_id") String content_id);
 
+    //盛世名录-产品
+    @GET("/api/Enterprise/product")
+    Observable<BaseResponse<ComanyrfBean>> getcomanyrfData(@Query("eid") String ep_id,
+                                                           @Query("page")int page,
+                                                           @Query("pagesize") int pagesize);
 }
 

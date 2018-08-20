@@ -13,25 +13,25 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
 import zhonghuass.ssml.mvp.ui.activity.TradeDetailActivity;
 
-public class TradeAdapter extends BaseQuickAdapter<TradeBean,BaseViewHolder> {
-    public TradeAdapter(int trade_item,List<TradeBean> data) {
-        super(trade_item,data);
+public class TradeAdapter extends BaseQuickAdapter<TradeBean, BaseViewHolder> {
+    public TradeAdapter(int trade_item, List<TradeBean> data) {
+        super(trade_item, data);
     }
 
     @Override
     protected void convert(BaseViewHolder helper, TradeBean item) {
-        helper.setText(R.id.trade_name,item.getShortname())
-                .setText(R.id.tv_type,item.getServicetype())
-                .setText(R.id.tv_phone,item.getPhone())
-                .setText(R.id.tv_address,item.getAddr());
+        helper.setText(R.id.trade_name, item.getShortname())
+                .setText(R.id.tv_type, item.getServicetype())
+                .setText(R.id.tv_phone, item.getPhone())
+                .setText(R.id.tv_address, item.getAddr());
         System.out.println(item.getLogo());
         Glide.with(mContext)
                 .load(item.getLogo())
-                .into((ImageView)helper.getView(R.id.trade_log));
-        helper.convertView.setOnClickListener((v) ->{
-            Intent intent = new Intent(mContext, TradeDetailActivity.class);
-            intent.putExtra("eid",item.getEid());
-            mContext.startActivity(intent);
+                .into((ImageView) helper.getView(R.id.trade_log));
+        helper.convertView.setOnClickListener((v) -> {
+                    Intent intent = new Intent(mContext, TradeDetailActivity.class);
+                    intent.putExtra("eid", item.getEid());
+                    mContext.startActivity(intent);
                 }
 
 

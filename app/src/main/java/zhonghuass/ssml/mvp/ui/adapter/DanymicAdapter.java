@@ -2,14 +2,11 @@ package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,13 +20,11 @@ import com.jess.arms.utils.ArmsUtils;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
-public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean> {
+public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView.ViewHolder> {
     Context mContext;
     public DanymicAdapter(Context activity, List<DanynimicBean> mlist) {
         super(activity,mlist);

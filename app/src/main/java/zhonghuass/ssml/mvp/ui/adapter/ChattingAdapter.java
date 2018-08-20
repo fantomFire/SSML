@@ -11,7 +11,7 @@ import java.util.List;
 
 import zhonghuass.ssml.mvp.model.appbean.ChatBean;
 
-    public class ChattingAdapter extends BaseQuickAdapter<ChatBean> {
+    public class ChattingAdapter extends BaseQuickAdapter<ChatBean, RecyclerView.ViewHolder> {
 
 
         public ChattingAdapter(Context context, List<ChatBean> data) {

@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -17,7 +18,7 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
 import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
-public class DailyAdapter extends BaseQuickAdapter<DailyChoicenessBean> {
+public class DailyAdapter extends BaseQuickAdapter<DailyChoicenessBean, RecyclerView.ViewHolder> {
 
     public DailyAdapter(Context context, List<DailyChoicenessBean> data) {
         super(context, data);

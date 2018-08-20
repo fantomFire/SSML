@@ -2,7 +2,7 @@ package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -24,7 +24,7 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
 import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
-public class VedioAdapter extends BaseQuickAdapter<PhotoBean> {
+public class VedioAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewHolder> {
     public VedioAdapter(Context activity, List<PhotoBean> mList) {
         super(activity,mList);
     }

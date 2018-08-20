@@ -2,6 +2,7 @@ package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by long on 2016/10/11.
  * 福利图适配器
  */
-public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean> {
+public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, RecyclerView.ViewHolder> {
 
     // 图片的宽度
     private int mPhotoWidth;

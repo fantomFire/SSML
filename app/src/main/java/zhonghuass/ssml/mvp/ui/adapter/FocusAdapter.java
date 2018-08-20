@@ -2,7 +2,7 @@ package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -24,7 +24,7 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.FocusBean;
 import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
-public class FocusAdapter  extends BaseQuickAdapter<FocusBean>{
+public class FocusAdapter  extends BaseQuickAdapter<FocusBean, RecyclerView.ViewHolder>{
     public FocusAdapter(Context context, List<FocusBean> mList) {
         super(context,mList);
     }

@@ -56,7 +56,7 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
                     public void onNext(LoginBean loginBeanBaseResponse) {
                         mRootView.showMessage(loginBeanBaseResponse.msg);
                         String status = loginBeanBaseResponse.status;
-                        if (status.equals(200)) {
+                        if (status.equals("200")) {
                             mRootView.gotoActivity(loginBeanBaseResponse);
                         }
 

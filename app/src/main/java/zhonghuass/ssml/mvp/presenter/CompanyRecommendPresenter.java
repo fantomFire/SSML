@@ -11,7 +11,11 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyRecommendContract;
+import zhonghuass.ssml.mvp.model.appbean.ComanyrfBean;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @FragmentScope
@@ -37,5 +41,23 @@ public class CompanyRecommendPresenter extends BasePresenter<CompanyRecommendCon
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getcomanyrfData(String ep_id, int page, int pagesize) {
+        mModel.getcomanyrfData(ep_id,page,pagesize)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<ComanyrfBean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<ComanyrfBean> listBaseResponse) {
+                        if (listBaseResponse.isSuccess()) {
+                            mRootView.showComanyData(listBaseResponse);
+                        } else if (listBaseResponse.getStatus().equals("201")) {
+                            mRootView.addshowData();
+                        } else {
+                            mRootView.showMessage(listBaseResponse.getMessage());
+                        }
+                    }
+
+                });
     }
 }

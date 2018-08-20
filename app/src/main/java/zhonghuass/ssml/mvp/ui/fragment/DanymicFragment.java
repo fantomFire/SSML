@@ -49,6 +49,7 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
     private int page = 1;
     private DanymicAdapter danymicAdapter;
     List<DanynimicBean> mlist = new ArrayList<>();
+
     public static DanymicFragment newInstance() {
         DanymicFragment fragment = new DanymicFragment();
         return fragment;
@@ -77,17 +78,17 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
     }
 
     private void initRecycleView() {
-        danymicAdapter = new DanymicAdapter(getActivity(),mlist);
+        danymicAdapter = new DanymicAdapter(getActivity(), mlist);
         SlideInBottomAdapter slideAdapter = new SlideInBottomAdapter(danymicAdapter);
         RecyclerViewHelper.initRecyclerViewSV(getContext(), recommendDny, slideAdapter, 2);
-      recommendDny.setAdapter(danymicAdapter);
+        recommendDny.setAdapter(danymicAdapter);
 
-        danymicAdapter.setRequestDataListener(()->{
+        danymicAdapter.setRequestDataListener(() -> {
             page++;
             mPresenter.getDanymicData(member_id, member_type, page);
         });
-        danyRefresh.setOnRefreshListener(()->{
-            page=1;
+        danyRefresh.setOnRefreshListener(() -> {
+            page = 1;
             danymicAdapter.enableLoadMore(false);
             mPresenter.getDanymicData(member_id, member_type, page);
 
@@ -96,13 +97,13 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                System.out.println("====="+dy);
+                System.out.println("=====" + dy);
             }
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                System.out.println("state"+newState);
+                System.out.println("state" + newState);
             }
         });
     }
@@ -139,11 +140,12 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
 
     }
 
+
     @Override
     public void setContent(List<DanynimicBean> listDamnymic) {
-      if(danyRefresh.isRefreshing()){
-          danyRefresh.setRefreshing(false);
-      }
+        if (danyRefresh.isRefreshing()) {
+            danyRefresh.setRefreshing(false);
+        }
         danymicAdapter.enableLoadMore(true);
         danymicAdapter.loadComplete();
         if (page > 1) {
@@ -154,9 +156,10 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
 
 
     }
+
     @Override
     public void notifystate() {
         danymicAdapter.noMoreDataToast();
-        Toast.makeText(getActivity(),"没有更多数据,请稍后尝试!",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "没有更多数据,请稍后尝试!", Toast.LENGTH_SHORT).show();
     }
 }
