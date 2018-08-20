@@ -22,4 +22,7 @@ View notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) 
 
 setEmptyView(R.layout.xxx, (ViewGroup) mRecyclerView.getParent());
 
+判断当前页面item没有填满屏幕时候隐藏 “没有更多数据”
+disableLoadMoreIfNotFullPage(mRecyclerView);
+
 

@@ -285,7 +285,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 ArmsUtils.startActivity(MyInfoActivity.class);
                 break;
             case R.id.tv_menu1:
-                ArmsUtils.startActivity(MyFansActivity.class);
+                ArmsUtils.startActivity(MyCollectionActivity.class);
                 break;
             case R.id.tv_menu2:
                 ArmsUtils.startActivity(MyConcernActivity.class);
