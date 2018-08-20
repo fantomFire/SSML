@@ -302,24 +302,11 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         mLoadingIcon.getIndeterminateDrawable().setColor(color);
     }
 
-    /**
-     * 加载完成
-     */
-    public void loadComplete() {
-        mIsLoadingNow = false;
-    }
 
     /**
-     * 没有更多数据，后面不再加载数据
+     * 判断当前item没有占满屏幕时候关闭加载更多，从而隐藏  没有更多数据 提示。
+     * @param recyclerView
      */
-    public void noMoreData() {
-        mIsLoadingNow = false;
-        mIsNoMoreData = true;
-        mLoadingIcon.setVisibility(View.GONE);
-        mLoadingDesc.setText(R.string.no_more_data);
-
-    }
-
     public void disableLoadMoreIfNotFullPage(RecyclerView recyclerView) {
         enableLoadMore(false);
         if (recyclerView == null) return;
@@ -334,7 +321,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                         enableLoadMore(true);
                     }
                 }
-            }, 1500);
+            }, 50);
         } else if (manager instanceof StaggeredGridLayoutManager) {
             final StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) manager;
             recyclerView.postDelayed(new Runnable() {
@@ -347,7 +334,7 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
                         enableLoadMore(true);
                     }
                 }
-            }, 3000);
+            }, 50);
         }
     }
 
@@ -369,6 +356,27 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
         return tmp;
     }
 
+
+
+    /**
+     * 加载完成
+     */
+    public void loadComplete() {
+        mIsLoadingNow = false;
+    }
+
+    /**
+     * 没有更多数据，后面不再加载数据
+     */
+    public void noMoreData() {
+        mIsLoadingNow = false;
+        mIsNoMoreData = true;
+        mLoadingIcon.setVisibility(View.GONE);
+        mLoadingDesc.setText(R.string.no_more_data);
+
+    }
+
+
     /**
      * 没有更多数据
      */
@@ -380,6 +388,12 @@ public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerV
 
 
 
+    }
+    public void noMoreData(boolean gone) {
+        mIsLoadingNow = false;
+        mIsNoMoreData = true;
+        mLoadingIcon.setVisibility(View.GONE);
+        mLoadingDesc.setVisibility(View.GONE);
     }
 
     /**

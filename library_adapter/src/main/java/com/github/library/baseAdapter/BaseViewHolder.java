@@ -18,6 +18,7 @@ package com.github.library.baseAdapter;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -37,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import com.github.library.R;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -613,4 +615,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public void setAssociatedObject(Object associatedObject) {
         this.associatedObject = associatedObject;
     }
+
+    public static void setDragColor(int dragColor) {
+        BaseViewHolder.dragDrawable = new ColorDrawable(dragColor);
+    }
+
+    public static void setDragDrawable(Drawable drawable) {
+        BaseViewHolder.dragDrawable = drawable;
+    }
+
+    private static Drawable dragDrawable;
+
 }

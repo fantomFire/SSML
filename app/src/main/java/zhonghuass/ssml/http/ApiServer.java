@@ -1,32 +1,10 @@
 package zhonghuass.ssml.http;
 
-import java.util.List;
-
 import io.reactivex.Observable;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import zhonghuass.ssml.mvp.model.appbean.CommentBean;
-import zhonghuass.ssml.mvp.model.appbean.CommentBean;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
-import zhonghuass.ssml.mvp.model.appbean.DailyBean;
-import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
-import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
-import zhonghuass.ssml.mvp.model.appbean.FocusBean;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
-import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
-import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
-import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
-import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
-import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
-import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
-import zhonghuass.ssml.mvp.model.appbean.SearchBean;
-import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
-import zhonghuass.ssml.mvp.model.appbean.TradeBean;
+import retrofit2.http.*;
+import zhonghuass.ssml.mvp.model.appbean.*;
+
+import java.util.List;
 
 public interface ApiServer {
     //注册
@@ -152,17 +130,33 @@ public interface ApiServer {
     Observable<BaseResponse<List<DailyChoicenessBean>>> getDailyData(@Query("member_id") String member_id,
                                                                      @Query("member_type") String member_type,
                                                                      @Query("page") String page);
+
     @GET("/Api/content/trends")
-    Observable<BaseResponse<List<DanynimicBean>>> getDanymicData(@Query("member_id")String member_id,
-                                                                 @Query("member_type")String member_type,
+    Observable<BaseResponse<List<DanynimicBean>>> getDanymicData(@Query("member_id") String member_id,
+                                                                 @Query("member_type") String member_type,
                                                                  @Query("page") String page);
+
     @GET("/Api/content/concern")
-    Observable<BaseResponse<List<FocusBean>>> getFocusData(@Query("member_id")String member_id,
-                                                           @Query("member_type")String member_type,
+    Observable<BaseResponse<List<FocusBean>>> getFocusData(@Query("member_id") String member_id,
+                                                           @Query("member_type") String member_type,
                                                            @Query("page") String page);
     @GET("/Api/content/access")
     Observable<BaseResponse<List<PhotoBean>>> getPhotoData(@Query("target_id")String eid,@Query("target_type") String target_type, @Query("content_type")String content_type,
                                                            @Query("member_id")String member_id,
                                                            @Query("member_type")String member_type,
                                                            @Query("page") String page);
+
+    //获取我的收藏
+    @GET("/Api/content/mycollection")
+    Observable<BaseResponse<List<CollectionBean>>> getMyCollection(@Query("member_id") String member_id,
+                                                                   @Query("member_type") String member_type,
+                                                                   @Query("page") int page);
+
+    //取消收藏
+    @FormUrlEncoded
+    @POST("/Api/content/cancelcollection")
+    Observable<BaseResponse<Void>> toCancelCollection(@Field("member_id") String member_id,
+                                                   @Field("member_type") String member_type,
+                                                   @Field("content_id") String content_id);
 }
+

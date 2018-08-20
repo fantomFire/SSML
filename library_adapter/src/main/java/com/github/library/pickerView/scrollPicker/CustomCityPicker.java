@@ -115,6 +115,16 @@ public class CustomCityPicker {
             canAccess = false;
         }
     }
+    public void show() {
+        if (canAccess) {
+            canAccess = true;
+            loadComponent();
+            addListener();
+            cityPickerDialog.show();
+        } else {
+            canAccess = false;
+        }
+    }
 
     //int type :  0 正常模式 ;1 只显示陕西省市区 ;2 第3级多一个全市区
     //提前加载数据，这样不需要花费过长时间

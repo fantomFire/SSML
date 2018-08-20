@@ -1918,7 +1918,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
                 }
             }
         }
-        return -1;
+        return position;
     }
 
     /**
