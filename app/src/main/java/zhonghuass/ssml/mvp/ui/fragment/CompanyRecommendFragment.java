@@ -72,7 +72,7 @@ public class CompanyRecommendFragment extends BaseFragment<CompanyRecommendPrese
         initRecycleView();
         ep_id = PrefUtils.getString(getContext(), Constants.EP_ID, "");
         //网络请求数据-产品
-        mPresenter.getcomanyrfData(ep_id, page,pagesize);
+        mPresenter.getcomanyrfData("1", page,pagesize);
     }
 
 

@@ -112,7 +112,7 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
         myPagerAdapter.setFragments(fragments);
         // 给ViewPager设置适配器
         companyVp.setAdapter(myPagerAdapter);
-
+        companyVp.setOffscreenPageLimit(2);
 
         // MagicIndicator magicIndicator = (MagicIndicator) inflate.findViewById(R.id.my_indict);
         //   magicIndicator.setBackgroundColor(Color.WHITE);

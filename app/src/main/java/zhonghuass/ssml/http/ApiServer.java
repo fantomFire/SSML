@@ -165,7 +165,12 @@ public interface ApiServer {
     //盛世名录-产品
     @GET("/api/Enterprise/product")
     Observable<BaseResponse<ComanyrfBean>> getcomanyrfData(@Query("eid") String ep_id,
-                                                           @Query("page")int page,
+                                                           @Query("page") int page,
                                                            @Query("pagesize") int pagesize);
+    //盛世名录-招聘
+    @GET("/api/Enterprise/recruitment")
+    Observable<BaseResponse<IniviteBean>> getInviteData(@Query("eid") String ep_id,
+                                                        @Query("page") int page,
+                                                        @Query("pagesize") int pagesize);
 }
 
