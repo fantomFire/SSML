@@ -159,5 +159,6 @@ public interface ApiServer {
     Observable<BaseResponse<Void>> toCancelCollection(@Field("member_id") String member_id,
                                                    @Field("member_type") String member_type,
                                                    @Field("content_id") String content_id);
+
 }
 
