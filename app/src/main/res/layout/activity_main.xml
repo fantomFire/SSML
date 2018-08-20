@@ -23,7 +23,6 @@
         <com.github.library.layoutView.BottomNavigationViewEx
             android:id="@+id/bottomMenu"
             android:layout_width="match_parent"
-
             android:layout_height="60dp"
             android:layout_gravity="bottom"
             android:background="@color/white"
@@ -34,6 +33,7 @@
 
     <!--左侧导航菜单-->
     <!--<android.support.design.widget.NavigationView-->
+
     <!--android:id="@+id/navigation"-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="match_parent"-->
@@ -41,6 +41,7 @@
     <!--android:background="@color/white"-->
     <!--app:headerLayout="@layout/headlayout"-->
     <!--app:menu="@menu/my_navigation_view" />-->
+
     <LinearLayout
         android:id="@+id/navigation"
         android:layout_width="match_parent"
