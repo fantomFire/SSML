@@ -1,23 +1,20 @@
 package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
-
-import com.jess.arms.integration.AppManager;
+import android.content.Context;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.mvp.BasePresenter;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-
-import javax.inject.Inject;
-
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.MyCollectionContract;
 import zhonghuass.ssml.mvp.model.appbean.CollectionBean;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
+import zhonghuass.ssml.utils.CustomProgress;
 import zhonghuass.ssml.utils.RxUtils;
 
-import java.util.ArrayList;
+import javax.inject.Inject;
 import java.util.List;
 
 
@@ -46,12 +43,14 @@ public class MyCollectionPresenter extends BasePresenter<MyCollectionContract.Mo
         this.mApplication = null;
     }
 
-    public void getMyCollection(String mId, String mType, int page) {
+    public void getMyCollection(CustomProgress progress, String mId, String mType, int page) {
+        progress.show();
         mModel.getMyCollection(mId, mType, page)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<List<CollectionBean>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<List<CollectionBean>> listBaseResponse) {
+                        progress.dismiss();
                         if (listBaseResponse.isSuccess()) {
                             mRootView.showData(listBaseResponse.getData());
                         } else if (listBaseResponse.getStatus().equals("201")) {
