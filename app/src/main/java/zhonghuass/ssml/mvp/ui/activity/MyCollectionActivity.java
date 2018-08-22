@@ -7,8 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import butterknife.BindView;
@@ -21,10 +19,10 @@ import zhonghuass.ssml.di.component.DaggerMyCollectionComponent;
 import zhonghuass.ssml.di.module.MyCollectionModule;
 import zhonghuass.ssml.mvp.contract.MyCollectionContract;
 import zhonghuass.ssml.mvp.model.appbean.CollectionBean;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 import zhonghuass.ssml.mvp.presenter.MyCollectionPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.utils.CustomPopupWindow;
+import zhonghuass.ssml.utils.CustomProgress;
 import zhonghuass.ssml.utils.GlideUtils;
 
 import java.util.ArrayList;
@@ -108,14 +106,15 @@ public class MyCollectionActivity extends MBaseActivity<MyCollectionPresenter> i
         };
         mAdapter.setOnLoadMoreListener(this);
         recyclerView.setAdapter(mAdapter);
-        mPresenter.getMyCollection(mId, mType, page);
+
+        mPresenter.getMyCollection(new CustomProgress(this), mId, mType, page);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
                 page = 1;
-                mPresenter.getMyCollection(mId, mType, page);
+                mPresenter.getMyCollection(new CustomProgress(MyCollectionActivity.this), mId, mType, page);
             }
         });
     }
@@ -182,6 +181,6 @@ public class MyCollectionActivity extends MBaseActivity<MyCollectionPresenter> i
     @Override
     public void onLoadMoreRequested() {
         page++;
-        mPresenter.getMyCollection(mId, mType, page);
+        mPresenter.getMyCollection(new CustomProgress(this), mId, mType, page);
     }
 }

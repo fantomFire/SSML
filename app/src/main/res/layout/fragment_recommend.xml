@@ -3,6 +3,8 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/whiteSmoke"
+
               android:orientation="vertical">
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -11,9 +13,10 @@
             android:layout_height="match_parent"
     >
         <android.support.v7.widget.RecyclerView
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:id="@+id/recommend_rec"
                 android:layout_width="match_parent"
-                android:background="@color/viewbg"
                 android:layout_height="match_parent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

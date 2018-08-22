@@ -105,8 +105,8 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
             }
         });
 
-        fragments.add(MyPicTextFragment.newInstance());
-        fragments.add(MyPicTextFragment.newInstance());
+        fragments.add(PhotoFragment.newInstance());
+        fragments.add(VideoFragment.newInstance());
         mAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments, titles);
         mViewPager.setAdapter(mAdapter);
         mTabLayout.setupWithViewPager(mViewPager);

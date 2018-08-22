@@ -26,7 +26,7 @@ import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
 public class PhotoAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewHolder> {
     public PhotoAdapter(Context context, List<PhotoBean> mList) {
-        super(context,mList);
+        super(context, mList);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PhotoAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewH
 
     @Override
     protected void convert(BaseViewHolder holder, PhotoBean item) {
-        holder.setText(R.id.company_title,item.getContent_title() )
+        holder.setText(R.id.company_title, item.getContent_title())
                 .setText(R.id.company_name, item.getMember_name());
         //设置theme
         TextView flag = holder.getView(R.id.tv_flag);
@@ -51,24 +51,24 @@ public class PhotoAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewH
         }
         //设置红心
         ImageView likeImg = holder.getView(R.id.iflike);
-        if(item.isPraise_tag()){
+        if (item.isPraise_tag()) {
             likeImg.setBackgroundResource(R.mipmap.home_icon_4);
-        }else {
+        } else {
             likeImg.setBackgroundResource(R.mipmap.home_icon_3);
         }
         final String cover_width = item.getCover_width();
         final String cover_height = item.getCover_height();
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
-        int imgWidth = (screenWidth - 30) / 2;
+        int imgWidth = (screenWidth) / 2;
         int resize = Integer.parseInt(cover_width) / imgWidth;
         int imghight = Integer.parseInt(cover_height) / resize;
 
-        ScaleImageView iv = (ScaleImageView) holder.getView(R.id.recommend_img);
+        ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();
         layoutParams.width = imgWidth;
         layoutParams.height = imghight;
         iv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.shape_iv_bg));
-        iv.setInitSize(imgWidth, imghight);
+        iv.setLayoutParams(layoutParams);
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.shape_iv_bg);

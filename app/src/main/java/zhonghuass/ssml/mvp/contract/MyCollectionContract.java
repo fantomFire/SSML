@@ -1,11 +1,10 @@
 package zhonghuass.ssml.mvp.contract;
 
-import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
+import com.jess.arms.mvp.IView;
 import io.reactivex.Observable;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.model.appbean.CollectionBean;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
 
 import java.util.List;
 

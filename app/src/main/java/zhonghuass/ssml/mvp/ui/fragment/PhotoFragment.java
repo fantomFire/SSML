@@ -43,8 +43,8 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     @BindView(R.id.photo_refresh)
     SwipeRefreshLayout photoRefresh;
     private List<PhotoBean> mList = new ArrayList<>();
-    private int page=1;
-    private String member_id="";
+    private int page = 1;
+    private String member_id = "";
     private String member_type = "";
     private PhotoAdapter photoAdapter;
     private boolean state = false;
@@ -75,28 +75,28 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         eid = PrefUtils.getString(getActivity(), "eid", "1");
-        System.out.println("photo"+eid);
-        eid="1";
+        System.out.println("photo" + eid);
+        eid = "1";
         initRecycle();
 
-        mPresenter.getPhotoData(eid,target_type,content_type,member_id,member_type,page);
+        mPresenter.getPhotoData(eid, target_type, content_type, member_id, member_type, page);
     }
 
     private void initRecycle() {
         photoAdapter = new PhotoAdapter(getActivity(), mList);
         SlideInBottomAdapter slideInBottomAdapter = new SlideInBottomAdapter(photoAdapter);
-        RecyclerViewHelper.initRecyclerViewSV(getActivity(),photoRecy,slideInBottomAdapter,2);
+        RecyclerViewHelper.initRecyclerViewSV(getActivity(), photoRecy, slideInBottomAdapter, 2);
         photoRecy.setAdapter(photoAdapter);
 
-        photoRefresh.setOnRefreshListener(()->{
+        photoRefresh.setOnRefreshListener(() -> {
             photoAdapter.enableLoadMore(false);
             page = 1;
-            mPresenter.getPhotoData(eid,target_type,content_type,member_id,member_type,page);
+            mPresenter.getPhotoData(eid, target_type, content_type, member_id, member_type, page);
 
         });
-        photoAdapter.setRequestDataListener(()->{
+        photoAdapter.setRequestDataListener(() -> {
             page++;
-            mPresenter.getPhotoData(eid,target_type,content_type,member_id,member_type,page);
+            mPresenter.getPhotoData(eid, target_type, content_type, member_id, member_type, page);
         });
         photoRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -107,7 +107,7 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if(dy>0){
+                if (dy > 0) {
 
                     state = true;
                 }
@@ -153,24 +153,24 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     public void notifystate() {
 
         photoAdapter.noMoreDataToast();
-        if(state){
+        if (state) {
 
-            Toast.makeText(getActivity(),"没有更多数据,请稍后尝试!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "没有更多数据,请稍后尝试!", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     @Override
     public void setContent(List<PhotoBean> data) {
-        System.out.println("============="+data.size());
-        if(photoRefresh.isRefreshing()){
+        System.out.println("=============" + data.size());
+        if (photoRefresh.isRefreshing()) {
             photoRefresh.setRefreshing(false);
         }
         photoAdapter.enableLoadMore(true);
         photoAdapter.loadComplete();
-        if(page>1){
+        if (page > 1) {
             photoAdapter.addItems(data);
-        }else {
+        } else {
             photoAdapter.updateItems(data);
         }
         // photoAdapter.disableLoadMoreIfNotFullPage(photoRefresh);

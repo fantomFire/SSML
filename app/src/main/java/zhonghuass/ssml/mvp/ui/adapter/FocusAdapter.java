@@ -59,16 +59,17 @@ public class FocusAdapter  extends BaseQuickAdapter<FocusBean, RecyclerView.View
         final String cover_width = item.getCover_width();
         final String cover_height = item.getCover_height();
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
-        int imgWidth = (screenWidth - 30) / 2;
+        int imgWidth = (screenWidth) / 2;
         int resize = Integer.parseInt(cover_width) / imgWidth;
         int imghight = Integer.parseInt(cover_height) / resize;
 
-        ScaleImageView iv = (ScaleImageView) holder.getView(R.id.recommend_img);
+        ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();
         layoutParams.width = imgWidth;
         layoutParams.height = imghight;
         iv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.shape_iv_bg));
-        iv.setInitSize(imgWidth, imghight);
+        iv.setLayoutParams(layoutParams);
+
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.shape_iv_bg);
