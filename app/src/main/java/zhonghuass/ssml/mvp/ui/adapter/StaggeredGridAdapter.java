@@ -19,7 +19,6 @@ import com.github.library.layoutView.CircleImageView;
 import com.jess.arms.utils.ArmsUtils;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
-import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
 import java.util.List;
 

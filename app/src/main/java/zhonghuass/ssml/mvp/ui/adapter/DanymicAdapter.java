@@ -22,7 +22,6 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
-import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
 public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView.ViewHolder> {
     Context mContext;

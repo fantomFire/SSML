@@ -22,7 +22,6 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.FocusBean;
-import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
 public class FocusAdapter  extends BaseQuickAdapter<FocusBean, RecyclerView.ViewHolder>{
     public FocusAdapter(Context context, List<FocusBean> mList) {

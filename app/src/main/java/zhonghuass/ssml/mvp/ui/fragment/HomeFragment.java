@@ -38,13 +38,11 @@ import butterknife.Unbinder;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerHomeFragmentComponent;
 import zhonghuass.ssml.di.module.HomeFragmentModule;
-import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
 import zhonghuass.ssml.mvp.ui.activity.MSMQActivity;
-import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
+import zhonghuass.ssml.mvp.ui.activity.PublishActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
-import zhonghuass.ssml.utils.EventBusUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -60,6 +58,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @BindView(R.id.home_mess)
     ImageView homeMess;
     Unbinder unbinder;
+    @BindView(R.id.img_edit)
+    ImageView imgEdit;
+    Unbinder unbinder1;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private View inflate;
     private String[] mDataList = {"推荐", "动态", "关注"};
@@ -179,6 +180,18 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
                 break;
             case R.id.home_mess:
                 ArmsUtils.startActivity(MSMQActivity.class);
+                break;
+        }
+    }
+    @OnClick({R.id.tv_search, R.id.home_mess, R.id.img_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_search:
+                break;
+            case R.id.home_mess:
+                break;
+            case R.id.img_edit:
+                ArmsUtils.startActivity(PublishActivity.class);
                 break;
         }
     }

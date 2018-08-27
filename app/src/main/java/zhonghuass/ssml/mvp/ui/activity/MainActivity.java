@@ -215,13 +215,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     };
 
     private void changeFragment() {
-        if (mReplace == 3 || mReplace == 0) {
+        toolbar.setVisibility(View.GONE);
+      /*  if (mReplace == 3 || mReplace == 0) {
             //隐藏标题栏
-            toolbar.setVisibility(View.GONE);
         } else {
             toolbar.setVisibility(View.VISIBLE);
         }
-        toolbarTitle.setText(mTitles.get(mReplace));
+        toolbarTitle.setText(mTitles.get(mReplace));*/
         FragmentUtils.hideAllShowFragment(mFragments.get(mReplace));
     }
 

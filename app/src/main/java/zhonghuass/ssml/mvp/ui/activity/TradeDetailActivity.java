@@ -37,6 +37,7 @@ import zhonghuass.ssml.di.component.DaggerTradeDetailComponent;
 import zhonghuass.ssml.di.module.TradeDetailModule;
 import zhonghuass.ssml.mvp.contract.TradeDetailContract;
 import zhonghuass.ssml.mvp.presenter.TradeDetailPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
 import zhonghuass.ssml.mvp.ui.fragment.CompanyBriefFragment;
 import zhonghuass.ssml.mvp.ui.fragment.CompanyDanymicFragment;
@@ -50,7 +51,7 @@ import zhonghuass.ssml.utils.PrefUtils;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> implements TradeDetailContract.View {
+public class TradeDetailActivity extends MBaseActivity<TradeDetailPresenter> implements TradeDetailContract.View {
 
     @BindView(R.id.top_bg)
     ImageView topBg;
