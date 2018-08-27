@@ -22,7 +22,6 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
-import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
 public class PhotoAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewHolder> {
     public PhotoAdapter(Context context, List<PhotoBean> mList) {

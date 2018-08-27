@@ -17,7 +17,6 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
-import zhonghuass.ssml.mvp.ui.ScaleImageView;
 
 public class DailyAdapter extends BaseQuickAdapter<DailyChoicenessBean, RecyclerView.ViewHolder> {
 

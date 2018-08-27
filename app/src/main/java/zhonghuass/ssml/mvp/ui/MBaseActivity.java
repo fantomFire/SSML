@@ -112,7 +112,7 @@ public abstract class MBaseActivity<P extends IPresenter> extends AppCompatActiv
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_base);
         FrameLayout flBaseActivity = findViewById(R.id.fl_base_activity);
 
