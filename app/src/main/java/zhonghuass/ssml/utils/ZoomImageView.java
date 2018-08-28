@@ -2,6 +2,8 @@ package zhonghuass.ssml.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -17,6 +19,13 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.view.View.OnTouchListener;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class ZoomImageView extends AppCompatImageView implements OnScaleGestureListener,
         OnTouchListener,ViewTreeObserver.OnGlobalLayoutListener {
     private static final String TAG = ZoomImageView.class.getSimpleName();
@@ -28,7 +37,9 @@ public class ZoomImageView extends AppCompatImageView implements OnScaleGestureL
      */
     private float initScale = 1.0f;
     private boolean once = true;
-
+    public   boolean getstate(){
+        return once ;
+    }
     /**
      * 用于存放矩阵的9个值
      */
@@ -292,10 +303,13 @@ public class ZoomImageView extends AppCompatImageView implements OnScaleGestureL
     public boolean onTouch(View v, MotionEvent event)
     {
 
-        if (mGestureDetector.onTouchEvent(event))
+        if (mGestureDetector.onTouchEvent(event)){
+            System.out.println("单点");
             return true;
+        }
         mScaleGestureDetector.onTouchEvent(event);
-
+        System.out.println("多点");
+        System.out.println("多点"+isCanDrag);
         float x = 0, y = 0;
         // 拿到触摸点的个数
         final int pointerCount = event.getPointerCount();
@@ -368,7 +382,6 @@ public class ZoomImageView extends AppCompatImageView implements OnScaleGestureL
                             dy = 0;
                             isCheckTopAndBottom = false;
                         }
-
 
                         mScaleMatrix.postTranslate(dx, dy);
                         checkMatrixBounds();
@@ -497,5 +510,41 @@ public class ZoomImageView extends AppCompatImageView implements OnScaleGestureL
     private boolean isCanDrag(float dx, float dy)
     {
         return Math.sqrt((dx * dx) + (dy * dy)) >= mTouchSlop;
+    }
+    /**
+     * 旋转
+     */
+    Bitmap toturn(String url){
+        Bitmap bitmap = returnBitMap(url);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90); /*翻转90度*/
+        int width = bitmap.getWidth();
+        int height =bitmap.getHeight();
+       /* img = Bitmap.createBitmap(img, 0, 0, width, height, matrix, true);*/
+        return null;
+    }
+    public final static Bitmap returnBitMap(String url) {
+        URL myFileUrl = null;
+        Bitmap bitmap = null;
+
+        try {
+            myFileUrl = new URL(url);
+            HttpURLConnection conn;
+
+            conn = (HttpURLConnection) myFileUrl.openConnection();
+
+            conn.setDoInput(true);
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            bitmap = BitmapFactory.decodeStream(is);
+
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }  catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return bitmap;
     }
 }

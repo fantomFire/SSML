@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,6 +65,59 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     public void initData(@Nullable Bundle savedInstanceState) {
         Intent intent = this.getIntent();
         selectList = intent.getParcelableArrayListExtra("selectList");
+      //  initImageListener();
+    }
+
+    private void initImageListener() {
+
+
+            editImg.setOnTouchListener(new View.OnTouchListener() {
+                private int rawY;
+                private int rawX;
+                private int lasty;
+                private int lastx;
+                int startx;//手指第一次点击屏幕时的位置x
+                int starty;//手指第一次点击屏幕时的位置y
+                private int mx, my;
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            boolean once = editImg.getstate();
+                            System.out.println("state"+once);
+                            startx = (int) event.getRawX();
+                            starty = (int) event.getRawY();
+                            rawX = (int) event.getRawX();
+                            rawY = (int) event.getRawY();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            lastx = editImg.getLeft();
+                            System.out.println("lastx:"+ lastx);
+                            lasty = editImg.getTop();
+                            System.out.println("lasty:"+ lasty);
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                          /*  mx = (int)(event.getRawX() - startx);
+                            my = (int)(event.getRawY() - starty);
+                            v.layout(mx, my, mx + v.getWidth(), my + v.getHeight());*/
+
+                            int dx = rawX -startx;
+                            int dy = rawY -starty;
+                            editImg.layout(editImg.getLeft()+dx, editImg.getTop()+dy, editImg.getRight()+dx, editImg.getBottom()+dy);
+                           // startx = (int) event.getX();
+                           // starty = (int) event.getY();
+                            editImg.invalidate();
+                            break;
+                    }
+                    return true;
+
+                }
+            });
+
+
+
+
+
+
     }
 
     @Override
