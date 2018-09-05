@@ -12,4 +12,5 @@ import zhonghuass.ssml.mvp.ui.activity.MyCollectionActivity;
 @Component(modules = MyCollectionModule.class, dependencies = AppComponent.class)
 public interface MyCollectionComponent {
     void inject(MyCollectionActivity activity);
+
 }
