@@ -1,6 +1,8 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
+import com.github.chrisbanes.photoview.OnSingleFlingListener;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -25,15 +30,17 @@ import zhonghuass.ssml.di.component.DaggerImageEditorComponent;
 import zhonghuass.ssml.di.module.ImageEditorModule;
 import zhonghuass.ssml.mvp.contract.ImageEditorContract;
 import zhonghuass.ssml.mvp.presenter.ImageEditorPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.utils.MatrixImageView;
 import zhonghuass.ssml.utils.ZoomImageView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> implements ImageEditorContract.View {
+public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> implements ImageEditorContract.View,OnSingleFlingListener {
 
     @BindView(R.id.edit_img)
-    ZoomImageView editImg;
+    PhotoView editImg;
     @BindView(R.id.out_bg)
     RelativeLayout outBg;
     @BindView(R.id.moban_item)
@@ -45,6 +52,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     @BindView(R.id.mark_item)
     LinearLayout markItem;
     private List<LocalMedia> selectList;
+    private Matrix matrix;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -65,59 +73,8 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     public void initData(@Nullable Bundle savedInstanceState) {
         Intent intent = this.getIntent();
         selectList = intent.getParcelableArrayListExtra("selectList");
-      //  initImageListener();
-    }
-
-    private void initImageListener() {
-
-
-            editImg.setOnTouchListener(new View.OnTouchListener() {
-                private int rawY;
-                private int rawX;
-                private int lasty;
-                private int lastx;
-                int startx;//手指第一次点击屏幕时的位置x
-                int starty;//手指第一次点击屏幕时的位置y
-                private int mx, my;
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            boolean once = editImg.getstate();
-                            System.out.println("state"+once);
-                            startx = (int) event.getRawX();
-                            starty = (int) event.getRawY();
-                            rawX = (int) event.getRawX();
-                            rawY = (int) event.getRawY();
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            lastx = editImg.getLeft();
-                            System.out.println("lastx:"+ lastx);
-                            lasty = editImg.getTop();
-                            System.out.println("lasty:"+ lasty);
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                          /*  mx = (int)(event.getRawX() - startx);
-                            my = (int)(event.getRawY() - starty);
-                            v.layout(mx, my, mx + v.getWidth(), my + v.getHeight());*/
-
-                            int dx = rawX -startx;
-                            int dy = rawY -starty;
-                            editImg.layout(editImg.getLeft()+dx, editImg.getTop()+dy, editImg.getRight()+dx, editImg.getBottom()+dy);
-                           // startx = (int) event.getX();
-                           // starty = (int) event.getY();
-                            editImg.invalidate();
-                            break;
-                    }
-                    return true;
-
-                }
-            });
-
-
-
-
-
-
+        matrix = new Matrix();
+        //  initImageListener();
     }
 
     @Override
@@ -155,13 +112,27 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
             case R.id.edit_img:
                 break;
             case R.id.moban_item:
+                editImg.setRotationBy(30.0f);
                 break;
             case R.id.back_item:
+                RectF displayRect = editImg.getDisplayRect();
+                System.out.println("sssss"+displayRect.bottom);
                 break;
             case R.id.name_item:
+                Matrix imageMatrix = editImg.getImageMatrix();
+
+                System.out.println("图片信息"+imageMatrix.toString());
+
                 break;
             case R.id.mark_item:
                 break;
         }
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        System.out.println("velocityX"+velocityX);
+        System.out.println("velocityY"+velocityY);
+        return false;
     }
 }

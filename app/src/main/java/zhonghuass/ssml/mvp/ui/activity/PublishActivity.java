@@ -142,7 +142,8 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
 
     @OnClick(R.id.tv_start)
     public void onViewClicked() {
-        selectPhoto();
+        ArmsUtils.startActivity(ImageEditorActivity.class);
+        //selectPhoto();
     }
 
     private void selectPhoto() {
