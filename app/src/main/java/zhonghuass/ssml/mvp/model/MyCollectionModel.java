@@ -48,4 +48,5 @@ public class MyCollectionModel extends BaseModel implements MyCollectionContract
     public Observable<BaseResponse<Void>> toCancelCollection(String mId, String mType, String content_id) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).toCancelCollection(mId, mType, content_id);
     }
+
 }

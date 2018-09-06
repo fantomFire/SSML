@@ -33,4 +33,5 @@ public class MyCollectionModule {
     MyCollectionContract.Model provideMyCollectionModel(MyCollectionModel model) {
         return model;
     }
+
 }

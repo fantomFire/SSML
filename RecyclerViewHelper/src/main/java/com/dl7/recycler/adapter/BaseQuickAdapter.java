@@ -38,7 +38,7 @@ import java.util.List;
  * Created by long on 2016/4/21.
  * 适配器基类
  */
-public abstract class BaseQuickAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public abstract class BaseQuickAdapter<T, V> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         implements ItemTouchHelperAdapter {
 
     public static final int HEADER_VIEW = 0x00000111;

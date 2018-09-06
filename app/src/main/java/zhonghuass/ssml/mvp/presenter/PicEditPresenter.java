@@ -6,16 +6,15 @@ import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
-
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
-import zhonghuass.ssml.mvp.contract.PicEditActivityContract;
+import zhonghuass.ssml.mvp.contract.PicEditContract;
 
 
 @ActivityScope
-public class PicEditActivityPresenter extends BasePresenter<PicEditActivityContract.Model, PicEditActivityContract.View> {
+public class PicEditPresenter extends BasePresenter<PicEditContract.Model, PicEditContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -26,7 +25,7 @@ public class PicEditActivityPresenter extends BasePresenter<PicEditActivityContr
     AppManager mAppManager;
 
     @Inject
-    public PicEditActivityPresenter(PicEditActivityContract.Model model, PicEditActivityContract.View rootView) {
+    public PicEditPresenter(PicEditContract.Model model, PicEditContract.View rootView) {
         super(model, rootView);
     }
 

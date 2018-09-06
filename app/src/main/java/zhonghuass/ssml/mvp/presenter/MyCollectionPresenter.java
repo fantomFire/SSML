@@ -91,4 +91,5 @@ public class MyCollectionPresenter extends BasePresenter<MyCollectionContract.Mo
                     }
                 });
     }
+
 }

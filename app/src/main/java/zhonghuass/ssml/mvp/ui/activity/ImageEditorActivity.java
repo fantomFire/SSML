@@ -1,14 +1,20 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.github.chrisbanes.photoview.OnOutsidePhotoTapListener;
+import com.github.chrisbanes.photoview.OnSingleFlingListener;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -24,15 +30,17 @@ import zhonghuass.ssml.di.component.DaggerImageEditorComponent;
 import zhonghuass.ssml.di.module.ImageEditorModule;
 import zhonghuass.ssml.mvp.contract.ImageEditorContract;
 import zhonghuass.ssml.mvp.presenter.ImageEditorPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.utils.MatrixImageView;
 import zhonghuass.ssml.utils.ZoomImageView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> implements ImageEditorContract.View {
+public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> implements ImageEditorContract.View{
 
     @BindView(R.id.edit_img)
-    ZoomImageView editImg;
+    PhotoView editImg;
     @BindView(R.id.out_bg)
     RelativeLayout outBg;
     @BindView(R.id.moban_item)
@@ -44,6 +52,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     @BindView(R.id.mark_item)
     LinearLayout markItem;
     private List<LocalMedia> selectList;
+    private Matrix matrix;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -64,6 +73,8 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     public void initData(@Nullable Bundle savedInstanceState) {
         Intent intent = this.getIntent();
         selectList = intent.getParcelableArrayListExtra("selectList");
+        matrix = new Matrix();
+        //  initImageListener();
     }
 
     @Override
@@ -101,13 +112,21 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
             case R.id.edit_img:
                 break;
             case R.id.moban_item:
+                editImg.setRotationBy(30.0f);
                 break;
             case R.id.back_item:
+                RectF displayRect = editImg.getDisplayRect();
+                System.out.println("sssss"+displayRect.bottom);
                 break;
             case R.id.name_item:
+                Matrix imageMatrix = editImg.getImageMatrix();
+
+                System.out.println("图片信息"+imageMatrix.toString());
+
                 break;
             case R.id.mark_item:
                 break;
         }
     }
+
 }
