@@ -37,7 +37,7 @@ import zhonghuass.ssml.utils.ZoomImageView;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> implements ImageEditorContract.View,OnSingleFlingListener {
+public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> implements ImageEditorContract.View{
 
     @BindView(R.id.edit_img)
     PhotoView editImg;
@@ -129,10 +129,4 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
         }
     }
 
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-        System.out.println("velocityX"+velocityX);
-        System.out.println("velocityY"+velocityY);
-        return false;
-    }
 }
