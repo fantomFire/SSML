@@ -20,19 +20,20 @@ import java.io.ByteArrayOutputStream;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import zhonghuass.ssml.di.component.DaggerPicEditActivityComponent;
-import zhonghuass.ssml.di.module.PicEditActivityModule;
-import zhonghuass.ssml.mvp.contract.PicEditActivityContract;
-import zhonghuass.ssml.mvp.presenter.PicEditActivityPresenter;
+
 
 import zhonghuass.ssml.R;
+import zhonghuass.ssml.di.component.DaggerPicEditComponent;
+import zhonghuass.ssml.di.module.PicEditModule;
+import zhonghuass.ssml.mvp.contract.PicEditContract;
+import zhonghuass.ssml.mvp.presenter.PicEditPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class PicEditActivity extends MBaseActivity<PicEditActivityPresenter> implements PicEditActivityContract.View {
+public class PicEditActivity extends MBaseActivity<PicEditPresenter> implements PicEditContract.View {
 
     @BindView(R.id.fl_image)
     FrameLayout flImage;
@@ -45,10 +46,10 @@ public class PicEditActivity extends MBaseActivity<PicEditActivityPresenter> imp
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerPicEditActivityComponent //如找不到该类,请编译一下项目
+        DaggerPicEditComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .picEditActivityModule(new PicEditActivityModule(this))
+                .picEditModule(new PicEditModule(this))
                 .build()
                 .inject(this);
     }
