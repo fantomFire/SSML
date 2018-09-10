@@ -167,5 +167,10 @@ public interface ApiServer {
     Observable<BaseResponse<ComanyrfBean>> getcomanyrfData(@Query("eid") String ep_id,
                                                            @Query("page")int page,
                                                            @Query("pagesize") int pagesize);
+    //图文详情
+    @GET("/Api/content/detail")
+    Observable<BaseResponse<GraphicBean>> getGraphicData(@Query("member_id") String member_id,
+                                                         @Query("member_type") String member_type,
+                                                         @Query("content_id") String content_id);
 }
 
