@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -19,6 +20,7 @@ import com.github.library.layoutView.CircleImageView;
 import com.jess.arms.utils.ArmsUtils;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
+import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
 
 import java.util.List;
 
@@ -54,7 +56,11 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         holder.setText(R.id.company_name, item.getMember_name())
                 .setText(R.id.company_title, item.getContent_title())
                 .setText(R.id.like_num,item.getAmount_of_praise());
-
+        holder.convertView.setOnClickListener((v) -> {
+                    Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
+                    mContext.startActivity(intent);
+                }
+        );
         //设置红心
         ImageView likeImg = holder.getView(R.id.iflike);
         if(item.isPraise_tag()){

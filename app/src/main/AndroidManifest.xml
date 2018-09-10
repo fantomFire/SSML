@@ -59,8 +59,15 @@
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
-        <activity android:name=".mvp.ui.activity.PublishActivity"></activity>
-        <activity android:name=".mvp.ui.activity.ImageEditorActivity"></activity>
+        <activity android:name=".mvp.ui.activity.PublishActivity" />
+        <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
+        <activity android:name=".mvp.ui.activity.MediaPlayerActivity"
+
+            >
+            <!--  android:screenOrientation="sensor"
+                        android:configChanges="orientation|keyboardHidden"-->
+
+        </activity>
     </application>
 
 </manifest>

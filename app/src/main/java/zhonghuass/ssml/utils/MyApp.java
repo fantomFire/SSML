@@ -1,5 +1,8 @@
 package zhonghuass.ssml.utils;
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.bumptech.glide.request.target.ViewTarget;
 import com.jess.arms.base.BaseApplication;
 
@@ -10,5 +13,11 @@ public class MyApp  extends BaseApplication{
     public void onCreate() {
         super.onCreate();
         ViewTarget.setTagId(R.id.tag_glide);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 }

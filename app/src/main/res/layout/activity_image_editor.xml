@@ -10,6 +10,7 @@
         android:layout_width="337dp"
         android:layout_height="420dp"
         android:layout_centerHorizontal="true"
+        android:background="@color/blue"
         android:layout_marginTop="10dp">
 
         <RelativeLayout
