@@ -137,9 +137,10 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 
                 break;
             case R.id.mark_item:
-                Glide.with(this)
+               /* Glide.with(this)
                         .load(filepath)
-                        .into(editImg);
+                        .into(editImg);*/
+               ArmsUtils.startActivity(MediaPlayerActivity.class);
                 break;
             case R.id.tv_right:
                 saveImage();
