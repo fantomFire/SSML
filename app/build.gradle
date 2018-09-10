@@ -66,4 +66,5 @@ dependencies {
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.8.4'
+    implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
 }
