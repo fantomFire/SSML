@@ -134,7 +134,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
                 System.out.println("sssss"+displayRect.bottom);
                 break;
             case R.id.name_item:
-
+                ArmsUtils.startActivity(MediaEditeActivity.class);
                 break;
             case R.id.mark_item:
                /* Glide.with(this)
