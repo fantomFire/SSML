@@ -34,7 +34,7 @@ public class MediaPlayerActivity extends BaseActivity<MediaPlayerPresenter> impl
     Uri playerUri = Uri.parse("http://mp4.vjshi.com/2018-08-24/d5c38d9ba8f01df0deaf9c2be1bfd377.mp4");
     @BindView(R.id.rl_content)
     RelativeLayout rlContent;
-    private String path = "https://pic.ibaotu.com/00/78/46/15B888piCKce.mp4";
+    private String path = "/data/data/zhonghuass.ssml/files/editerQQ视频_4EF3A4822509623660D20F12D677317A.mp4";
     private String path1 = "http://mp4.vjshi.com/2018-08-24/d5c38d9ba8f01df0deaf9c2be1bfd377.mp4";
     @BindView(R.id.btnPlay)
     ImageView btnPlay;

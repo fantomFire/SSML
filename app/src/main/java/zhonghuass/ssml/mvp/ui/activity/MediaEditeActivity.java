@@ -1,21 +1,22 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,17 +24,24 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.daimajia.numberprogressbar.NumberProgressBar;
+
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import VideoHandle.EpEditor;
+import VideoHandle.EpVideo;
+import VideoHandle.OnEditorListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerMediaEditeComponent;
 import zhonghuass.ssml.di.module.MediaEditeModule;
@@ -65,6 +73,8 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
     FrameLayout layoutBottom;
     @BindView(R.id.ll_edit)
     LinearLayout llEdit;
+    @BindView(R.id.number_progress_bar)
+    NumberProgressBar demoMpc;
     private String path;
     private ExtractVideoInfoUtil mExtractVideoInfoUtil;
     private Long duration;
@@ -84,8 +94,21 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
     private long scrollPos = 0;
     private boolean isSeeking;
     private int lastScrollX;
-    private String path1 = "http://mp4.vjshi.com/2018-08-24/d5c38d9ba8f01df0deaf9c2be1bfd377.mp4";
     private List<LocalMedia> selectList;
+    private boolean isRuning = false;
+    //uiHandler在主线程中创建，所以自动绑定主线程
+    private Handler progressHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+
+                    System.out.println("msg.arg1:" + msg.arg1);
+                  setCurrentProgress(msg.arg1);
+                    break;
+            }
+        }
+    };
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -108,11 +131,94 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         tvRight.setText("下一步");
         Intent intent = this.getIntent();
         selectList = intent.getParcelableArrayListExtra("selectList");
-        System.out.println("视频地址"+selectList.get(0).getPath());
+        System.out.println("视频地址" + selectList.get(0).getPath());
         initInfo();
         initEditView();
         initEditVideo();
         initPlay();
+    }
+
+    @OnClick({R.id.tv_right})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_right:
+                //tvRight.setClickable(false);
+                if (isRuning) {
+                    Toast.makeText(this, "视频正在处理中...", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                isRuning = true;
+                demoMpc.setVisibility(View.VISIBLE);
+                getCutMedia();
+                break;
+
+        }
+    }
+
+    private void getCutMedia() {
+
+
+        if (null == path) {
+            Toast.makeText(this, "视频路径错误!", Toast.LENGTH_SHORT).show();
+            isRuning = false;
+            return;
+        }
+        File file = new File(path);
+        String name = file.getName();
+
+        File filesDir = this.getFilesDir();
+
+        String outFile = filesDir + "/editer" + name;
+        File output = new File(outFile);
+        if (output.isFile() && output.exists()) {
+            System.out.println("删除源文件");
+            output.delete();
+        }
+        System.out.println("存储路径"+outFile);
+
+        EpVideo epVideo = new EpVideo(path);
+        EpVideo clip = epVideo.clip((int) (leftProgress / 1000), (int) ((rightProgress - leftProgress) / 1000));
+        EpEditor.OutputOption outputOption = new EpEditor.OutputOption(outFile);
+       /* outputOption.setWidth(100); //输出视频宽，如果不设置则为原始视频宽高
+        outputOption.setHeight(120);//输出视频高度*/
+        outputOption.frameRate = 30;//输出视频帧率,默认30
+        outputOption.bitRate = 30;//输出视频码率,默认10
+        EpEditor.exec(clip, outputOption, new OnEditorListener() {
+            @Override
+            public void onSuccess() {
+                System.out.println("===========");
+                isRuning = false;
+
+                Intent intent = new Intent(MediaEditeActivity.this, PublishMediaActivity.class);
+                intent.putExtra("mediaPath",outFile);
+                startActivity(intent);
+                demoMpc.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onFailure() {
+                isRuning = false;
+                demoMpc.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onProgress(float v) {
+             //   demoMpc.setPercent(random.nextInt(100) / 100f);
+                int progress = (int) Math.abs(v*100);
+                Message message = new Message();
+                message.what = 1;
+                message.arg1 = progress;
+                progressHandler.sendMessage(message);
+
+            }
+
+
+        });
+        tvRight.setClickable(true);
+    }
+
+    private  void setCurrentProgress(int progress) {
+        demoMpc.setProgress(progress);
     }
 
     private void initPlay() {
@@ -126,7 +232,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
                     @Override
                     public void onSeekComplete(MediaPlayer mp) {
                         Log.d(TAG, "------ok----real---start-----");
-                        Log.d(TAG, "------isSeeking-----"+isSeeking);
+                        Log.d(TAG, "------isSeeking-----" + isSeeking);
                         if (!isSeeking) {
                             videoStart();
                         }
@@ -139,6 +245,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         //first
         videoStart();
     }
+
     private void videoStart() {
         Log.d(TAG, "----videoStart----->>>>>>>");
         mVideoView.start();
@@ -150,6 +257,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         handler.removeCallbacks(run);
         handler.post(run);
     }
+
     private void initEditVideo() {
         //for video edit
         long startPosition = 0;
@@ -235,7 +343,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
                     isSeeking = false;
                     //从minValue开始播
                     mVideoView.seekTo((int) leftProgress);
-   //                 videoStart();
+                    //                 videoStart();
                     break;
                 default:
                     break;
@@ -301,6 +409,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             lastScrollX = scrollX;
         }
     };
+
     /**
      * 水平滑动了多少px
      *
@@ -312,7 +421,9 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         View firstVisibleChildView = layoutManager.findViewByPosition(position);
         int itemWidth = firstVisibleChildView.getWidth();
         return (position) * itemWidth - firstVisibleChildView.getLeft();
-    }    private void initInfo() {
+    }
+
+    private void initInfo() {
         path = selectList.get(0).getPath();
         //for video check
         if (!new File(path).exists()) {
@@ -328,9 +439,10 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
 
 
     }
+
     private final MainHandler mUIHandler = new MainHandler(this);
 
-    private static class MainHandler extends Handler {
+    private class MainHandler extends Handler {
         private final WeakReference<MediaEditeActivity> mActivity;
 
         MainHandler(MediaEditeActivity activity) {
@@ -350,6 +462,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             }
         }
     }
+
     private void videoPause() {
         isSeeking = false;
         if (mVideoView != null && mVideoView.isPlaying()) {
@@ -365,6 +478,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             animator.cancel();
         }
     }
+
     private Handler handler = new Handler();
     private Runnable run = new Runnable() {
 
@@ -387,6 +501,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             anim();
         }
     }
+
     private ValueAnimator animator;
 
     private void anim() {
@@ -410,6 +525,33 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         });
         animator.start();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       /* if (animator != null) {
+            animator.cancel();
+        }*/
+        if (mVideoView != null) {
+            mVideoView.stopPlayback();
+        }
+       /* if (mExtractVideoInfoUtil != null) {
+            mExtractVideoInfoUtil.release();
+        }*/
+    //    mRecyclerView.removeOnScrollListener(mOnScrollListener);
+        if (mExtractFrameWorkThread != null) {
+            mExtractFrameWorkThread.stopExtract();
+        }
+        mUIHandler.removeCallbacksAndMessages(null);
+        handler.removeCallbacksAndMessages(null);
+        if (!TextUtils.isEmpty(OutPutFileDirPath)) {
+            PictureUtils.deleteFile(new File(OutPutFileDirPath));
+        }
+       /* if(null!=progressHandler){
+            progressHandler=null;
+        }*/
+    }
+
     @Override
     public void showLoading() {
 

@@ -142,8 +142,8 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
 
     @OnClick(R.id.tv_start)
     public void onViewClicked() {
-        //ArmsUtils.startActivity(ImageEditorActivity.class);
-       selectPhoto();
+        ArmsUtils.startActivity(ImageEditorActivity.class);
+     //  selectPhoto();
     }
 
     private void selectPhoto() {
@@ -184,7 +184,6 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
                 .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
                 .videoQuality(1)// 视频录制质量 0 or 1 int
                 .videoMaxSecond(150)// 显示多少秒以内的视频or音频也可适用 int
-                .videoMinSecond(10)// 显示多少秒以内的视频or音频也可适用 int
                 .recordVideoSecond(60)//视频秒数录制 默认60s int
                 .isDragFrame(false)// 是否可拖动裁剪框(固定)
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code

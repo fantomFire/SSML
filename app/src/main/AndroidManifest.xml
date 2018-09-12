@@ -69,7 +69,8 @@
             -->
 
         </activity>
-        <activity android:name=".mvp.ui.activity.MediaEditeActivity"></activity>
+        <activity android:name=".mvp.ui.activity.MediaEditeActivity" />
+        <activity android:name=".mvp.ui.activity.PublishMediaActivity"></activity>
     </application>
 
 </manifest>

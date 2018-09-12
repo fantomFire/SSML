@@ -14,6 +14,7 @@ import android.os.Handler;
 
 public class ExtractFrameWorkThread extends Thread {
     public static final int MSG_SAVE_SUCCESS = 0;
+    public static final int MSG_MEDIA_PROGRESS = 1;
     private String videoPath;
     private String OutPutFileDirPath;
     private long startPosition;
