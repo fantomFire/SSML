@@ -87,7 +87,9 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("下一步");
         Intent intent = this.getIntent();
-        selectList = intent.getParcelableArrayListExtra("selectList");
+        selectList = intent.getParcelableArrayListExtra("imageList");
+        int template_num = intent.getIntExtra("template_num", 0);
+        System.out.println("模板样式"+template_num);
         matrix = new Matrix();
         //  initImageListener();
     }
