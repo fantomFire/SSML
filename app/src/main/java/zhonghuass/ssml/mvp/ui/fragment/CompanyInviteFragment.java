@@ -76,7 +76,7 @@ public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> 
 
         inviteRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
         iniviteAdapter = new IniviteAdapter(R.layout.compony_invite, list);
-
+        iniviteAdapter.openLoadAnimation();
         iniviteAdapter.setOnLoadMoreListener(this);
         inviteRecycle.setAdapter(iniviteAdapter);
         mPresenter.getInviteData("1", page, pagesize);
