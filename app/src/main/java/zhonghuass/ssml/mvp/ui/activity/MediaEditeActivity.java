@@ -130,7 +130,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("下一步");
         Intent intent = this.getIntent();
-        selectList = intent.getParcelableArrayListExtra("selectList");
+        selectList = intent.getParcelableArrayListExtra("mediaList");
         System.out.println("视频地址" + selectList.get(0).getPath());
         initInfo();
         initEditView();
@@ -520,7 +520,12 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 params.leftMargin = (int) animation.getAnimatedValue();
-                positionIcon.setLayoutParams(params);
+                System.out.println("positionIcon"+positionIcon);
+                System.out.println("params"+params);
+                if(null!=positionIcon){
+
+                    positionIcon.setLayoutParams(params);
+                }
             }
         });
         animator.start();

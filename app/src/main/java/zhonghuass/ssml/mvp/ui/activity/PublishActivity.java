@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
@@ -17,11 +20,9 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import qdx.bezierviewpager_compile.BezierRoundView;
 import qdx.bezierviewpager_compile.util.ImageLoadFactory;
@@ -32,6 +33,8 @@ import zhonghuass.ssml.di.component.DaggerPublishComponent;
 import zhonghuass.ssml.di.module.PublishModule;
 import zhonghuass.ssml.mvp.contract.PublishContract;
 import zhonghuass.ssml.mvp.presenter.PublishPresenter;
+import zhonghuass.ssml.utils.CustomDialog;
+import zhonghuass.ssml.utils.CustomSelectDialog;
 import zhonghuass.ssml.utils.GlideImageClient;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -46,6 +49,8 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
     @BindView(R.id.tv_start)
     TextView tvStart;
     private List<Object> imgList = new ArrayList<>();
+    private  int TEMPLATE_NUM = 0;
+    private View inflate;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -102,9 +107,16 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
         viewPager.setAdapter(cardAdapter);
         viewPager.showTransformer(0.1f);
 
-
+        cardAdapter.setOnCardItemClickListener(new CardPagerAdapter.OnCardItemClickListener() {
+            @Override
+            public void onClick(int i) {
+                TEMPLATE_NUM=i;
+                selectPhoto(PictureMimeType.ofImage(),1);
+            }
+        });
         // ImageView iv_bg = (ImageView) findViewById(R.id.iv_bg);
         // iv_bg.setLayoutParams(new RelativeLayout.LayoutParams(mWidth, (int) ((mWidth * heightRatio) + dp2px(60))));
+
     }
 
     public int dp2px(float dpValue) {
@@ -142,13 +154,32 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
 
     @OnClick(R.id.tv_start)
     public void onViewClicked() {
-        ArmsUtils.startActivity(ImageEditorActivity.class);
-     //  selectPhoto();
+
+        inflate = LayoutInflater.from(this).inflate(R.layout.select_type, null);
+        final CustomSelectDialog dialog = new CustomSelectDialog(this,0, 0, inflate, R.style.MyDialog);
+        dialog.show();
+        inflate.findViewById(R.id.img_select).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPhoto(PictureMimeType.ofImage(),3);
+                dialog.dismiss();
+            }
+        });
+
+        inflate.findViewById(R.id.media_select).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPhoto(PictureMimeType.ofVideo(),2);
+                dialog.dismiss();
+            }
+        });
+      //  ArmsUtils.startActivity(ImageEditorActivity.class);
+
     }
 
-    private void selectPhoto() {
+    private void selectPhoto(int type,int request_code) {
         PictureSelector.create(PublishActivity.this)
-                .openGallery(PictureMimeType.ofVideo())//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .openGallery(type)//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
                 .theme(R.style.picture_default_style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
                 .maxSelectNum(5)// 最大图片选择数量 int
                 .minSelectNum(1)// 最小选择数量 int
@@ -186,36 +217,41 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
                 .videoMaxSecond(150)// 显示多少秒以内的视频or音频也可适用 int
                 .recordVideoSecond(60)//视频秒数录制 默认60s int
                 .isDragFrame(false)// 是否可拖动裁剪框(固定)
-                .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
+                .forResult(request_code);//结果回调onActivityResult code
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK){
+        if(resultCode==RESULT_OK&&requestCode == 1){
             if(data!=null){
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                toEdite(selectList);
-
+                Intent intent = new Intent(this, ImageEditorActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("template_num",TEMPLATE_NUM);
+                bundle.putParcelableArrayList("imageList",(ArrayList<? extends Parcelable>) selectList);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
-
-
-
+        }else if(resultCode==RESULT_OK&&requestCode == 2){
+            if(data!=null){
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                Intent intent = new Intent(this, MediaEditeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("mediaList",(ArrayList<? extends Parcelable>) selectList);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        }else if(resultCode==RESULT_OK&&requestCode == 3){
+            if(data!=null){
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                Intent intent = new Intent(this, UpLoadDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("uploadinfo",(ArrayList<? extends Parcelable>) selectList);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
         }
     }
 
-    private void toEdite(List<LocalMedia> selectList) {
-        System.out.println("集合大小"+selectList.size());
-       /* Intent intent = new Intent(this, ImageEditorActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("selectList",(ArrayList<? extends Parcelable>) selectList);
-        intent.putExtras(bundle);
-        startActivity(intent);*/
-        Intent intent = new Intent(this, MediaEditeActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("selectList",(ArrayList<? extends Parcelable>) selectList);
-        intent.putExtras(bundle);
-        startActivity(intent);
-
-    }
 }
