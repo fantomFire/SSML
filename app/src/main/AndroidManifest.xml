@@ -61,13 +61,16 @@
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
         <activity android:name=".mvp.ui.activity.PublishActivity" />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
-        <activity android:name=".mvp.ui.activity.MediaPlayerActivity"
+        <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
-            >
-            <!--  android:screenOrientation="sensor"
-                        android:configChanges="orientation|keyboardHidden"-->
+            <!--
+                  android:screenOrientation="sensor"
+                        android:configChanges="orientation|keyboardHidden"
+            -->
 
         </activity>
+        <activity android:name=".mvp.ui.activity.MediaEditeActivity" />
+        <activity android:name=".mvp.ui.activity.PublishMediaActivity"></activity>
     </application>
 
 </manifest>

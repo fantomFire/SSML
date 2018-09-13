@@ -1,69 +1,43 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.RelativeLayout;
+import android.widget.VideoView;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
-import com.google.android.exoplayer2.PlaybackParameters;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextRenderer;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.ArmsUtils;
 
-import java.util.Formatter;
-import java.util.List;
-import java.util.Locale;
-
+import butterknife.BindView;
+import butterknife.OnClick;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerMediaPlayerComponent;
 import zhonghuass.ssml.di.module.MediaPlayerModule;
 import zhonghuass.ssml.mvp.contract.MediaPlayerContract;
 import zhonghuass.ssml.mvp.presenter.MediaPlayerPresenter;
 
-import zhonghuass.ssml.R;
-import zhonghuass.ssml.mvp.ui.MBaseActivity;
-
-
-import static com.jess.arms.utils.Preconditions.checkNotNull;
-
 
 public class MediaPlayerActivity extends BaseActivity<MediaPlayerPresenter> implements MediaPlayerContract.View {
 
-    private ProgressBar mProgressBar;
-    private SimpleExoPlayerView mExoPlayerView;
-    private SimpleExoPlayer mSimpleExoPlayer;
+    @BindView(R.id.media_view)
+    VideoView mediaView;
     Uri playerUri = Uri.parse("http://mp4.vjshi.com/2018-08-24/d5c38d9ba8f01df0deaf9c2be1bfd377.mp4");
+    @BindView(R.id.rl_content)
+    RelativeLayout rlContent;
+    private String path = "/data/data/zhonghuass.ssml/files/editerQQ视频_4EF3A4822509623660D20F12D677317A.mp4";
+    private String path1 = "http://mp4.vjshi.com/2018-08-24/d5c38d9ba8f01df0deaf9c2be1bfd377.mp4";
+    @BindView(R.id.btnPlay)
+    ImageView btnPlay;
 
 
     @Override
@@ -91,116 +65,47 @@ public class MediaPlayerActivity extends BaseActivity<MediaPlayerPresenter> impl
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        initPlayer();
-        playVideo();
-    }
+        mediaView.setVideoPath(path);
+        mediaView.setMediaController(new MediaController(this));
+        mediaView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
 
-    private void playVideo() {
-        //测量播放过程中的带宽。 如果不需要，可以为null。
-        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        // 生成加载媒体数据的DataSource实例。
-        DataSource.Factory dataSourceFactory
-                = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "useExoplayer"), bandwidthMeter);
-        // 生成用于解析媒体数据的Extractor实例。
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+            }
+        });
+        rlContent.setOnTouchListener(new View.OnTouchListener() {
 
+            private float currentY;
 
-        // MediaSource代表要播放的媒体。
-        MediaSource videoSource = new ExtractorMediaSource(playerUri, dataSourceFactory, extractorsFactory,
-                null, null);
-        //Prepare the player with the source.
-        mSimpleExoPlayer.prepare(videoSource);
-        //添加监听的listener
-//        mSimpleExoPlayer.setVideoListener(mVideoListener);
-        mSimpleExoPlayer.addListener(new PlayerEventListener());
-       // mSimpleExoPlayer.setTextOutput(mOutput);
-        mSimpleExoPlayer.setPlayWhenReady(true);
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        currentY = event.getRawY();
+                        System.out.println("wwwwww"+currentY);
+                        break;
 
+                    case MotionEvent.ACTION_MOVE:
+                        float rawY = event.getRawY();
+                        int v1 = (int) (rawY - currentY);
+                        if(Math.abs(v1)>50){
+                            System.out.println("===="+v1);
+                            if(v1>0){
+                                mediaView.setVideoPath(path1);
 
-    }
+                            }else {
+                                mediaView.setVideoPath(path);
+                            }
+                            btnPlay.setVisibility(View.VISIBLE);
+                        }
+                        break;
 
-    private void initPlayer() {
+                }
+                return true;
+            }
+        });
 
-        //1. 创建一个默认的 TrackSelector
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector =
-                new DefaultTrackSelector(videoTackSelectionFactory);
-        LoadControl loadControl = new DefaultLoadControl();
-        //2.创建ExoPlayer
-        mSimpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
-        //3.创建SimpleExoPlayerView
-        mExoPlayerView = (SimpleExoPlayerView) findViewById(R.id.exoView);
-        //4.为SimpleExoPlayer设置播放器
-        mExoPlayerView.setPlayer(mSimpleExoPlayer);
-
-
-    }
-
-    TextRenderer.Output mOutput = new TextRenderer.Output() {
-        @Override
-        public void onCues(List<Cue> cues) {
-            Log.i("aaaaa", "MainActivity.onCues.");
-        }
-    };
-
-    private SimpleExoPlayer.VideoListener mVideoListener = new SimpleExoPlayer.VideoListener() {
-        @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            Log.i("aaaaa", "MainActivity.onVideoSizeChanged.width:" + width + ", height:" + height);
-
-        }
-
-        @Override
-        public void onRenderedFirstFrame() {
-            Log.i("aaaaa", "MainActivity.onRenderedFirstFrame.");
-        }
-    };
-
-
-    /**
-     * Starts or stops playback. Also takes care of the Play/Pause button toggling
-     *
-     * @param play True if playback should be started
-     */
-    private void setPlayPause(boolean play) {
-        mSimpleExoPlayer.setPlayWhenReady(play);
-    }
-
-    private String stringForTime(int timeMs) {
-        StringBuilder mFormatBuilder;
-        Formatter mFormatter;
-        mFormatBuilder = new StringBuilder();
-        mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
-        int totalSeconds = timeMs / 1000;
-
-        int seconds = totalSeconds % 60;
-        int minutes = (totalSeconds / 60) % 60;
-        int hours = totalSeconds / 3600;
-
-        mFormatBuilder.setLength(0);
-        if (hours > 0) {
-            return mFormatter.format("%d:%02d:%02d", hours, minutes, seconds).toString();
-        } else {
-            return mFormatter.format("%02d:%02d", minutes, seconds).toString();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        Log.i("aaaaa", "MainActivity.onPause.");
-        super.onPause();
-        mSimpleExoPlayer.stop();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.i("aaaaa", "MainActivity.onStop.");
-        super.onStop();
-        mSimpleExoPlayer.release();
     }
 
 
@@ -216,46 +121,39 @@ public class MediaPlayerActivity extends BaseActivity<MediaPlayerPresenter> impl
 
     @Override
     public void showMessage(@NonNull String message) {
-        checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+
     }
 
     @Override
     public void launchActivity(@NonNull Intent intent) {
-        checkNotNull(intent);
-        ArmsUtils.startActivity(intent);
+
     }
 
     @Override
     public void killMyself() {
-        finish();
+
     }
 
-
-    private class PlayerEventListener extends Player.DefaultEventListener {
-
-        @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            if (playbackState == Player.STATE_ENDED) {
-               //showControls();
-            }
-            //updateButtonVisibilities();
-            Log.i("aaaaa", playbackState+"");
-
-        }
-
-        @Override
-        public void onPositionDiscontinuity(@Player.DiscontinuityReason int reason) {
+    @OnClick({R.id.btnPlay, R.id.rl_content})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btnPlay:
+                if (mediaView.isPlaying()) {
+                    mediaView.pause();
+                } else {
+                    mediaView.start();
+                    btnPlay.setVisibility(View.GONE);
+                }
+                break;
 
         }
+    }
 
-        @Override
-        public void onPlayerError(ExoPlaybackException e) {
-        }
-
-        @Override
-        @SuppressWarnings("ReferenceEquality")
-        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaView != null){
+            mediaView.suspend();
         }
     }
 }
