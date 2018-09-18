@@ -156,6 +156,7 @@ public interface ApiServer {
                                                                    @Query("page") int page);
 
     //取消收藏
+
     @FormUrlEncoded
     @POST("/Api/content/cancelcollection")
     Observable<BaseResponse<Void>> toCancelCollection(@Field("member_id") String member_id,
@@ -165,12 +166,19 @@ public interface ApiServer {
     //盛世名录-产品
     @GET("/api/Enterprise/product")
     Observable<BaseResponse<ComanyrfBean>> getcomanyrfData(@Query("eid") String ep_id,
-                                                           @Query("page")int page,
+                                                           @Query("page") int page,
                                                            @Query("pagesize") int pagesize);
+
     //图文详情
     @GET("/Api/content/detail")
     Observable<BaseResponse<GraphicBean>> getGraphicData(@Query("member_id") String member_id,
                                                          @Query("member_type") String member_type,
                                                          @Query("content_id") String content_id);
+
+    //招聘
+    @GET("/api/Enterprise/recruitment")
+    Observable<BaseResponse<IniviteBean>> getInviteData(@Query("eid") String ep_id,
+                                                        @Query("page") int page,
+                                                        @Query("pagesize") int pagesize);
 }
 

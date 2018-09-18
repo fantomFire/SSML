@@ -10,7 +10,11 @@ import com.jess.arms.di.scope.FragmentScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyInviteContract;
+import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
 
 
 @FragmentScope
@@ -30,5 +34,10 @@ public class CompanyInviteModel extends BaseModel implements CompanyInviteContra
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<IniviteBean>> getInviteData(String ep_id, int page, int pagesize) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getInviteData(ep_id,page,pagesize);
     }
 }

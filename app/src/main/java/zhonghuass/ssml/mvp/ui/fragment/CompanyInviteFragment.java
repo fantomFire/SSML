@@ -6,25 +6,49 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerCompanyInviteComponent;
 import zhonghuass.ssml.di.module.CompanyInviteModule;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyInviteContract;
+import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
 import zhonghuass.ssml.mvp.presenter.CompanyInvitePresenter;
-
-import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.adapter.IniviteAdapter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> implements CompanyInviteContract.View {
+public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> implements CompanyInviteContract.View, BaseQuickAdapter.RequestLoadMoreListener {
+
+    @BindView(R.id.tv_invite_count)
+    TextView tvInviteCount;
+    @BindView(R.id.invite_recycle)
+    RecyclerView inviteRecycle;
+    Unbinder unbinder;
+    private int page = 1;
+    private int pagesize = 5;
+    private String ep_id;
+    private List<IniviteBean.ListBean> list;
+    private IniviteAdapter iniviteAdapter;
 
     public static CompanyInviteFragment newInstance() {
         CompanyInviteFragment fragment = new CompanyInviteFragment();
@@ -48,7 +72,14 @@ public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> 
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        ep_id = PrefUtils.getString(getContext(), Constants.EP_ID, "");
 
+        inviteRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
+        iniviteAdapter = new IniviteAdapter(R.layout.compony_invite, list);
+        iniviteAdapter.openLoadAnimation();
+        iniviteAdapter.setOnLoadMoreListener(this);
+        inviteRecycle.setAdapter(iniviteAdapter);
+        mPresenter.getInviteData("1", page, pagesize);
     }
 
     /**
@@ -117,5 +148,36 @@ public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> 
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    public void showdata(BaseResponse<IniviteBean> iniviteBeanBaseResponse) {
+        int count = iniviteBeanBaseResponse.getData().count;
+        list = iniviteBeanBaseResponse.getData().list;
+        tvInviteCount.setText("共" + count + "职位");
+
+        if (list.size() > 0) {
+            iniviteAdapter.loadMoreComplete();
+        } else {
+            iniviteAdapter.loadMoreEnd();
+            return;
+        }
+        if (page == 1) {
+            iniviteAdapter.setNewData(list);
+        } else {
+            iniviteAdapter.addData(list);
+        }
+        iniviteAdapter.disableLoadMoreIfNotFullPage(inviteRecycle);
+    }
+
+    @Override
+    public void showdatatoast() {
+
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        page++;
+        mPresenter.getInviteData("1", page, pagesize);
     }
 }

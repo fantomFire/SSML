@@ -11,7 +11,11 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyInviteContract;
+import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @FragmentScope
@@ -37,5 +41,22 @@ public class CompanyInvitePresenter extends BasePresenter<CompanyInviteContract.
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void getInviteData(String ep_id, int page, int pagesize) {
+        mModel.getInviteData(ep_id, page, pagesize)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<IniviteBean>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<IniviteBean> iniviteBeanBaseResponse) {
+                        if (iniviteBeanBaseResponse.isSuccess()) {
+                            mRootView.showdata(iniviteBeanBaseResponse);
+                        } else if (iniviteBeanBaseResponse.getStatus().equals("201")) {
+                            mRootView.showdatatoast();
+                        } else {
+                            mRootView.showMessage(iniviteBeanBaseResponse.getMessage());
+                        }
+                    }
+                });
     }
 }
