@@ -71,8 +71,6 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
     LinearLayout seekBarLayout;
     @BindView(R.id.layout_bottom)
     FrameLayout layoutBottom;
-    @BindView(R.id.ll_edit)
-    LinearLayout llEdit;
     @BindView(R.id.number_progress_bar)
     NumberProgressBar demoMpc;
     private String path;

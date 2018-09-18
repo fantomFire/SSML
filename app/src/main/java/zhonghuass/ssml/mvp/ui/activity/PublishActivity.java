@@ -33,6 +33,7 @@ import zhonghuass.ssml.di.component.DaggerPublishComponent;
 import zhonghuass.ssml.di.module.PublishModule;
 import zhonghuass.ssml.mvp.contract.PublishContract;
 import zhonghuass.ssml.mvp.presenter.PublishPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.utils.CustomDialog;
 import zhonghuass.ssml.utils.CustomSelectDialog;
 import zhonghuass.ssml.utils.GlideImageClient;
