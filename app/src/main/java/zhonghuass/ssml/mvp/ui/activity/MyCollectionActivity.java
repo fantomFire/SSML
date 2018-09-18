@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.BindView;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.github.library.baseAdapter.BaseViewHolder;
@@ -88,13 +89,15 @@ public class MyCollectionActivity extends MBaseActivity<MyCollectionPresenter> i
                         tempPosition = getParentPosition(item);
                         popupWindow = new CustomPopupWindow(getApplicationContext(), R.layout.popupwindow_layout, 100, 100);
                         popupWindow.showAtLocation(ivMenu, 0, 5);
-                        popupWindow.tvConcern.setOnClickListener(new View.OnClickListener() {
+                        TextView tvConcern = popupWindow.contentView.findViewById(R.id.tv_concern);
+                        TextView tvDel = popupWindow.contentView.findViewById(R.id.tv_del);
+                        tvConcern.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mPresenter.toConcern(mId, mType, item.getMember_id(), item.getMember_type());
                             }
                         });
-                        popupWindow.tvDel.setOnClickListener(new View.OnClickListener() {
+                        tvDel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 mPresenter.toCancelCollection(mId, mType, item.getContent_id());

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#8000"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+            android:id="@+id/ll_close"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="40dp">
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/arrow_down"/>
+    </LinearLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/whiteSmoke"
+    />
+
+    <LinearLayout
+            android:id="@+id/ll_tag"
+            android:layout_margin="20dp"
+            android:layout_width="300dp"
+            android:gravity="center"
+            android:background="@color/whiteSmoke"
+            android:layout_height="40dp">
+
+        <EditText
+                android:id="@+id/et_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:hint="请输入文字内容"
+                android:background="@null"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:gravity="center_vertical">
+        <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="请选择标签样式"
+        />
+        <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="0.3dp"
+                android:background="@color/whiteSmoke"/>
+    </LinearLayout>
+
+    <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+    >
+        <RadioGroup
+                android:id="@+id/rg2"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+        />
+    </HorizontalScrollView>
+
+</LinearLayout>

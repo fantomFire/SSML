@@ -18,15 +18,12 @@ public class CustomPopupWindow extends PopupWindow {
 
 
     private PopupWindow window;
-    private View contentView;
-    public TextView tvConcern;
-    public TextView tvDel;
+    public View contentView;
 
     public CustomPopupWindow(Context context, int layoutRes, int width, int height) {
         // 用于PopupWindow的View
         contentView = LayoutInflater.from(context).inflate(layoutRes, null, false);
-        tvConcern = contentView.findViewById(R.id.tv_concern);
-        tvDel = contentView.findViewById(R.id.tv_del);
+
         // 创建PopupWindow对象，其中：
         // 第一个参数是用于PopupWindow中的View，第二个参数是PopupWindow的宽度，
         // 第三个参数是PopupWindow的高度，第四个参数指定PopupWindow能否获得焦点

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import butterknife.Unbinder;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerPhotoComponent;
 import zhonghuass.ssml.di.module.PhotoModule;
+import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.PhotoContract;
 import zhonghuass.ssml.mvp.model.appbean.FocusBean;
 import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
@@ -48,6 +50,7 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
     private String member_type = "";
     private PhotoAdapter photoAdapter;
     private boolean state = false;
+    private boolean init = false;
     private String eid;
     private String target_type = "0";
     private String content_type = "0";
@@ -74,12 +77,9 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        page=1;
-        eid = PrefUtils.getString(getActivity(), "eid", "1");
-        System.out.println("photo" + eid);
-        eid = "1";
+        init = true;
         initRecycle();
-
+        Log.e("--", "我的图文initData" + eid);
         mPresenter.getPhotoData(eid, target_type, content_type, member_id, member_type, page);
     }
 
@@ -120,7 +120,15 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
 
     @Override
     public void setData(@Nullable Object data) {
-
+        EventMsg msg = (EventMsg) data;
+        //请求的是我的图文
+        Log.e("--", "我的图文" + eid);
+        eid = "1";
+        // 如果已经初始化之后则可调用mPresenter类了。
+        if (init) {
+            //刷新
+            Log.e("--", "刷新");
+        }
     }
 
     @Override
@@ -155,7 +163,6 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
 
         photoAdapter.noMoreDataToast();
         if (state) {
-
             Toast.makeText(getActivity(), "没有更多数据,请稍后尝试!", Toast.LENGTH_SHORT).show();
         }
 

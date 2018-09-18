@@ -28,9 +28,11 @@ import butterknife.Unbinder;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerCompanyDanymicComponent;
 import zhonghuass.ssml.di.module.CompanyDanymicModule;
+import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.CompanyDanymicContract;
 import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 import zhonghuass.ssml.mvp.presenter.CompanyDanymicPresenter;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -48,6 +50,7 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
     private VideoFragment videoFragment;
     private FragmentManager fm;
     private FragmentTransaction ft;
+    private EventMsg msg;
 
     public static CompanyDanymicFragment newInstance() {
         CompanyDanymicFragment fragment = new CompanyDanymicFragment();
@@ -79,6 +82,10 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
         ft.replace(R.id.frame_layout,fragmentPhoto);
         ft.commit();
 
+        msg = new EventMsg();
+        msg.tag = 1;
+        msg.tId = "1";
+        fragmentPhoto.setData(msg);
     }
 
 
@@ -130,6 +137,10 @@ public class CompanyDanymicFragment extends BaseFragment<CompanyDanymicPresenter
                 tvPhoto.setBackground(getResources().getDrawable(R.drawable.company_danymic));
                 tvAv.setBackground(getResources().getDrawable(R.drawable.company_danymic_right_gray));
                 ft.replace(R.id.frame_layout,fragmentPhoto);
+
+                msg.tag = 1;
+                msg.tId = "1";
+                fragmentPhoto.setData(msg);
                 break;
             case R.id.tv_av:
                 chooseColor(tvAv, tvPhoto);
