@@ -8,10 +8,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.jude.rollviewpager.RollPagerView;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +24,7 @@ import zhonghuass.ssml.mvp.contract.GraphicDetailsContract;
 import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
 import zhonghuass.ssml.mvp.presenter.GraphicDetailsPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.mvp.ui.adapter.StorePagerAdapter;
 import zhonghuass.ssml.utils.CircleImageView;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -50,6 +53,8 @@ public class GraphicDetailsActivity extends MBaseActivity<GraphicDetailsPresente
     @BindView(R.id.tv_site)
     TextView tvSite;
     private String content_id="71",member_id="1", member_type="0";
+    private StorePagerAdapter storePagerAdapter;
+
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
         DaggerGraphicDetailsComponent //如找不到该类,请编译一下项目
@@ -101,5 +106,18 @@ public class GraphicDetailsActivity extends MBaseActivity<GraphicDetailsPresente
     @Override
     public void showGraphicData(GraphicBean data) {
         System.out.println(data.getContent_title());
+        Glide.with(this)
+                .load(data.getMember_image())
+                .into(civIcon1);
+        tvCompany.setText(data.getMember_name());
+        tvDate.setText(data.getAdd_time());
+        tvTitle.setText(data.getContent_title());
+        tvContent.setText(data.getContent_detail());
+        tvSite.setText(data.getContent_position());
+        //设置轮播图数据
+        storePagerAdapter = new StorePagerAdapter(this, data.getContent_images());
+        vpBanner.setPlayDelay(3000);
+        vpBanner.setAnimationDurtion(500);
+        vpBanner.setAdapter(storePagerAdapter);
     }
 }
