@@ -1,6 +1,5 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -16,7 +15,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -25,22 +23,18 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
-
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.List;
-import java.util.Random;
 
 import VideoHandle.EpEditor;
 import VideoHandle.EpVideo;
 import VideoHandle.OnEditorListener;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerMediaEditeComponent;
@@ -95,14 +89,17 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
     private List<LocalMedia> selectList;
     private boolean isRuning = false;
     //uiHandler在主线程中创建，所以自动绑定主线程
-    private Handler progressHandler = new Handler(){
+    private Handler progressHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
 
                     System.out.println("msg.arg1:" + msg.arg1);
-                  setCurrentProgress(msg.arg1);
+                    setCurrentProgress(msg.arg1);
+                    break;
+                case 2:
+                    demoMpc.setVisibility(View.GONE);
                     break;
             }
         }
@@ -172,7 +169,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             System.out.println("删除源文件");
             output.delete();
         }
-        System.out.println("存储路径"+outFile);
+        System.out.println("存储路径" + outFile);
 
         EpVideo epVideo = new EpVideo(path);
         EpVideo clip = epVideo.clip((int) (leftProgress / 1000), (int) ((rightProgress - leftProgress) / 1000));
@@ -188,21 +185,29 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
                 isRuning = false;
 
                 Intent intent = new Intent(MediaEditeActivity.this, PublishMediaActivity.class);
-                intent.putExtra("mediaPath",outFile);
+                intent.putExtra("mediaPath", outFile);
                 startActivity(intent);
-                demoMpc.setVisibility(View.GONE);
+
+                Message message = new Message();
+                message.what = 2;
+
+                progressHandler.sendMessage(message);
             }
 
             @Override
             public void onFailure() {
                 isRuning = false;
-                demoMpc.setVisibility(View.GONE);
+                Message message = new Message();
+                message.what = 2;
+
+                progressHandler.sendMessage(message);
+
             }
 
             @Override
             public void onProgress(float v) {
-             //   demoMpc.setPercent(random.nextInt(100) / 100f);
-                int progress = (int) Math.abs(v*100);
+                //   demoMpc.setPercent(random.nextInt(100) / 100f);
+                int progress = (int) Math.abs(v * 100);
                 Message message = new Message();
                 message.what = 1;
                 message.arg1 = progress;
@@ -215,7 +220,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         tvRight.setClickable(true);
     }
 
-    private  void setCurrentProgress(int progress) {
+    private void setCurrentProgress(int progress) {
         demoMpc.setProgress(progress);
     }
 
@@ -518,9 +523,9 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 params.leftMargin = (int) animation.getAnimatedValue();
-                System.out.println("positionIcon"+positionIcon);
-                System.out.println("params"+params);
-                if(null!=positionIcon){
+                System.out.println("positionIcon" + positionIcon);
+                System.out.println("params" + params);
+                if (null != positionIcon) {
 
                     positionIcon.setLayoutParams(params);
                 }
@@ -541,7 +546,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
        /* if (mExtractVideoInfoUtil != null) {
             mExtractVideoInfoUtil.release();
         }*/
-    //    mRecyclerView.removeOnScrollListener(mOnScrollListener);
+        //    mRecyclerView.removeOnScrollListener(mOnScrollListener);
         if (mExtractFrameWorkThread != null) {
             mExtractFrameWorkThread.stopExtract();
         }

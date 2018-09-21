@@ -10,8 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import com.dl7.recycler.SimpleDividerItemDecoration;
-import com.dl7.recycler.divider.RecyclerViewItemDecoration;
 import com.dl7.recycler.adapter.BaseQuickAdapter;
 import com.dl7.recycler.divider.DividerGridItemDecoration;
 import com.dl7.recycler.divider.DividerItemDecoration;
