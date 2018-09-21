@@ -28,6 +28,7 @@ public class StorePagerAdapter extends PagerAdapter {
     @Override
     public int getCount() {
 
+
         return bananer == null ? 0 : bananer.size();
     }
 
