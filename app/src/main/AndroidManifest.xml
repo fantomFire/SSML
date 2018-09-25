@@ -61,6 +61,7 @@
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
         <activity android:name=".mvp.ui.activity.PublishActivity" />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
+        <activity android:name=".mvp.ui.activity.PostVideosActivity"/>
         <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
             <!--
@@ -71,8 +72,10 @@
         </activity>
         <activity android:name=".mvp.ui.activity.MediaEditeActivity" />
         <activity android:name=".mvp.ui.activity.PublishMediaActivity" />
-        <activity android:name=".mvp.ui.activity.UpLoadDetailActivity"></activity>
-        <activity android:name=".mvp.ui.activity.PicEditActivity"/>
+        <activity android:name=".mvp.ui.activity.UpLoadDetailActivity" />
+        <activity android:name=".mvp.ui.activity.PicEditActivity" />
+        <activity android:name=".mvp.ui.activity.PostVideosActivity" />
+        <activity android:name=".mvp.ui.activity.PostVideoActivity" />
     </application>
 
 </manifest>

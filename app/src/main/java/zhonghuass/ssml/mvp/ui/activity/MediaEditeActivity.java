@@ -137,17 +137,23 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_right:
-                //tvRight.setClickable(false);
+               /* //tvRight.setClickable(false);
                 if (isRuning) {
                     Toast.makeText(this, "视频正在处理中...", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 isRuning = true;
                 demoMpc.setVisibility(View.VISIBLE);
-                getCutMedia();
+                getCutMedia();*/
+                //发布视频界面
+                gotoPostVideos();
                 break;
 
         }
+    }
+
+    private void gotoPostVideos() {
+        ArmsUtils.startActivity(PostVideosActivity.class);
     }
 
     private void getCutMedia() {
