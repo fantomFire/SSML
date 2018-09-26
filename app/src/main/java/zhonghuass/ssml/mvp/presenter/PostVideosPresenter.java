@@ -7,10 +7,17 @@ import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PostVideosContract;
 import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
@@ -57,5 +64,28 @@ public class PostVideosPresenter extends BasePresenter<PostVideosContract.Model,
                         }
                     }
                 });
+    }
+
+    public void upLoadData(List<String> paths, String mContent, String userEare, String dailyTag) {
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("uid", convertToRequestBody(mContent));
+        map.put("truename", convertToRequestBody(userEare));
+        map.put("identity_card", convertToRequestBody(dailyTag));
+        MultipartBody.Part[] parts = new MultipartBody.Part[paths.size()];
+        int cnt = 0;
+        for (String imgPath : paths) {
+            final File file = new File(imgPath);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("uploadfile[]", file.getName(), requestFile);
+            parts[cnt] = filePart;
+            cnt++;
+        }
+      /*  mModel.upLoadData(map,parts)
+                .c*/
+
+    }
+    private RequestBody convertToRequestBody(String param) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), param);
+        return requestBody;
     }
 }

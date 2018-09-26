@@ -4,14 +4,50 @@ import java.util.List;
 
 public class GraphicBean {
 
+
+    /**
+     * status : 200
+     * msg : success
+     * data : {"content_id":"71","content_type":"0","content_title":"城围联八强战前瞻：南京将战大阪 谁能笑到最后","member_id":"1","member_type":"0","amount_of_reading":"11","amount_of_comment":"1","amount_of_collection":"0","amount_of_forward":"0","amount_of_praise":"0","add_time":"2018-08-14","content_detail":"联八强战前瞻：南京将战大阪 谁能笑到最后\r\n\r\n城围联16强城围联16强\r\n　　8月11日，2018赛季城市围棋联赛的1/8决赛在南宁市会展中心落下帷幕，常规赛32支队伍，历经三个月的鏖战厮杀，在烽火硝烟中走出的，只剩下了最后的八强。城市围棋联赛，也慢慢走到了最激动人心的时分。\r\n\r\n　　9月1日，城围联八强战将鸣锣开战，代表着城围联2018赛季最高水准的八支队伍，将为半决赛的名额展开激烈的争夺。此刻，且借着1/8决赛尚未散尽的硝烟，且借着在常规赛闭幕战与季后赛1/8决赛看过的紧张与悲喜，且借着围棋大会的热烈与欢乐，让我们对城围联的最终八强战来做一番巡礼预测，为九月秋高里的无限激情，提前添上一把柴火。\r\n\r\n　　且尽杯中酒，点将夜谈兵。\r\n\r\n　　南京苏中建设VS大阪创新生物\r\n\r\n　　作为一支完全由日本棋手组成的队伍，大阪创新生物，在城围联的诸多俱乐部中，是一个\u201c异数\u201d。相较于其他几支海外俱乐部或多或少还有中国棋手参与，大阪则是彻头彻尾的\u201c海外军团\u201d，在常规赛闭幕战时，这支队伍的研究席极好分辨\u2014\u2014大概是因为语言不通，大阪队的全体队员很少四处走动，也很少见到有人去找他们采访，签名。满满一桌人，围坐在他们的主教练，日本名将","content_position":"陕西 西安","praise_tag":false,"collection_tag":false,"theme_title":"","member_name":"中华盛世1","member_image":"http://video.zhonghuass.cn/public/admin/images/tx.jpg","content_images":["http://video.zhonghuass.cn/public/uploadfile/tmp/image15.jpg"]}
+     */
+
+    private String status;
+    private String msg;
+    private DataBean data;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public DataBean getData() {
+        return data;
+    }
+
+    public void setData(DataBean data) {
+        this.data = data;
+    }
+
+    public static class DataBean {
         /**
          * content_id : 71
          * content_type : 0
          * content_title : 城围联八强战前瞻：南京将战大阪 谁能笑到最后
          * member_id : 1
          * member_type : 0
-         * amount_of_reading : 7
-         * amount_of_comment : 0
+         * amount_of_reading : 11
+         * amount_of_comment : 1
          * amount_of_collection : 0
          * amount_of_forward : 0
          * amount_of_praise : 0
@@ -209,4 +245,5 @@ public class GraphicBean {
             this.content_images = content_images;
         }
     }
+}
 

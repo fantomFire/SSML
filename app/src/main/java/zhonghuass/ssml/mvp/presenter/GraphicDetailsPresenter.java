@@ -46,13 +46,19 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
     public void getGraphicData(String content_id, String member_id, String member_type) {
         mModel.getGraphicData(content_id,  member_id,  member_type)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<GraphicBean>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<GraphicBean>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<GraphicBean> listBaseResponse) {
-                        if (listBaseResponse.isSuccess()) {
+                    public void onNext(GraphicBean listBaseResponse) {
+                        System.out.println("结果"+ listBaseResponse.getStatus());
+                      //  System.out.println("结果"+ listBaseResponse.getData().getContent_title());
+                        String status = listBaseResponse.getStatus();
+
+                        if (status.equals("200")) {
+
                             mRootView.showGraphicData(listBaseResponse.getData());
                         } else {
-                            mRootView.showMessage(listBaseResponse.getMessage());
+
+                            mRootView.showMessage(listBaseResponse.getMsg());
                         }
                     }
                 });

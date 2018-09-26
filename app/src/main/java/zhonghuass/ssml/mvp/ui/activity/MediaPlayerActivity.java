@@ -65,7 +65,13 @@ public class MediaPlayerActivity extends BaseActivity<MediaPlayerPresenter> impl
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        mediaView.setVideoPath(path);
+
+        String mediaPath = getIntent().getStringExtra("mediaPath");
+        if(null!=mediaPath){
+
+            mediaView.setVideoPath(mediaPath);
+        }
+
         mediaView.setMediaController(new MediaController(this));
         mediaView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override

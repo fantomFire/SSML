@@ -1,6 +1,8 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +26,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class PublishMediaActivity extends BaseActivity<PublishMediaPresenter> implements PublishMediaContract.View {
 
     @BindView(R.id.mpaht)
-    TextView mpaht;
+    TextView mpath;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -43,9 +45,11 @@ public class PublishMediaActivity extends BaseActivity<PublishMediaPresenter> im
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        String mediaPath = getIntent().getStringExtra("mediaPath");
-        mpaht.setText(mediaPath);
+
+
     }
+
+
 
     @Override
     public void showLoading() {
@@ -74,10 +78,5 @@ public class PublishMediaActivity extends BaseActivity<PublishMediaPresenter> im
         finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }
