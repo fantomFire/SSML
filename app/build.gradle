@@ -67,4 +67,8 @@ dependencies {
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.8.4'
     implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
+    //WebSocket插件
+    implementation 'com.github.0xZhangKe:WebSocketDemo:2.2'
+    //轮播图控件
+    implementation 'com.jude:rollviewpager:1.2.9'
 }
