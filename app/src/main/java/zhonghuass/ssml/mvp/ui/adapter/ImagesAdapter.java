@@ -15,38 +15,38 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 
-public class ImagesAdapter extends BaseQuickAdapter<LocalMedia,BaseViewHolder> {
+public class ImagesAdapter extends BaseQuickAdapter<LocalMedia, BaseViewHolder> {
 
-    private  ArrayList<LocalMedia> localMedia;
+    private ArrayList<LocalMedia> localMedia;
 
     public ImagesAdapter(int layoutResId, ArrayList<LocalMedia> imagesList) {
-        super(layoutResId,imagesList);
+        super(layoutResId, imagesList);
         localMedia = imagesList;
     }
 
 
     @Override
     protected void convert(BaseViewHolder holder, LocalMedia item) {
-        ImageView mImage = (ImageView)holder.getView(R.id.img_back);
-        ImageView image_delete = (ImageView)holder.getView(R.id.image_delete);
-        System.out.println("NNNN"+item.getPath());
+        ImageView mImage = (ImageView) holder.getView(R.id.img_back);
+        ImageView image_delete = (ImageView) holder.getView(R.id.image_delete);
+        System.out.println("NNNN" + item.getPath());
         Glide.with(mContext)
                 .load(item.getPath())
                 .into(mImage);
 
-        int adapterPosition = holder.getAdapterPosition();
-        int position1 = holder.getPosition();
-        System.out.println("adapterPosition"+adapterPosition);
-        System.out.println("position1"+position1);
-        if(position1==localMedia.size()-1){
+        final int adapterPosition = holder.getAdapterPosition();
+
+        if (adapterPosition == localMedia.size() - 1) {
             image_delete.setVisibility(View.GONE);
-        }else {
+        } else {
             image_delete.setVisibility(View.VISIBLE);
         }
+
         holder.getView(R.id.image_delete).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                localMedia.remove(adapterPosition);
+                notifyDataSetChanged();
             }
         });
 
@@ -54,10 +54,10 @@ public class ImagesAdapter extends BaseQuickAdapter<LocalMedia,BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        if(localMedia.size()>9){
+        if (localMedia.size() > 9) {
 
             return 9;
-        }else {
+        } else {
             return localMedia.size();
         }
     }
