@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,8 @@ import zhonghuass.ssml.mvp.presenter.PostVideosPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ImagesAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.PostVideoAdapter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -74,6 +78,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     public static final String ANDROID_RESOURCE = "android.resource://";
     public static final String FOREWARD_SLASH = "/";
     private ArrayList<LocalMedia> imagesList;
+    private Bitmap bitmap;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -139,9 +144,9 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         imgRec.setVisibility(View.VISIBLE);
         imagesList = intent.getParcelableArrayListExtra("uploadinfo");
         Uri url = Uri.parse(ANDROID_RESOURCE + getPackageName() + FOREWARD_SLASH + R.mipmap.fb_icon_12);
-            LocalMedia localMedia = new LocalMedia();
-            localMedia.setPath(url.toString());
-            imagesList.add(localMedia);
+        LocalMedia localMedia = new LocalMedia();
+        localMedia.setPath(url.toString());
+        imagesList.add(localMedia);
 
         imgRec.setLayoutManager(new GridLayoutManager(this, 3));
         imagesAdapter = new ImagesAdapter(R.layout.image_item, imagesList);
@@ -150,9 +155,9 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 
-                if(imagesList.size()<10){
-                    if(position== imagesList.size()-1){
-                        selectImages(10- imagesList.size());
+                if (imagesList.size() < 10) {
+                    if (position == imagesList.size() - 1) {
+                        selectImages(10 - imagesList.size());
 
                     }
                 }
@@ -195,9 +200,9 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
                 // .cropWH()// 裁剪宽高比，设置如果大于图片本身宽高则无效 int
                 .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
                 .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
-               // .videoQuality(1)// 视频录制质量 0 or 1 int
-               // .videoMaxSecond(150)// 显示多少秒以内的视频or音频也可适用 int
-              //  .recordVideoSecond(60)//视频秒数录制 默认60s int
+                // .videoQuality(1)// 视频录制质量 0 or 1 int
+                // .videoMaxSecond(150)// 显示多少秒以内的视频or音频也可适用 int
+                //  .recordVideoSecond(60)//视频秒数录制 默认60s int
                 .isDragFrame(false)// 是否可拖动裁剪框(固定)
                 .forResult(1);//结果回调onActivityResult code
 
@@ -207,10 +212,10 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_OK&&requestCode == 1){
-            if(data!=null){
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            if (data != null) {
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                imagesList.addAll(imagesList.size()-1,selectList);
+                imagesList.addAll(imagesList.size() - 1, selectList);
                 imagesAdapter.notifyDataSetChanged();
             }
         }
@@ -234,7 +239,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     private void setImage(String mediaPath) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(mediaPath);
-        Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime();
+        bitmap = mediaMetadataRetriever.getFrameAtTime();
         imageUp.setImageBitmap(bitmap);
     }
 
@@ -288,10 +293,22 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     }
 
     private void checkData() {
+        String userId = PrefUtils.getString(this, Constants.USER_ID, "");
         String mContent = etContent.getText().toString();
         mList.add(mediaPath);
-        mPresenter.upLoadData(mList, mContent, userEare, dailyTag);
+     //   mPresenter.upLoadData(mList, mContent, userEare, dailyTag, convertIconToString(bitmap));
+        mPresenter.upImages(imagesList, mContent, userEare, dailyTag,userId);
 
     }
 
-}
+    /**
+     * 图片转成string	 * 	 * @param bitmap	 * @return
+     */
+    public static String convertIconToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
+        	bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        	byte[] appicon = baos.toByteArray();// 转为byte数组
+         return Base64.encodeToString(appicon, Base64.DEFAULT); 	}
+
+
+    }

@@ -186,7 +186,7 @@ public interface ApiServer {
                                                         @Query("pagesize") int pagesize);
     //上传图片,视频
     @Multipart
-    @GET("/api/Enterprise/recruitment")
+    @POST("/Api/content/publish")
 
     Observable<BaseResponse<Void>> upLoadData(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part[] parts);
 }
