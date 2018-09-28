@@ -3,7 +3,11 @@ package zhonghuass.ssml.mvp.contract;
 import com.jess.arms.mvp.IModel;
 import com.jess.arms.mvp.IView;
 
+import java.util.HashMap;
+
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
 
@@ -19,5 +23,7 @@ public interface PostVideosContract {
     interface Model extends IModel {
 
         Observable<BaseResponse<IniviteBean>> getInviteData(String ep_id, int page, int pagesize);
+
+        Observable <BaseResponse<Void>> upLoadData(HashMap<String, RequestBody> map, MultipartBody.Part[] parts);
     }
 }

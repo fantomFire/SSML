@@ -37,7 +37,7 @@ public class GraphicDetailsModel extends BaseModel implements GraphicDetailsCont
     }
 
     @Override
-    public Observable<BaseResponse<GraphicBean>> getGraphicData(String content_id, String member_id, String member_type) {
+    public Observable<GraphicBean> getGraphicData(String content_id, String member_id, String member_type) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).getGraphicData(content_id,member_id,member_type);
     }
 }

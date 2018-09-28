@@ -246,9 +246,10 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
         }else if(resultCode==RESULT_OK&&requestCode == 3){
             if(data!=null){
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                Intent intent = new Intent(this, UpLoadDetailActivity.class);
+                Intent intent = new Intent(this, PostVideosActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("uploadinfo",(ArrayList<? extends Parcelable>) selectList);
+                bundle.putString("selectType","multipleImage");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

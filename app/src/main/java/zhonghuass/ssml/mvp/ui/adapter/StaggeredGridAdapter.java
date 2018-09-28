@@ -113,7 +113,13 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
+                intent.putExtra("content_id",item.getContent_id());
+                intent.putExtra("member_id",item.getMember_id());
+                intent.putExtra("member_type",item.getMember_type());
+                mContext.startActivity(intent);
             }
         });
+
     }
 }

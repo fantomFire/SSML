@@ -7,20 +7,22 @@ import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-
+import butterknife.BindView;
+import butterknife.OnClick;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.luck.picture.lib.widget.longimage.SubsamplingScaleImageView;
 
-import butterknife.BindView;
-import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerPicEditComponent;
 import zhonghuass.ssml.di.module.PicEditModule;
@@ -511,7 +513,7 @@ public class PicEditActivity extends MBaseActivity<PicEditPresenter> implements 
                 ivBg.setBackgroundColor(getResources().getColor(R.color.colorcf1313));
                 break;
             case R.id.tv_1:
-                ivMb.setBackground(getResources().getDrawable(R.mipmap.muban));
+                ivMb.setBackground(getResources().getDrawable(R.mipmap.meinv));
                 break;
         }
     }

@@ -13,6 +13,7 @@
         android:paddingTop="17dp">
 
         <EditText
+            android:id="@+id/et_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
@@ -22,10 +23,15 @@
             android:textSize="14sp" />
 
         <ImageView
+            android:id="@+id/image_up"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="90dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/img_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <View
@@ -46,6 +52,7 @@
             android:background="@mipmap/fb_icon_adress" />
 
         <TextView
+            android:id="@+id/tv_eara"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="19dp"
@@ -55,10 +62,13 @@
             android:textSize="@dimen/sp_14" />
 
         <ImageView
+            android:id="@+id/eara_next"
             android:layout_width="8dp"
             android:layout_height="@dimen/dp_14"
             android:layout_marginRight="13dp"
-            android:background="@mipmap/news_next" />
+            android:background="@mipmap/news_next"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
     </LinearLayout>
 
     <View
@@ -79,6 +89,7 @@
             android:background="@mipmap/fb_icon_adress_s" />
 
         <TextView
+            android:id="@+id/tv_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="19dp"
@@ -91,6 +102,9 @@
             android:layout_width="8dp"
             android:layout_height="@dimen/dp_14"
             android:layout_marginRight="13dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:id="@+id/dialy_next"
             android:background="@mipmap/news_next" />
     </LinearLayout>
 
@@ -118,11 +132,11 @@
         android:textSize="@dimen/sp_12" />
 
     <android.support.v4.widget.NestedScrollView
-        android:paddingLeft="11dp"
-        android:paddingRight="11dp"
-        android:layout_marginTop="13dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:paddingLeft="11dp"
+        android:paddingRight="11dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvGrid"
