@@ -30,7 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name="com.zhangke.websocket.NetworkChangedReceiver" />
+
         <activity android:name=".mvp.ui.activity.LogInActivity" />
         <activity android:name=".mvp.ui.activity.GuideActivity" />
         <activity android:name=".mvp.ui.activity.WelcomeActivity" />
@@ -61,16 +63,17 @@
         <activity android:name=".mvp.ui.activity.MyConcernActivity" />
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
-        <activity android:name=".mvp.ui.activity.ChattingActivity" />
         <activity android:name=".mvp.ui.activity.PublishActivity" />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
-        <activity android:name=".mvp.ui.activity.MediaPlayerActivity"
+        <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
-            >
-            <!--  android:screenOrientation="sensor"
-                        android:configChanges="orientation|keyboardHidden"-->
+            <!--
+                  android:screenOrientation="sensor"
+                        android:configChanges="orientation|keyboardHidden"
+            -->
 
         </activity>
+        <activity android:name=".mvp.ui.activity.ChattingActivity"></activity>
     </application>
 
 </manifest>

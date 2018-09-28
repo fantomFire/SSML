@@ -2,6 +2,9 @@ package zhonghuass.ssml.utils.mywebsocket;
 
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.TypeReference;
 import com.zhangke.websocket.ErrorResponse;
 import com.zhangke.websocket.IResponseDispatcher;
 import com.zhangke.websocket.Response;
@@ -34,28 +37,28 @@ public class AppResponseDispatcher implements IResponseDispatcher {
      */
     @Override
     public void onMessageResponse(Response message, ResponseDelivery delivery) {
-//        try {
-//            CommonResponseEntity responseEntity = JSON.parseObject(message.getResponseText(), new TypeReference<CommonResponseEntity>() {
-//            });
-//            CommonResponse commonResponse = new CommonResponse(message.getResponseText(), responseEntity);
-//            if (commonResponse.getResponseEntity().getCode() >= 1000) {
-//                delivery.onMessageResponse(commonResponse);
-//            } else {
-//                ErrorResponse errorResponse = new ErrorResponse();
-//                errorResponse.setErrorCode(12);
-//                errorResponse.setDescription(commonResponse.getResponseEntity().getMessage());
-//                errorResponse.setResponseText(message.getResponseText());
-//                //将已经解析好的 CommonResponseEntity 独享保存起来以便后面使用
-//                errorResponse.setReserved(responseEntity);
-//                onSendMessageError(errorResponse, delivery);
-//            }
-//        } catch (JSONException e) {
-//            ErrorResponse errorResponse = new ErrorResponse();
-//            errorResponse.setResponseText(message.getResponseText());
-//            errorResponse.setErrorCode(11);
-//            errorResponse.setCause(e);
-//            onSendMessageError(errorResponse, delivery);
-//        }
+        try {
+            CommonResponseEntity responseEntity = JSON.parseObject(message.getResponseText(), new TypeReference<CommonResponseEntity>() {
+            });
+            CommonResponse commonResponse = new CommonResponse(message.getResponseText(), responseEntity);
+            if (commonResponse.getResponseEntity().getCode() >= 1000) {
+                delivery.onMessageResponse(commonResponse);
+            } else {
+                ErrorResponse errorResponse = new ErrorResponse();
+                errorResponse.setErrorCode(12);
+                errorResponse.setDescription(commonResponse.getResponseEntity().getMessage());
+                errorResponse.setResponseText(message.getResponseText());
+                //将已经解析好的 CommonResponseEntity 独享保存起来以便后面使用
+                errorResponse.setReserved(responseEntity);
+                onSendMessageError(errorResponse, delivery);
+            }
+        } catch (JSONException e) {
+            ErrorResponse errorResponse = new ErrorResponse();
+            errorResponse.setResponseText(message.getResponseText());
+            errorResponse.setErrorCode(11);
+            errorResponse.setCause(e);
+            onSendMessageError(errorResponse, delivery);
+        }
     }
 
     /**
@@ -66,13 +69,13 @@ public class AppResponseDispatcher implements IResponseDispatcher {
     public void onSendMessageError(ErrorResponse error, ResponseDelivery delivery) {
         switch (error.getErrorCode()) {
             case 1:
-                error.setDescription("网络错误");
+                error.setDescription("网络错误1");
                 break;
             case 2:
-                error.setDescription("网络错误");
+                error.setDescription("网络错误2");
                 break;
             case 3:
-                error.setDescription("网络错误");
+                error.setDescription("网络错误3");
                 break;
             case 11:
                 error.setDescription("数据格式异常");

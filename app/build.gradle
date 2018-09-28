@@ -69,6 +69,7 @@ dependencies {
     implementation 'com.github.yangjie10930:EpMedia:v0.9.5'
     //WebSocket插件
     implementation 'com.github.0xZhangKe:WebSocketDemo:2.2'
+    implementation 'com.alibaba:fastjson:1.2.33'
     //轮播图控件
     implementation 'com.jude:rollviewpager:1.2.9'
 }

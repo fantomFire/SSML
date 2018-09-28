@@ -18,7 +18,7 @@ public class MyApp  extends BaseApplication{
         super.onCreate();
         ViewTarget.setTagId(R.id.tag_glide);
         //配置 WebSocket，必须在 WebSocket 服务启动前设置
-        WebSocketSetting.setConnectUrl("Your WebSocket connect url");//必选
+        WebSocketSetting.setConnectUrl("ws://video.zhonghuass.cn:10000");//必选
         WebSocketSetting.setResponseProcessDelivery(new AppResponseDispatcher());
         WebSocketSetting.setReconnectWithNetworkChanged(true);
 

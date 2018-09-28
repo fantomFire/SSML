@@ -1,10 +1,13 @@
 package zhonghuass.ssml.utils.mywebsocket;
 
+import java.util.List;
+
 /**
  * 后台接口返回的数据格式
  * Created by ZhangKe on 2018/6/27.
  */
 public class CommonResponseEntity {
+
 
     private String message;
     private String data;
