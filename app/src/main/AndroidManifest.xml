@@ -63,17 +63,24 @@
         <activity android:name=".mvp.ui.activity.MyConcernActivity" />
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
+        <activity android:name=".mvp.ui.activity.ChattingActivity" />
         <activity android:name=".mvp.ui.activity.PublishActivity" />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
+        <activity android:name=".mvp.ui.activity.PostVideosActivity"
+             android:windowSoftInputMode = "stateAlwaysHidden|adjustPan"
+            ></activity>
         <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
-            <!--
-                  android:screenOrientation="sensor"
-                        android:configChanges="orientation|keyboardHidden"
-            -->
+            >
+            <!--  android:screenOrientation="sensor"
+                        android:configChanges="orientation|keyboardHidden"-->
 
         </activity>
-        <activity android:name=".mvp.ui.activity.ChattingActivity"></activity>
+        <activity android:name=".mvp.ui.activity.MediaEditeActivity" />
+        <activity android:name=".mvp.ui.activity.PublishMediaActivity" />
+        <activity android:name=".mvp.ui.activity.UpLoadDetailActivity" />
+        <activity android:name=".mvp.ui.activity.PicEditActivity" />
+        <activity android:name=".mvp.ui.activity.GraphicDetailsActivity" />
     </application>
 
 </manifest>

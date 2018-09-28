@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dl7.recycler.helper.RecyclerViewHelper;
+import com.dl7.recycler.listener.OnRecyclerViewItemClickListener;
 import com.dl7.recycler.listener.OnRequestDataListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
@@ -30,6 +31,7 @@ import zhonghuass.ssml.mvp.contract.RecommendContract;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.presenter.RecommendPresenter;
 
+import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.StaggeredGridAdapter;
 
@@ -48,6 +50,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     private String member_type = "1";
     private int page = 1;
     private StaggeredGridAdapter mAdapter;
+    private List<RecommendBean> mData= new ArrayList<>();
 
     public static RecommendFragment newInstance() {
         RecommendFragment fragment = new RecommendFragment();
@@ -96,6 +99,21 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
                 mPresenter.getRecomendData(member_id, member_type, page);
             }
         });
+    /*    mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                System.out.println("当前位置");
+                if(null!=mData){
+                    System.out.println("当前位置"+position);
+                    Intent intent = new Intent(getActivity(), GraphicDetailsActivity.class);
+                    intent.putExtra("content_id",mData.get(position).getContent_id());
+                    intent.putExtra("member_id",mData.get(position).getMember_id());
+                    intent.putExtra("member_type",mData.get(position).getMember_type());
+                    startActivity(intent);
+                }
+
+            }
+        });*/
     }
 
     @Override
@@ -139,14 +157,18 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void setContent(List<RecommendBean> data) {
+
         if (recommendSrl.isRefreshing()) {
             recommendSrl.setRefreshing(false);
         }
         mAdapter.enableLoadMore(true);
         mAdapter.loadComplete();
         if (page > 1) {
+            mData.addAll(data);
             mAdapter.addItems(data);
         } else {
+            mData.clear();
+            mData.addAll(data) ;
             mAdapter.updateItems(data);
         }
 

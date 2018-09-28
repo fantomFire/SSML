@@ -132,6 +132,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
             case R.id.tv_agreement:
                 break;
             case R.id.iv_weixin:
+                ArmsUtils.startActivity(WeiXinLoginActivity.class);
                 break;
             case R.id.iv_qq:
                 break;

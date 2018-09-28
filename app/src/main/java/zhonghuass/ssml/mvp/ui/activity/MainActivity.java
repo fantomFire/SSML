@@ -81,6 +81,10 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     private List<Fragment> mFragments;
     private List<Integer> mNavIds;
     private int mReplace = 0;
+    private HomeFragment homeFragment;
+    private CompanyFragment companyFragment;
+    private DialyFragment dialyFragment;
+    private MycenterFragment mycenterFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,10 +145,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
             mNavIds.add(R.id.tab_mycenter);
         }
 
-        HomeFragment homeFragment;
-        CompanyFragment companyFragment;
-        DialyFragment dialyFragment;
-        MycenterFragment mycenterFragment;
 
         if (savedInstanceState == null) {
             homeFragment = HomeFragment.newInstance();
@@ -209,6 +209,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
             case R.id.bottom_menu4:
                 mReplace = 3;
                 changeFragment();
+                mycenterFragment.setData(1);
                 return true; //不返回图标不变色
         }
         return false;

@@ -39,6 +39,7 @@ import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
 import zhonghuass.ssml.mvp.ui.activity.PicEditActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ViewPagerAdapter;
 import zhonghuass.ssml.utils.EventBusUtils;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -61,6 +62,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     private List<Fragment> fragments = new ArrayList<>();
     private ViewPagerAdapter mAdapter;
     private String[] titles = {"图文", "视频"};
+    private PhotoFragment photoFragment;
 
     public static MycenterFragment newInstance() {
         MycenterFragment fragment = new MycenterFragment();
@@ -104,8 +106,10 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
                 ArmsUtils.startActivity(MyInfoActivity.class);
             }
         });
+        photoFragment = PhotoFragment.newInstance();
+        fragments.add(photoFragment);
 
-        fragments.add(PhotoFragment.newInstance());
+
         fragments.add(VideoFragment.newInstance());
         mAdapter = new ViewPagerAdapter(getChildFragmentManager(), fragments, titles);
         mViewPager.setAdapter(mAdapter);
@@ -129,7 +133,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
         llFans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArmsUtils.startActivity(MyFansActivity.class);
+                ArmsUtils.startActivity(PicEditActivity.class);
             }
         });
     }
@@ -205,7 +209,12 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
      */
     @Override
     public void setData(@Nullable Object data) {
-
+        //通知图文模块加载
+        // 通知PhotoFragment是来查询我的图文的
+        EventMsg msg = new EventMsg();
+        msg.tag = 1;
+        msg.tId = PrefUtils.getString(getActivity(), "eid", "1");
+        photoFragment.setData(msg);
     }
 
     @Override

@@ -29,6 +29,7 @@ public class RecyclerViewHelper {
 
     /**
      * 配置垂直列表RecyclerView
+     *
      * @param view
      */
     public static void initRecyclerViewV(Context context, RecyclerView view, boolean isDivided,
@@ -61,6 +62,7 @@ public class RecyclerViewHelper {
 
     /**
      * 配置水平列表RecyclerView
+     *
      * @param view
      */
     public static void initRecyclerViewH(Context context, RecyclerView view, boolean isDivided,
@@ -81,6 +83,7 @@ public class RecyclerViewHelper {
 
     /**
      * 配置网格列表RecyclerView
+     *
      * @param view
      */
     public static void initRecyclerViewG(Context context, RecyclerView view, boolean isDivided,
@@ -101,15 +104,16 @@ public class RecyclerViewHelper {
 
     /**
      * 配置瀑布流列表RecyclerView
+     *
      * @param view
      */
     public static void initRecyclerViewSV(Context context, RecyclerView view, boolean isDivided,
-                                         RecyclerView.Adapter adapter, int column) {
+                                          RecyclerView.Adapter adapter, int column) {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(column, StaggeredGridLayoutManager.VERTICAL);
         view.setLayoutManager(layoutManager);
         view.setItemAnimator(new DefaultItemAnimator());
         if (isDivided) {
-            view.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
+            view.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL_LIST));
         }
         view.setAdapter(adapter);
     }
@@ -119,8 +123,29 @@ public class RecyclerViewHelper {
     }
 
     /**
+     * 配置瀑布流列表RecyclerView
+     *
+     * @param view
+     */
+    public static void initRecyclerViewSH(Context context, RecyclerView view, boolean isDivided,
+                                          RecyclerView.Adapter adapter, int column) {
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(column, StaggeredGridLayoutManager.HORIZONTAL);
+        view.setLayoutManager(layoutManager);
+        view.setItemAnimator(new DefaultItemAnimator());
+        if (isDivided) {
+            view.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL_LIST));
+        }
+        view.setAdapter(adapter);
+    }
+
+    public static void initRecyclerViewSH(Context context, RecyclerView view, RecyclerView.Adapter adapter, int column) {
+        initRecyclerViewSV(context, view, false, adapter, column);
+    }
+
+    /**
      * 启动拖拽和滑动
-     * @param view 视图
+     *
+     * @param view    视图
      * @param adapter 适配器
      */
     public static void startDragAndSwipe(RecyclerView view, BaseQuickAdapter adapter) {
@@ -139,8 +164,9 @@ public class RecyclerViewHelper {
 
     /**
      * 启动拖拽和滑动
-     * @param view 视图
-     * @param adapter 适配器
+     *
+     * @param view         视图
+     * @param adapter      适配器
      * @param dragFixCount 固定数量
      */
     public static void startDragAndSwipe(RecyclerView view, BaseQuickAdapter adapter, int dragFixCount) {
@@ -150,10 +176,11 @@ public class RecyclerViewHelper {
 
     /**
      * 启动拖拽和滑动
-     * @param view 视图
-     * @param adapter 适配器
+     *
+     * @param view         视图
+     * @param adapter      适配器
      * @param dragFixCount 固定数量
-     * @param fixColor 固定背景色
+     * @param fixColor     固定背景色
      */
     public static void startDragAndSwipe(RecyclerView view, BaseQuickAdapter adapter, int dragFixCount, int fixColor) {
         startDragAndSwipe(view, adapter, dragFixCount);
@@ -162,10 +189,11 @@ public class RecyclerViewHelper {
 
     /**
      * 启动拖拽和滑动
-     * @param view 视图
-     * @param adapter 适配器
+     *
+     * @param view         视图
+     * @param adapter      适配器
      * @param dragFixCount 固定数量
-     * @param fixDrawable 固定背景色
+     * @param fixDrawable  固定背景色
      */
     public static void startDragAndSwipe(RecyclerView view, BaseQuickAdapter adapter, int dragFixCount, Drawable fixDrawable) {
         startDragAndSwipe(view, adapter, dragFixCount);

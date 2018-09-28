@@ -81,7 +81,6 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
         tradeRecycle.setAdapter(tradeAdapter);
 
         mPresenter.getTradeData(area, type, currentPage, pagesize);
-
     }
 
     @Override
