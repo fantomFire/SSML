@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="#8000"
               android:gravity="center_horizontal"
               android:orientation="vertical">
@@ -37,6 +37,8 @@
             android:gravity="center"
             android:id="@+id/rg"
             android:layout_width="wrap_content"
+            app:maxColumns="6"
+            app:itemWidth="40"
             android:layout_height="wrap_content"
             android:padding="15dp"
     />

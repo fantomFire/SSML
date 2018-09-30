@@ -8,15 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-
-import com.dl7.recycler.adapter.BaseMultiItemQuickAdapter;
+import butterknife.BindView;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerChattingComponent;
 import zhonghuass.ssml.di.module.ChattingModule;
@@ -25,6 +19,9 @@ import zhonghuass.ssml.mvp.model.appbean.ChatBean;
 import zhonghuass.ssml.mvp.presenter.ChattingPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ChattingAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 

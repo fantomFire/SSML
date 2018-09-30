@@ -1,10 +1,12 @@
 package zhonghuass.ssml.utils;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import zhonghuass.ssml.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,14 @@ import java.util.List;
  */
 public class CustomRadioGroup extends RadioGroup {
     private List<RowView> rowViews;//存放每行radioBotton的集合
-    private int horizontalSpacing = 20;//默认水平间距
+    public int horizontalSpacing = 20;//默认水平间距
     private int verticalSpacing = 10;//默认垂直间距
+    private int maxColumns;//默认列数
+    private int itemWidth;//默认列数
     private Context mContext;
     private OnclickListener listener;
+    private int maxWidth;
+    private int parentWidth;
 
     public void setListener(OnclickListener listener) {
         this.listener = listener;
@@ -32,7 +38,13 @@ public class CustomRadioGroup extends RadioGroup {
         super(context, attrs);
         this.mContext = context;
         rowViews = new ArrayList<>();
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CustomRadioGroup);
+        maxColumns = array.getInt(R.styleable.CustomRadioGroup_maxColumns, 0);
+        itemWidth = array.getInt(R.styleable.CustomRadioGroup_itemWidth, 0);
+        array.recycle();
+        Log.e("--", "列数：" + maxColumns);
     }
+
 
     //设置水平间距（单位dp）
     public void setHorizontalSpacing(int horizontalSpacing_dp) {
@@ -42,7 +54,6 @@ public class CustomRadioGroup extends RadioGroup {
     //设置垂直间距（单位dp）
     public void setVerticalSpacing(int verticalSpacing_dp) {
         this.verticalSpacing = dip2px(mContext, verticalSpacing_dp);
-        ;
     }
 
     public int dip2px(Context context, float dipValue) {
@@ -54,10 +65,17 @@ public class CustomRadioGroup extends RadioGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         rowViews.clear();//清空集合
-        //获取屏幕总宽度(包含默认paddingleft和paddingright)
+        //获取屏幕总宽度(包含默认paddingleft和paddingright)(用于当做View宽度)
         int width = MeasureSpec.getSize(widthMeasureSpec);
+        //计算每个item所占像素宽度
+        int iWidth = dip2px(mContext, itemWidth);
+        //计算定义的view宽度
+        int mWidth = (maxColumns - 1) * horizontalSpacing + maxColumns * iWidth;
         //去除默认宽带与实际宽带进行比较
-        int nopaddingWidth = width - getPaddingLeft() - getPaddingRight();
+//        int nopaddingWidth = width - getPaddingLeft() - getPaddingRight();
+        int nopaddingWidth = mWidth;
+        // View整体宽
+        parentWidth = mWidth + getPaddingLeft() + getPaddingRight();
 
         RowView rowView = null;
         //遍历所有的view进行分行
@@ -88,7 +106,7 @@ public class CustomRadioGroup extends RadioGroup {
             heght += rowViews.get(i).getRowHeight();//添加每行高度
         }
         heght += (rowViews.size() - 1) * verticalSpacing;//添加垂直间距高度
-        setMeasuredDimension(width, heght);//向父view申请宽带和高度
+        setMeasuredDimension(parentWidth, heght);//向父view申请宽带和高度
         if (getChildCount() == 0) {
             setMeasuredDimension(0, 0);
         }

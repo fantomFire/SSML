@@ -6,6 +6,7 @@ public class ToActivityMsg {
     public boolean showTagPop;
     public int viewId;
     public String text;
+    public int size;
     public int color;
     public int fragment;
 }
