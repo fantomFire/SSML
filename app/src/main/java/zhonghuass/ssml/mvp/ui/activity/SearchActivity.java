@@ -25,12 +25,13 @@ import zhonghuass.ssml.di.module.SearchModule;
 import zhonghuass.ssml.mvp.contract.SearchContract;
 import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
 import zhonghuass.ssml.mvp.presenter.SearchPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.SearchHistoryAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class SearchActivity extends BaseActivity<SearchPresenter> implements SearchContract.View {
+public class SearchActivity extends MBaseActivity<SearchPresenter> implements SearchContract.View {
 
     @BindView(R.id.ll_search_back)
     LinearLayout llSearchBack;

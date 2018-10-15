@@ -13,10 +13,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyContract;
+import zhonghuass.ssml.mvp.model.appbean.AreaBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
+import zhonghuass.ssml.mvp.model.appbean.TradeItemBean;
 
 
 @FragmentScope
@@ -43,5 +46,19 @@ public class CompanyModel extends BaseModel implements CompanyContract.Model {
 
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .getTradeData(area,type,currentPage+"",pagesize+"");
+    }
+
+    @Override
+    public Observable<ResponseBody> getAreaData() {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .getAreaData()
+                ;
+    }
+
+    @Override
+    public Observable<BaseResponse<List<TradeItemBean>>> getTradeItem() {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .getTradeItem()
+                ;
     }
 }

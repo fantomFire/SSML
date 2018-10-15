@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,10 +63,16 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
             @Override
             public void handle(String result) {
                 tvArea.setText(result);
+                System.out.println("area"+result);
+            }
+
+            @Override
+            public void sendId(String ids) {
+                System.out.println("areaId"+ids);
             }
         });
         //提前初始化数据，这样可以加载快一些。
-        cityPicker.initJson();
+        cityPicker.initJson(null);
 
         etMy.addTextChangedListener(new TextWatcher() {
             @Override

@@ -32,6 +32,7 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
 
     // 图片的宽度
     private int mPhotoWidth;
+    private int resize=1;
 
 
     public StaggeredGridAdapter(Context context) {
@@ -84,12 +85,19 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
 
 
 
-        final String cover_width = item.getCover_width();
-        final String cover_height = item.getCover_height();
+        final int cover_width =Integer.parseInt(item.getCover_width());
+        final int cover_height = Integer.parseInt(item.getCover_height());
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
         int imgWidth = (screenWidth) / 2;
-        int resize = Integer.parseInt(cover_width) / imgWidth;
-        int imghight = Integer.parseInt(cover_height) / resize;
+        System.out.println("cover_width"+cover_width);
+        System.out.println("cover_height"+cover_height);
+        System.out.println("imgWidth"+imgWidth);
+            resize = (cover_width) / imgWidth;
+
+        if(resize==0){
+            resize=1;
+        }
+        int imghight = cover_height/ resize;
 
         ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();

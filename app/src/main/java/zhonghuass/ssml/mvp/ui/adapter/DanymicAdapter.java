@@ -65,6 +65,10 @@ public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
         int imgWidth = (screenWidth) / 2;
         int resize = Integer.parseInt(cover_width) / imgWidth;
+
+        if(resize==0){
+            resize=1;
+        }
         int imghight = Integer.parseInt(cover_height) / resize;
 
         ImageView iv = (ImageView) holder.getView(R.id.recommend_img);

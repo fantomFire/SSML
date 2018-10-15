@@ -268,7 +268,7 @@ public class ZoomImageView extends AppCompatImageView implements OnScaleGestureL
 
         lastPointerCount = pointerCount;
         RectF rectF = getMatrixRectF();
-        if(pointerCount>1){
+        if (pointerCount > 1) {
             isScale = true;
             mScaleGestureDetector.onTouchEvent(event);
             switch (event.getAction()) {
@@ -335,9 +335,11 @@ public class ZoomImageView extends AppCompatImageView implements OnScaleGestureL
 
             return true;
 
-        }else {
-            mGestureDetector.onTouchEvent(event);
-            isScale = false;
+        } else {
+            if (mGestureDetector != null) {
+                mGestureDetector.onTouchEvent(event);
+                isScale = false;
+            }
         }
        /* if (mGestureDetector.onTouchEvent(event)) {
             return true;

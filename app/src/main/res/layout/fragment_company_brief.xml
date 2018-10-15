@@ -40,14 +40,14 @@
                     android:layout_centerVertical="true"
                     android:background="@mipmap/ml_icon_7" />
 
-                <ImageView
+            <!--    <ImageView
                     android:id="@+id/img_more"
                     android:layout_width="13dp"
                     android:layout_height="17dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="5dp"
-                    android:background="@mipmap/ml_icon_8" />
+                    android:background="@mipmap/ml_icon_8" />-->
 
             </RelativeLayout>
 
@@ -56,12 +56,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
+            <!--    <android.support.v7.widget.RecyclerView
                     android:id="@+id/com_recycle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="17dp"
-                    android:layout_marginTop="17dp" />
+                    android:layout_marginTop="17dp" />-->
 
                 <TextView
                     android:id="@+id/com_introduce"
@@ -129,6 +129,7 @@
                             android:textSize="12sp" />
 
                         <TextView
+                            android:id="@+id/legal_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
@@ -165,16 +166,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingTop="22dp"
-                            android:text="法人代表"
+                            android:text="注册资本"
                             android:textColor="@color/color66"
                             android:textSize="12sp" />
 
                         <TextView
+                            android:id="@+id/registe_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:layout_marginTop="5dp"
-                            android:text="冯桂娣"
                             android:textColor="@color/corlor28"
                             android:textSize="15sp" />
                     </LinearLayout>

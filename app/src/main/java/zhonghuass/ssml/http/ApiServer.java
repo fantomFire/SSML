@@ -3,6 +3,7 @@ package zhonghuass.ssml.http;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.*;
 import zhonghuass.ssml.mvp.model.appbean.*;
 
@@ -184,10 +185,26 @@ public interface ApiServer {
     Observable<BaseResponse<IniviteBean>> getInviteData(@Query("eid") String ep_id,
                                                         @Query("page") int page,
                                                         @Query("pagesize") int pagesize);
-    //上传图片,视频
+    //上传视频
     @Multipart
-    @GET("/api/Enterprise/recruitment")
+    @POST("/Api/content/publish")
 
-    Observable<BaseResponse<Void>> upLoadData(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part[] parts);
+    Observable<BaseResponse<Void>> upLoadData(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part mediaparts, @Part MultipartBody.Part mediaPart); //,视频
+    //上传图片
+    @Multipart
+    @POST("/Api/content/publish")
+    Observable<BaseResponse<Void>> upLoadImages(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part file,@Part MultipartBody.Part[] parts);
+    //详情页推荐
+    @GET("/Api/theme/recommend")
+    Observable<BaseResponse<List<RecomDetailBean>>> getRecomDetail();
+    //区域分类
+    @GET("/Api/Enterprise/getAreaContent")
+    Observable<ResponseBody> getAreaData();
+    //行业选择
+    @GET("/Api/Enterprise/getIndustryContent")
+    Observable<BaseResponse<List<TradeItemBean>>> getTradeItem();
+    //公司简介
+    @GET("/Api/Enterprise/synopsis")
+    Observable<BaseResponse<List<BriefBean>>> getBriefData(@Query("eid") String eid);
 }
 

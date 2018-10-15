@@ -24,7 +24,6 @@ public class TradeAdapter extends BaseQuickAdapter<TradeBean, BaseViewHolder> {
                 .setText(R.id.tv_type, item.getServicetype())
                 .setText(R.id.tv_phone, item.getPhone())
                 .setText(R.id.tv_address, item.getAddr());
-        System.out.println(item.getLogo());
         Glide.with(mContext)
                 .load(item.getLogo())
                 .into((ImageView) helper.getView(R.id.trade_log));
