@@ -1,6 +1,6 @@
 package zhonghuass.ssml.utils.image;
 
-class MessageEvent {
+public class MessageEvent {
     public float x;
     public float y;
     public float mLastX;

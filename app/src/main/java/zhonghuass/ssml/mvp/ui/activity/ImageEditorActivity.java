@@ -54,9 +54,9 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     LinearLayout mobanItem;
     @BindView(R.id.back_item)
     LinearLayout backItem;
-    @BindView(R.id.name_item)
+    @BindView(R.id.text_item)
     LinearLayout nameItem;
-    @BindView(R.id.mark_item)
+    @BindView(R.id.tag_item)
     LinearLayout markItem;
     @BindView(R.id.ll_menu)
     LinearLayout llMenu;
@@ -67,7 +67,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     private int textSize = 15;
     private int fragment = 1;
     private int viewId;
-    private int textColor = R.color.black;
+    private int textColor = R.color.bar_grey;
 
     private Integer[] sizes = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
     private Integer[] layouts = {R.layout.activity_my_setting};
@@ -87,6 +87,20 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     private List<Fragment> mFragments;
     private FragmentManager fm;
     private EditText etFont;
+    private ImageLayout1Fragment fragment1;
+    private ImageLayout2Fragment fragment2;
+
+    public interface IOnFocusListenable {
+        public void onWindowFocusChanged(boolean hasFocus);
+    }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        if (fragment1 instanceof IOnFocusListenable) {
+            ((IOnFocusListenable) fragment1).onWindowFocusChanged(hasFocus);
+        }
+    }
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -130,12 +144,14 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         initTagPopupWindow();
 
 
-        ImageLayout1Fragment image1 = ImageLayout1Fragment.newInstance();
-        ImageLayout2Fragment image2 = ImageLayout2Fragment.newInstance();
+        fragment1 = ImageLayout1Fragment.newInstance();
+        fragment2 = ImageLayout2Fragment.newInstance();
         mFragments = new ArrayList<>();
-        mFragments.add(image1);
-        mFragments.add(image2);
+        mFragments.add(fragment1);
+        mFragments.add(fragment2);
         fm = getSupportFragmentManager();
+
+
     }
 
 
@@ -177,12 +193,15 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         });
         CustomRadioGroup crg = contentview.findViewById(R.id.rg);
         RadioGroup rg = contentview.findViewById(R.id.rg2);
+        int leftPx = dip2px(ImageEditorActivity.this, itemW / 2);
+
         for (int i = 0; i < 17; i++) {
             View radioButton = getLayoutInflater().inflate(R.layout.item_edit_bg_1, null);
             CircleImageView civ = radioButton.findViewById(R.id.civ);
             civ.setImageResource(mList.get(i));
+
             if (i == 6) {
-                radioButton.setPadding(40, 0, 0, 0);
+                radioButton.setPadding(leftPx + (crg.horizontalSpacing) / 2, 0, 0, 0);
             }
             radioButton.setTag(i);
             crg.addView(radioButton);
@@ -195,10 +214,6 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
                     case 0:
                         ImageLayout1Fragment image1 = (ImageLayout1Fragment) fm.getFragments().get(0);
                         image1.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
-                        break;
-                    case -1:
-                        ImageLayout2Fragment image2 = (ImageLayout2Fragment) fm.getFragments().get(0);
-                        image2.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
                         break;
                 }
             }
@@ -220,6 +235,13 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         }
 
     }
+
+    public int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    private int itemW = 40;
 
     private void initFontPopupWindow() {
         //LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -257,12 +279,14 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         ScrollView sv2 = contentview.findViewById(R.id.scroll_view2);
         RadioGroup rg = contentview.findViewById(R.id.rg);
         RadioGroup rg2 = contentview.findViewById(R.id.rg2);
+
+        int leftPx = dip2px(ImageEditorActivity.this, itemW / 2);
         for (int i = 0; i < mList.size(); i++) {
             View radioButton = getLayoutInflater().inflate(R.layout.item_edit_bg_1, null);
             CircleImageView civ = radioButton.findViewById(R.id.civ);
             civ.setImageResource(mList.get(i));
             if (i == 6 || i == 17) {
-                radioButton.setPadding(40, 0, 0, 0);
+                radioButton.setPadding(leftPx + (crg.horizontalSpacing) / 2, 0, 0, 0);
             }
             radioButton.setTag(i);
             crg.addView(radioButton);
@@ -450,35 +474,54 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     private int imageLayout = -1;
 
-    @OnClick({R.id.edit_img, R.id.moban_item, R.id.back_item, R.id.name_item, R.id.mark_item})
+    @OnClick({R.id.edit_img, R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
     public void onViewClicked(View view) {
+        //发这消息是为了关闭TextView上的菜单
+        ToFragmentMsg msg = new ToFragmentMsg();
+        msg.fragment = fragment;
+        EventBusUtils.post(msg);
+
         switch (view.getId()) {
             case R.id.edit_img:
                 break;
             case R.id.moban_item:
-                FragmentUtils.removeAllFragments(fm);
-                imageLayout++;
-                initImageLayout(mFragments.get(imageLayout));
-                if (imageLayout > 0) {
-                    imageLayout = -1;
-                    fragment = 1;
-                }
+//                FragmentUtils.removeAllFragments(fm);
+//                imageLayout++;
+//                initImageLayout(mFragments.get(imageLayout));
+//                if (imageLayout > 0) {
+//                    imageLayout = -1;
+//                    fragment = 1;
+//                }
+                Intent intent = new Intent();
+                intent.setClass(ImageEditorActivity.this, SelectMBActivity.class);
+                this.startActivityForResult(intent, 999);
+
                 break;
             case R.id.back_item:
                 backPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
-            case R.id.name_item:
-                ToFragmentMsg msg = new ToFragmentMsg();
+            case R.id.text_item:
+                msg = new ToFragmentMsg();
                 msg.fragment = fragment;
                 msg.text = etFont.getText().toString();
                 msg.size = 15;
+                msg.color = textColor;
                 msg.isAddText = true;
                 EventBusUtils.post(msg);
                 fontPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
-            case R.id.mark_item:
+            case R.id.tag_item:
                 tagPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 999) {
+            initImageLayout(mFragments.get(0));
+            imageLayout = 0;
         }
     }
 
@@ -500,6 +543,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         if (msg.showFontPop) {
             fontPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             etFont.setText(msg.text);
+            etFont.setTextColor(msg.color);
             viewId = msg.viewId;
             fragment = msg.fragment;
         }

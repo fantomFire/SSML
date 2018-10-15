@@ -8,17 +8,17 @@
 
 
     <RelativeLayout
-            android:id="@+id/rl_wl"
+            android:id="@+id/rl_mb"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
     >
 
-        <ImageView
+        <zhonghuass.ssml.utils.image.PhotoView
                 android:id="@+id/iv1"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="@dimen/dp_10"
-                android:background="@mipmap/meizi"
+                android:scaleType="fitCenter"
         />
 
 
@@ -41,16 +41,20 @@
         </LinearLayout>
 
 
-        <ImageView
+        <zhonghuass.ssml.utils.image.PhotoView
                 android:layout_below="@id/ll_tv1"
                 android:id="@+id/iv2"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_margin="@dimen/dp_10"
-                android:background="@mipmap/meizi2"
-        />
-
-
+                android:scaleType="fitCenter"
+                />
     </RelativeLayout>
+    <RelativeLayout
+            android:focusable="false"
+            android:id="@+id/stickerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    />
 
 </RelativeLayout>
