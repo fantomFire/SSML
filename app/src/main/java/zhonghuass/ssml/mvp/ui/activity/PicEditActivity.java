@@ -509,7 +509,7 @@ public class PicEditActivity extends MBaseActivity<PicEditPresenter> implements 
                 ivBg.setBackgroundColor(getResources().getColor(R.color.colorcf1313));
                 break;
             case R.id.tv_1:
-                ivMb.setBackground(getResources().getDrawable(R.mipmap.moban2));
+                ivMb.setBackground(getResources().getDrawable(R.mipmap.meinv));
                 break;
         }
     }

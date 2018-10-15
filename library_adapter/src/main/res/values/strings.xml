@@ -18,7 +18,10 @@
     <string name="day">日</string>
     <string name="hour">时</string>
     <string name="minute">分</string>
+    <string name="daily_speak"> 参与每日一语话题榜,选择你感兴趣的标签作为发文主题,系统会在每周随机抽取一个标签作为本周话题,
+    系统通过统计您内容的播放量(仅限视频),阅读量(仅限图文),转发量,评论量来评选每周话题榜前三名,获得前三名的用户有好礼相送哦!!!
 
+    </string>
 
     <string name="cp_select_city">选择城市</string>
     <string name="cp_hot_city">热门城市</string>

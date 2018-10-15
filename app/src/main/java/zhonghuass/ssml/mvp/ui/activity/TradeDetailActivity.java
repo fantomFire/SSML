@@ -3,12 +3,14 @@ package zhonghuass.ssml.mvp.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +53,7 @@ import zhonghuass.ssml.utils.PrefUtils;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class TradeDetailActivity extends MBaseActivity<TradeDetailPresenter> implements TradeDetailContract.View {
+public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> implements TradeDetailContract.View {
 
     @BindView(R.id.top_bg)
     ImageView topBg;
@@ -99,11 +101,19 @@ public class TradeDetailActivity extends MBaseActivity<TradeDetailPresenter> imp
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 透明状态栏
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            // 透明导航栏
+            getWindow().addFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         String eid = getIntent().getStringExtra("eid");
-        if(eid==null){
+        if (eid == null) {
             Toast.makeText(this, "eid=null", Toast.LENGTH_SHORT).show();
         }
-        PrefUtils.putString(this,"eid",eid);
+        PrefUtils.putString(this, "eid", eid);
         fragments.add(CompanyDanymicFragment.newInstance());
         fragments.add(CompanyRecommendFragment.newInstance());
         fragments.add(CompanyInviteFragment.newInstance());

@@ -17,7 +17,6 @@ package com.github.library.baseAdapter;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
@@ -570,7 +569,7 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
      *
      * @param newData the new data collection
      */
-    public void addData(@NonNull Collection<? extends T> newData) {
+    public void addData(@NonNull List<T> newData) {
         mData.addAll(newData);
         notifyItemRangeInserted(mData.size() - newData.size() + getHeaderLayoutCount(), newData.size());
         compatibilityDataSizeChanged(newData.size());

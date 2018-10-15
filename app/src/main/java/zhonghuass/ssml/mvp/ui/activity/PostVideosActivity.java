@@ -5,16 +5,18 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
@@ -24,19 +26,21 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerPostVideosComponent;
 import zhonghuass.ssml.di.module.PostVideosModule;
-import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PostVideosContract;
-import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
+import zhonghuass.ssml.mvp.model.appbean.RecomDetailBean;
 import zhonghuass.ssml.mvp.presenter.PostVideosPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ImagesAdapter;
@@ -65,7 +69,9 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     TextView tvTag;
     @BindView(R.id.img_rec)
     RecyclerView imgRec;
-    private List<IniviteBean.ListBean> list;
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+    private List<RecomDetailBean> list = new ArrayList<>();
     private PostVideoAdapter adapter;
     private String mediaPath;
     private String userEare;
@@ -78,7 +84,17 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     public static final String ANDROID_RESOURCE = "android.resource://";
     public static final String FOREWARD_SLASH = "/";
     private ArrayList<LocalMedia> imagesList;
+    private ArrayList<LocalMedia> imagesUpList = new ArrayList<>();
     private Bitmap bitmap;
+    private String bitmapPath;
+    private LocalMedia localMediaLast;
+    private String urlPath;
+    private String userId;
+    private File fileDir;
+    private File currentFile;
+    private boolean isRuning;
+    private String theme_id="0";
+    private String member_type;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -100,17 +116,18 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("发布");
         intent = getIntent();
+        userId = PrefUtils.getString(this, Constants.USER_ID, "");
+        member_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "");
 
         selectType = intent.getStringExtra("selectType");
 
-        System.out.println("mediaPath" + mediaPath);
         if (selectType.equals("editMedia")) {
 
             imageUp.setVisibility(View.VISIBLE);
             imgRec.setVisibility(View.GONE);
 
             mediaPath = intent.getStringExtra("mediaPath");
-
+            System.out.println("mediaPath" + mediaPath);
             //设置图片
             if (mediaPath != null) {
                 setImage(mediaPath);
@@ -134,7 +151,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         //初始化每日一语
         initDialySay();
 
-        mPresenter.getInviteData("1", 1, 5);
+        mPresenter.getInviteData();
     }
 
     private void initImages() {
@@ -143,10 +160,10 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         imageUp.setVisibility(View.GONE);
         imgRec.setVisibility(View.VISIBLE);
         imagesList = intent.getParcelableArrayListExtra("uploadinfo");
-        Uri url = Uri.parse(ANDROID_RESOURCE + getPackageName() + FOREWARD_SLASH + R.mipmap.fb_icon_12);
-        LocalMedia localMedia = new LocalMedia();
-        localMedia.setPath(url.toString());
-        imagesList.add(localMedia);
+        urlPath = Uri.parse(ANDROID_RESOURCE + getPackageName() + FOREWARD_SLASH + R.mipmap.fb_icon_12).toString();
+        localMediaLast = new LocalMedia();
+        localMediaLast.setPath(urlPath);
+        imagesList.add(localMediaLast);
 
         imgRec.setLayoutManager(new GridLayoutManager(this, 3));
         imagesAdapter = new ImagesAdapter(R.layout.image_item, imagesList);
@@ -163,6 +180,167 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
                 }
             }
         });
+
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            if (data != null) {
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                imagesList.addAll(imagesList.size() - 1, selectList);
+                imagesAdapter.notifyDataSetChanged();
+            }
+        }
+
+
+    }
+
+    private void initDialySay() {
+        rvGrid.setLayoutManager(new GridLayoutManager(this, 3));
+        adapter = new PostVideoAdapter(R.layout.postvideos_item, list);
+        rvGrid.setAdapter(adapter);
+        rvGrid.setNestedScrollingEnabled(false);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                tvTag.setText(list.get(position).getTheme_title());
+                theme_id = list.get(position).getTheme_id();
+            }
+        });
+    }
+
+    private void setImage(String mediaPath) {
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(mediaPath);
+        bitmap = mediaMetadataRetriever.getFrameAtTime();
+        imageUp.setImageBitmap(bitmap);
+        File sdDir = Environment.getExternalStorageDirectory();
+        fileDir = new File(sdDir.getPath() + "/IMAGE");
+        if (!fileDir.exists()) {
+            fileDir.mkdir();
+        }
+        saveFile(bitmap);
+
+    }
+
+    public void saveFile(Bitmap bitmap) {
+
+        SimpleDateFormat time = new SimpleDateFormat("yyyyMMddHHmmss");
+        String fileName = time.format(System.currentTimeMillis());
+        currentFile = new File(fileDir, fileName + ".jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(currentFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void showLoading() {
+        isRuning=true;
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        progressBar.setVisibility(View.GONE);
+        isRuning = false;
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+        checkNotNull(message);
+        ArmsUtils.snackbarText(message);
+    }
+
+    @Override
+    public void launchActivity(@NonNull Intent intent) {
+        checkNotNull(intent);
+        ArmsUtils.startActivity(intent);
+    }
+
+    @Override
+    public void killMyself() {
+        finish();
+    }
+
+
+    @Override
+    public void showdata(List<RecomDetailBean> recomList) {
+        list = recomList;
+        adapter.setNewData(recomList);
+    }
+
+
+    @OnClick({R.id.eara_next, R.id.dialy_next, R.id.tv_right})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.eara_next:
+                break;
+            case R.id.dialy_next:
+                break;
+            case R.id.tv_right:
+
+                if (selectType.equals("editMedia")) {
+                    uploadMedia();
+                } else if (selectType.equals("multipleImage")) {
+                    checkData();
+                }
+
+                break;
+        }
+    }
+
+    private void uploadMedia() {
+        if (isRuning) {
+            Toast.makeText(this, "视频上传中...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String mContent = etContent.getText().toString().trim();
+        if(TextUtils.isEmpty(mContent)){
+            Toast.makeText(this, "说点什么吧!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        showLoading();
+        mPresenter.upLoadData(mediaPath, mContent, theme_id, userId,member_type, currentFile.getPath());
+    }
+
+    private void checkData() {
+        String mContent = etContent.getText().toString();
+
+        imagesUpList.clear();
+        imagesUpList.addAll(imagesList);
+        //   mPresenter.upLoadData(mList, mContent, userEare, dailyTag, );
+
+        String path = imagesUpList.get(imagesList.size() - 1).getPath();
+        if (path.equals(urlPath)) {
+            imagesUpList.remove(imagesList.size() - 1);
+        }
+        if (isRuning) {
+            Toast.makeText(this, "文件上传中...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        showLoading();
+        mPresenter.upImages(imagesUpList, mContent, theme_id, userId,member_type);
 
     }
 
@@ -208,107 +386,4 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
 
 
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            if (data != null) {
-                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                imagesList.addAll(imagesList.size() - 1, selectList);
-                imagesAdapter.notifyDataSetChanged();
-            }
-        }
-
-
-    }
-
-    private void initDialySay() {
-        rvGrid.setLayoutManager(new GridLayoutManager(this, 4));
-        adapter = new PostVideoAdapter(R.layout.postvideos_item, list);
-        rvGrid.setAdapter(adapter);
-        rvGrid.setNestedScrollingEnabled(false);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                tvTag.setText(position + "");
-            }
-        });
-    }
-
-    private void setImage(String mediaPath) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(mediaPath);
-        bitmap = mediaMetadataRetriever.getFrameAtTime();
-        imageUp.setImageBitmap(bitmap);
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
-
-    }
-
-    @Override
-    public void showMessage(@NonNull String message) {
-        checkNotNull(message);
-        ArmsUtils.snackbarText(message);
-    }
-
-    @Override
-    public void launchActivity(@NonNull Intent intent) {
-        checkNotNull(intent);
-        ArmsUtils.startActivity(intent);
-    }
-
-    @Override
-    public void killMyself() {
-        finish();
-    }
-
-
-    @Override
-    public void showdata(BaseResponse<IniviteBean> iniviteBeanBaseResponse) {
-        list = iniviteBeanBaseResponse.getData().list;
-        adapter.addData(list);
-    }
-
-
-    @OnClick({R.id.eara_next, R.id.dialy_next, R.id.tv_right})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.eara_next:
-                break;
-            case R.id.dialy_next:
-                break;
-            case R.id.tv_right:
-                checkData();
-
-                break;
-        }
-    }
-
-    private void checkData() {
-        String userId = PrefUtils.getString(this, Constants.USER_ID, "");
-        String mContent = etContent.getText().toString();
-        mList.add(mediaPath);
-     //   mPresenter.upLoadData(mList, mContent, userEare, dailyTag, convertIconToString(bitmap));
-        mPresenter.upImages(imagesList, mContent, userEare, dailyTag,userId);
-
-    }
-
-    /**
-     * 图片转成string	 * 	 * @param bitmap	 * @return
-     */
-    public static String convertIconToString(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
-        	bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        	byte[] appicon = baos.toByteArray();// 转为byte数组
-         return Base64.encodeToString(appicon, Base64.DEFAULT); 	}
-
-
-    }
+}

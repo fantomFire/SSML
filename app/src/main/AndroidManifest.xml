@@ -48,7 +48,10 @@
         <activity android:name=".mvp.ui.activity.RealNameActivity" />
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
-        <activity android:name=".mvp.ui.activity.TradeDetailActivity" />
+        <activity
+            android:name=".mvp.ui.activity.TradeDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity android:name=".mvp.ui.activity.ConcernActivity" />
         <activity android:name=".mvp.ui.activity.PraiseActivity" />
         <activity android:name=".mvp.ui.activity.CommentActivity" />
@@ -61,9 +64,9 @@
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
         <activity android:name=".mvp.ui.activity.PublishActivity" />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
-        <activity android:name=".mvp.ui.activity.PostVideosActivity"
-             android:windowSoftInputMode = "stateAlwaysHidden|adjustPan"
-            ></activity>
+        <activity
+            android:name=".mvp.ui.activity.PostVideosActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
         <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
             <!--

@@ -198,6 +198,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     @Override
     public void gotoActivity(LoginBean voidBaseResponse) {
         PrefUtils.putString(LogInActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
+        PrefUtils.putString(LogInActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
         ArmsUtils.startActivity(MainActivity.class);
         LogInActivity.this.finish();
     }
