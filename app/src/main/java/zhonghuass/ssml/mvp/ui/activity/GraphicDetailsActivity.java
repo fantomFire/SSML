@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.jude.rollviewpager.RollPagerView;
@@ -27,7 +29,7 @@ import zhonghuass.ssml.utils.CircleImageView;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class GraphicDetailsActivity extends MBaseActivity<GraphicDetailsPresenter> implements GraphicDetailsContract.View {
+public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter> implements GraphicDetailsContract.View {
 
     @BindView(R.id.vp_banner)
     RollPagerView vpBanner;
@@ -69,6 +71,9 @@ public class GraphicDetailsActivity extends MBaseActivity<GraphicDetailsPresente
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
+      //  llTop.setVisibility(View.GONE);
+
         Intent intent = getIntent();
       /*   content_id = intent.getStringExtra("content_id");
         member_id = intent.getStringExtra("member_id");
