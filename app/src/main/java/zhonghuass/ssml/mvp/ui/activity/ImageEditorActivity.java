@@ -2,9 +2,12 @@ package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,17 +18,13 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
-
+import butterknife.BindView;
+import butterknife.OnClick;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import zhonghuass.ssml.R;
@@ -37,7 +36,16 @@ import zhonghuass.ssml.mvp.contract.ImageEditorContract;
 import zhonghuass.ssml.mvp.presenter.ImageEditorPresenter;
 import zhonghuass.ssml.mvp.ui.fragment.ImageLayout1Fragment;
 import zhonghuass.ssml.mvp.ui.fragment.ImageLayout2Fragment;
-import zhonghuass.ssml.utils.*;
+import zhonghuass.ssml.utils.CircleImageView;
+import zhonghuass.ssml.utils.CustomRadioGroup;
+import zhonghuass.ssml.utils.EventBusUtils;
+import zhonghuass.ssml.utils.FragmentUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -46,10 +54,14 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     @BindView(R.id.rl_edit)
     RelativeLayout relativeLayout;
-    @BindView(R.id.edit_img)
-    ZoomImageView editImg;
-    @BindView(R.id.out_bg)
-    RelativeLayout outBg;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
+    @BindView(R.id.tv_save)
+    TextView tvSave;
+    //    @BindView(R.id.edit_img)
+////    ZoomImageView editImg;
+////    @BindView(R.id.out_bg)
+////    RelativeLayout outBg;
     @BindView(R.id.moban_item)
     LinearLayout mobanItem;
     @BindView(R.id.back_item)
@@ -68,9 +80,9 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     private int fragment = 1;
     private int viewId;
     private int textColor = R.color.bar_grey;
+    private int tagType = R.color.white;
 
     private Integer[] sizes = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-    private Integer[] layouts = {R.layout.activity_my_setting};
     private Integer[] colors = {
             R.color.white, R.color.blue, R.color.red,
             R.color.white, R.color.blue, R.color.red,
@@ -89,6 +101,8 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     private EditText etFont;
     private ImageLayout1Fragment fragment1;
     private ImageLayout2Fragment fragment2;
+    private List<LocalMedia> selectList;
+    private EditText etTag;
 
     public interface IOnFocusListenable {
         public void onWindowFocusChanged(boolean hasFocus);
@@ -119,23 +133,11 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-
-//        try {
-//            int layoutResID = initView(savedInstanceState);
-//            //如果initView返回0,框架则不会调用setContentView(),当然也不会 Bind ButterKnife
-//            if (layoutResID != 0) {
-//                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                View contentView = inflater.inflate(layoutResID, null);
-//
-//                flImage.addView(contentView);
-//                //setContentView(layoutResID);
-//                //绑定到butterknife
-//                Unbinder mUnbinder = ButterKnife.bind(this);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        Bundle mBundle = getIntent().getExtras();
+        int imgMB = mBundle.getInt("template_num", 0);
+        selectList = mBundle.getParcelableArrayList("imageList");
+        // 初始化图片模板
+        initFragment(imgMB);
 
 
         mList = Arrays.asList(colors);
@@ -144,14 +146,17 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         initTagPopupWindow();
 
 
-        fragment1 = ImageLayout1Fragment.newInstance();
-        fragment2 = ImageLayout2Fragment.newInstance();
-        mFragments = new ArrayList<>();
-        mFragments.add(fragment1);
-        mFragments.add(fragment2);
+    }
+
+    private void initFragment(int imgMB) {
         fm = getSupportFragmentManager();
-
-
+        switch (imgMB) {
+            case 0:
+                fragment1 = ImageLayout1Fragment.newInstance(selectList);
+                initImageLayout(fragment1);
+                break;
+        }
+        imageLayout = imgMB;
     }
 
 
@@ -209,7 +214,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         crg.setListener(new CustomRadioGroup.OnclickListener() {
             @Override
             public void OnText(int position) {
-                outBg.setBackgroundColor(getResources().getColor(colors[position]));
+//                outBg.setBackgroundColor(getResources().getColor(colors[position]));
                 switch (imageLayout) {
                     case 0:
                         ImageLayout1Fragment image1 = (ImageLayout1Fragment) fm.getFragments().get(0);
@@ -390,7 +395,6 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     }
 
-
     private void initTagPopupWindow() {
         View contentview = getLayoutInflater().inflate(R.layout.popupwindow_edit_tag, null);
         contentview.setFocusable(true); // 这个很重要
@@ -411,15 +415,32 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
         tagPopupWindow.setFocusable(true);
 
-        LinearLayout llClose = contentview.findViewById(R.id.ll_close);
-        llClose.setOnClickListener(new View.OnClickListener() {
+        ImageView ivClose = (ImageView) contentview.findViewById(R.id.iv_close);
+        ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tagPopupWindow.dismiss();
             }
         });
+        ImageView ivAdd = (ImageView) contentview.findViewById(R.id.iv_add);
+        etTag = (EditText) contentview.findViewById(R.id.et_tag);
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 关闭，添加
+                ToFragmentMsg msg = new ToFragmentMsg();
+                msg.text = etTag.getText().toString();
+                msg.fragment = fragment;
+                msg.viewId = viewId;
+                msg.type = tagType;
+                msg.size = textSize;
+                msg.isTagOk = true;
+                EventBusUtils.post(msg);
+                tagPopupWindow.dismiss();
+
+            }
+        });
         LinearLayout llTag = contentview.findViewById(R.id.ll_tag);
-        EditText etTag = contentview.findViewById(R.id.et_tag);
         RadioGroup rg = contentview.findViewById(R.id.rg2);
 
         for (int i = 0; i < mList.size(); i++) {
@@ -433,13 +454,13 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
                 @Override
                 public void onClick(View v) {
                     int position = (int) v.getTag();
-                    llTag.setBackgroundColor(getResources().getColor(colors[position]));
+                    tagType = colors[position];
+                    llTag.setBackgroundColor(getResources().getColor(tagType));
                 }
             });
         }
 
     }
-
 
     @Override
     public void showLoading() {
@@ -474,7 +495,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     private int imageLayout = -1;
 
-    @OnClick({R.id.edit_img, R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
+    @OnClick({R.id.iv_back, R.id.tv_save, R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
     public void onViewClicked(View view) {
         //发这消息是为了关闭TextView上的菜单
         ToFragmentMsg msg = new ToFragmentMsg();
@@ -482,7 +503,13 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         EventBusUtils.post(msg);
 
         switch (view.getId()) {
-            case R.id.edit_img:
+
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.tv_save:
+                // 保存当前fragment图片
+                saveImage();
                 break;
             case R.id.moban_item:
 //                FragmentUtils.removeAllFragments(fm);
@@ -494,7 +521,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 //                }
                 Intent intent = new Intent();
                 intent.setClass(ImageEditorActivity.this, SelectMBActivity.class);
-                this.startActivityForResult(intent, 999);
+                startActivityForResult(intent, 999);
 
                 break;
             case R.id.back_item:
@@ -516,12 +543,68 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         }
     }
 
+
+    //保存图片
+    private void saveImage() {
+        Bitmap b = getBitmap();
+        String SavePath = getSDCardPath() + "/SSMLImage";
+        // 保存Bitmap
+        try {
+            File path = new File(SavePath);
+            // 文件
+            String imageName = (System.currentTimeMillis() / 1000) + ".jpg";
+            String filepath = SavePath + "/SSML" + imageName;
+            File file = new File(filepath);
+            if (!path.exists()) {
+                path.mkdirs();
+            }
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileOutputStream fos = null;
+            fos = new FileOutputStream(file);
+            if (null != fos) {
+                b.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.flush();
+                fos.close();
+                Toast.makeText(this, "图片已保存至SDCard/SSMLImage/下",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap getBitmap() {
+        flImage.setDrawingCacheEnabled(true);
+        flImage.buildDrawingCache();
+        //启用DrawingCache并创建位图
+        Bitmap bitmap = Bitmap.createBitmap(flImage.getDrawingCache());
+        // 创建一个DrawingCache的拷贝，因为DrawingCache得到的位图在禁用后会被回收
+        flImage.setDrawingCacheEnabled(false);
+        // 禁用DrawingCahce否则会影响性能
+        return bitmap;
+    }
+
+    //获取SDCard的目录路径功能
+    private String getSDCardPath() {
+        File sdcardDir = null;
+        // 判断SDCard是否存在
+        boolean sdcardExist = Environment.getExternalStorageState().equals(
+                android.os.Environment.MEDIA_MOUNTED);
+        if (sdcardExist) {
+            sdcardDir = Environment.getExternalStorageDirectory();
+        }
+        return sdcardDir.toString();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 999) {
-            initImageLayout(mFragments.get(0));
-            imageLayout = 0;
+//            initImageLayout(mFragments.get(0));
+//            imageLayout = 0;
         }
     }
 
@@ -544,6 +627,12 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
             fontPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             etFont.setText(msg.text);
             etFont.setTextColor(msg.color);
+            viewId = msg.viewId;
+            fragment = msg.fragment;
+        }
+        if (msg.showTagPop) {
+            tagPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            etTag.setText(msg.text);
             viewId = msg.viewId;
             fragment = msg.fragment;
         }

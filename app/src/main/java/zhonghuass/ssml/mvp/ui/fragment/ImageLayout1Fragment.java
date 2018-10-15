@@ -1,10 +1,10 @@
 package zhonghuass.ssml.mvp.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -12,9 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.*;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
@@ -22,6 +20,7 @@ import com.github.chrisbanes.photoview.OnSingleFlingListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import zhonghuass.ssml.R;
@@ -32,9 +31,13 @@ import zhonghuass.ssml.mvp.ToFragmentMsg;
 import zhonghuass.ssml.mvp.contract.ImageLayout1Contract;
 import zhonghuass.ssml.mvp.presenter.ImageLayout1Presenter;
 import zhonghuass.ssml.mvp.ui.activity.ImageEditorActivity;
+import zhonghuass.ssml.utils.CircleImageView;
+import zhonghuass.ssml.utils.CustomRadioGroup;
 import zhonghuass.ssml.utils.EventBusUtils;
+import zhonghuass.ssml.utils.ImageUtils;
 import zhonghuass.ssml.utils.image.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,16 +68,23 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     private List<String> pathList = new ArrayList();
     private View mDrawImage;//最终保存图片区域
     private int statusBarHeight, titleBarHeight;
-
+    private static List<LocalMedia> selectList;
+    private PopupWindow imageMenuPop;
 
     public static ImageLayout1Fragment newInstance() {
         ImageLayout1Fragment fragment = new ImageLayout1Fragment();
         return fragment;
     }
 
+    public static ImageLayout1Fragment newInstance(List<LocalMedia> imgList) {
+        ImageLayout1Fragment fragment = new ImageLayout1Fragment();
+        selectList = imgList;
+        return fragment;
+    }
+
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerImageLayout1Component //如找不到该类,请编译一下项目
+        DaggerImageLayout1Component //如找不到该类,请编译 一下项目
                 .builder()
                 .appComponent(appComponent)
                 .imageLayout1Module(new ImageLayout1Module(this))
@@ -90,17 +100,21 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        path1 = "https://isujin.com/wp-content/uploads/2013/02/wallpaper-2624453.jpg";
-        path2 = "https://isujin.com/wp-content/uploads/2014/10/wallhaven-8938.jpg";
+        initBackPopupWindow();
+        path1 = selectList.get(0).getPath();
+        path2 = selectList.get(1).getPath();
         pathList.add(path1);
         pathList.add(path2);
+
+        image1.setScaleType(ImageView.ScaleType.CENTER);
+        image2.setScaleType(ImageView.ScaleType.CENTER);
+
         Glide.with(this)
                 .load(path1)
                 .into(image1);
         Glide.with(this)
                 .load(path2)
                 .into(image2);
-
 
         //把模板中默认的textView添加进去，因为点击之后要弹出底部菜单修改
         textViews.add(tv1);
@@ -121,42 +135,6 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
     }
 
-    /**
-     * 通过此方法可以使 Fragment 能够与外界做一些交互和通信, 比如说外部的 Activity 想让自己持有的某个 Fragment 对象执行一些方法,
-     * 建议在有多个需要与外界交互的方法时, 统一传 {@link Message}, 通过 what 字段来区分不同的方法, 在 {@link #setData(Object)}
-     * 方法中就可以 {@code switch} 做不同的操作, 这样就可以用统一的入口方法做多个不同的操作, 可以起到分发的作用
-     * <p>
-     * 调用此方法时请注意调用时 Fragment 的生命周期, 如果调用 {@link #setData(Object)} 方法时 {@link Fragment#onCreate(Bundle)} 还没执行
-     * 但在 {@link #setData(Object)} 里却调用了 Presenter 的方法, 是会报空的, 因为 Dagger 注入是在 {@link Fragment#onCreate(Bundle)} 方法中执行的
-     * 然后才创建的 Presenter, 如果要做一些初始化操作,可以不必让外部调用 {@link #setData(Object)}, 在 {@link #initData(Bundle)} 中初始化就可以了
-     * <p>
-     * Example usage:
-     * <pre>
-     * public void setData(@Nullable Object data) {
-     *     if (data != null && data instanceof Message) {
-     *         switch (((Message) data).what) {
-     *             case 0:
-     *                 loadData(((Message) data).arg1);
-     *                 break;
-     *             case 1:
-     *                 refreshUI();
-     *                 break;
-     *             default:
-     *                 //do something
-     *                 break;
-     *         }
-     *     }
-     * }
-     *
-     * // call setData(Object):
-     * Message data = new Message();
-     * data.what = 0;
-     * data.arg1 = 1;
-     * fragment.setData(data);
-     * </pre>
-     *
-     * @param data 当不需要参数时 {@code data} 可以为 {@code null}
-     */
     @Override
     public void setData(@Nullable Object data) {
 
@@ -196,22 +174,113 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             case R.id.rl_mb:
                 break;
             case R.id.iv1:
+                Log.e("--", "点击了，弹菜单。");
+                clickImageView = image1;
+                imageMenuPop.showAsDropDown(image1);
                 break;
             case R.id.iv2:
                 break;
             case R.id.tv1:
-                toShowPop(0);
+                toShowPop(0, 1);
                 break;
         }
     }
 
-    private void toShowPop(int id) {
+    private PhotoView clickImageView;
+    private boolean imageMenuPopShow;
+
+    private int rotateNum = 0;
+
+    private void initBackPopupWindow() {
+        View contentview = getLayoutInflater().inflate(R.layout.popupwindow_image_menu, null);
+        contentview.setFocusable(true); // 这个很重要
+        contentview.setFocusableInTouchMode(true);
+
+        imageMenuPop = new PopupWindow(contentview, WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+
+        TextView tvChange = contentview.findViewById(R.id.tv_change);
+        TextView tvRotate = contentview.findViewById(R.id.tv_rotate);
+
+        tvRotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rotateNum++;
+//                Matrix matrix = new Matrix(); //旋转图片 动作
+//                matrix.setRotate(90);//旋转角度
+//                Bitmap bitmap = ((BitmapDrawable) ((PhotoView) clickImageView).getDrawable()).getBitmap();
+////                Bitmap bitmap = ImageUtils.getBitMBitmap(selectList.get(0).getPath());
+//                int width = selectList.get(0).getWidth();
+//                int height = selectList.get(0).getHeight(); // 创建新的图片
+//                Log.e("--", "图片宽高" + width + "-" + height);
+//                int width2 = bitmap.getWidth();
+//                int height2 = bitmap.getHeight(); // 创建新的图片
+//                Log.e("--", "view宽高" + width2 + "-" + height2);
+////                Bitmap resizedBitmap;
+////                if ((rotateNum ^ 2) == 0) {
+////                    resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+////                } else {
+////                    resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, height, width, matrix, true);
+////                }
+//                Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width2, height2, matrix, true);
+//                BitmapDrawable bitmapDrawable = new BitmapDrawable(resizedBitmap);
+//                clickImageView.setImageDrawable(bitmapDrawable);
+
+                Bitmap bmp = BitmapFactory.decodeFile(selectList.get(0).getPath());
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(rotaingImageView(90 * rotateNum, bmp));
+                clickImageView.setImageDrawable(bitmapDrawable);
+            }
+        });
+
+
+        imageMenuPop.setBackgroundDrawable(new ColorDrawable(0x11111111));
+        // 设置好参数之后再show
+        imageMenuPop.setOutsideTouchable(true);
+
+
+    }
+
+
+    /*
+     * 旋转图片
+     * @param angle
+     * @param bitmap
+     * @return Bitmap
+     */
+    public Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+        //旋转图片 动作
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+
+
+        float nn = bitmap.getWidth() / image1.getWidth();
+        int w = (int) (nn * bitmap.getWidth());
+        int h = (int) (nn * bitmap.getHeight());
+
+        
+        Log.e("--","图宽"+bitmap.getWidth());
+        Log.e("--","V宽"+image1.getWidth());
+
+
+        // 创建新的图片
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+    }
+
+
+    //通知编辑页面弹出底部菜单
+    private void toShowPop(int id, int pop) {
         eventMsg = new ToActivityMsg();
-        eventMsg.showFontPop = true;
+        if (pop == 1) {
+            eventMsg.showFontPop = true;
+            eventMsg.color = textViews.get(id).getCurrentTextColor();
+            eventMsg.text = textViews.get(id).getText().toString();
+        }
+        if (pop == 2) {
+            eventMsg.showTagPop = true;
+            eventMsg.text = tagTextViews.get(id).getText().toString();
+        }
         eventMsg.viewId = id;
         eventMsg.fragment = 1;
-        eventMsg.color = textViews.get(id).getCurrentTextColor();
-        eventMsg.text = textViews.get(id).getText().toString();
         EventBusUtils.post(eventMsg);
     }
 
@@ -229,6 +298,8 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
     private List<TextView> textViews = new ArrayList<>();
     private List<View> views = new ArrayList<>();
+    private List<TextView> tagTextViews = new ArrayList<>();
+    private List<View> tagViews = new ArrayList<>();
 
     //接收消息
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -243,6 +314,9 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             if (msg.isAddText) {
                 addDelRotateView(msg);
             }
+            if (msg.isTagOk) {
+                addTagView(msg);
+            }
         }
     }
 
@@ -256,12 +330,16 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 ivRotate.setVisibility(View.INVISIBLE);
             }
         }
+        if (tagViews.size() > 0) {
+            for (View view : tagViews) {
+                ImageView ivDelete = (ImageView) view.findViewById(R.id.iv_delete);
+                ivDelete.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     //添加一个带删除旋转的view
     private void addDelRotateView(ToFragmentMsg msg) {
-
-
         View view = getActivity().getLayoutInflater().inflate(R.layout.layout_add_text, null);
         TextView textView = (TextView) view.findViewById(R.id.textView);
         ImageView ivDelete = (ImageView) view.findViewById(R.id.iv_delete);
@@ -275,7 +353,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.CENTER_IN_PARENT);
         view.setLayoutParams(lp);
-        rlMb.addView(view);
+        stickerView.addView(view);
         eventMsg = new ToActivityMsg();
         eventMsg.isViewId = true;
         eventMsg.viewId = textViews.size();
@@ -286,7 +364,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rlMb.removeView(view);
+                stickerView.removeView(view);
                 views.remove((int) textView.getTag() - 1);
             }
         });
@@ -297,7 +375,49 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 Log.e("--", "点击了" + ((int) textView.getTag()));
                 ivDelete.setVisibility(View.VISIBLE);
                 ivRotate.setVisibility(View.VISIBLE);
-                toShowPop((int) textView.getTag());
+                toShowPop((int) textView.getTag(), 1);
+            }
+        });
+        touchView(view);
+
+    }
+
+    //添加一个tag
+    private void addTagView(ToFragmentMsg msg) {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.layout_add_tag, null);
+        LinearLayout llTag = (LinearLayout) view.findViewById(R.id.ll_tag);
+        llTag.setBackgroundColor(getResources().getColor(msg.type));
+        TextView textView = (TextView) view.findViewById(R.id.tv_tag);
+        ImageView ivDelete = (ImageView) view.findViewById(R.id.iv_delete);
+        textView.setText(msg.text);
+        textView.setTag(tagTextViews.size());
+        view.setPadding(5, 5, 5, 5);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.addRule(RelativeLayout.CENTER_IN_PARENT);
+        view.setLayoutParams(lp);
+        stickerView.addView(view);
+        eventMsg = new ToActivityMsg();
+        eventMsg.isViewId = true;
+        eventMsg.viewId = tagTextViews.size();
+        EventBusUtils.post(eventMsg);
+        tagTextViews.add(textView);
+        tagViews.add(view);
+
+        ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stickerView.removeView(view);
+                tagViews.remove((int) textView.getTag());
+            }
+        });
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("--", "点击了" + ((int) textView.getTag()));
+                ivDelete.setVisibility(View.VISIBLE);
+                toShowPop((int) textView.getTag(), 2);
             }
         });
         touchView(view);
@@ -529,7 +649,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             public void onClick(View v) {
                 Log.e("--", "点击了" + ((int) textView.getTag()));
 
-                toShowPop((int) textView.getTag());
+                toShowPop((int) textView.getTag(), 1);
             }
         });
         touchTextView(textView);
@@ -594,7 +714,6 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 .load(mList.get(position1).imgPath)
                 .into(mList.get(position1).v);
 
-
     }
 
     private List<MyViewBean> mList = new ArrayList();
@@ -639,12 +758,10 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             MyViewBean myViewBean = new MyViewBean();
             myViewBean.imgLeft = location[0];
             myViewBean.imgbottom = location[1];
-     /*   myViewBean.imgRight = location[0]+location[2];
-        myViewBean.imgrightBo = location[1]+location[3];*/
-            myViewBean.v = image2;
-            myViewBean.imgPath = path2;
             myViewBean.imgRight = location[0] + image2.getWidth();
             myViewBean.imgrightBo = location[1] + image2.getHeight();
+            myViewBean.v = image2;
+            myViewBean.imgPath = path2;
             mList.add(myViewBean);
 
         }
