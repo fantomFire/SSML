@@ -68,7 +68,9 @@
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
-        <activity android:name=".mvp.ui.activity.PublishActivity" />
+        <activity android:name=".mvp.ui.activity.PublishActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
         <activity
             android:name=".mvp.ui.activity.PostVideosActivity"
