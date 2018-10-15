@@ -16,13 +16,14 @@ import com.jess.arms.utils.ArmsUtils;
 import com.jude.rollviewpager.RollPagerView;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerGraphicDetailsComponent;
 import zhonghuass.ssml.di.module.GraphicDetailsModule;
 import zhonghuass.ssml.mvp.contract.GraphicDetailsContract;
 import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
 import zhonghuass.ssml.mvp.presenter.GraphicDetailsPresenter;
-import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.StorePagerAdapter;
 import zhonghuass.ssml.utils.CircleImageView;
 
@@ -51,7 +52,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     TextView tvContent;
     @BindView(R.id.tv_site)
     TextView tvSite;
-    private String content_id="71",member_id="1", member_type="0";
+    private String content_id = "71", member_id = "1", member_type = "0";
     private StorePagerAdapter storePagerAdapter;
 
     @Override
@@ -78,8 +79,8 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         member_id = intent.getStringExtra("member_id");
         member_type = intent.getStringExtra("member_type");
 */
-        System.out.println("content_id"+content_id+"   member_id"+member_id);
-        mPresenter.getGraphicData("71","1", "0");
+        System.out.println("content_id" + content_id + "   member_id" + member_id);
+        mPresenter.getGraphicData("71", "1", "0");
     }
 
     @Override
@@ -112,7 +113,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     @Override
     public void showGraphicData(GraphicBean.DataBean data) {
-        System.out.println("wwwwwwwww"+data.getTheme_title());
+        System.out.println("wwwwwwwww" + data.getTheme_title());
         Glide.with(this)
                 .load(data.getMember_image())
                 .into(civIcon1);
@@ -127,5 +128,23 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         vpBanner.setAnimationDurtion(500);
         vpBanner.setAdapter(storePagerAdapter);
 
+    }
+
+
+    @OnClick({R.id.vp_banner, R.id.iv_back, R.id.iv_right, R.id.civ_icon1, R.id.btn_focus})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.vp_banner:
+                break;
+            case R.id.iv_back:
+                onBackPressed();
+                break;
+            case R.id.iv_right:
+                break;
+            case R.id.civ_icon1:
+                break;
+            case R.id.btn_focus:
+                break;
+        }
     }
 }
