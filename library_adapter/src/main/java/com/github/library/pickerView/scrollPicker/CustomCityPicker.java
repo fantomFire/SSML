@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.github.library.R;
 
-import org.json.JSONArray;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,11 +26,15 @@ import java.util.List;
  */
 public class CustomCityPicker {
 
+    private int countysSelect;
+    private String json;
+
     /**
      * 定义结果回调接口
      */
     public interface ResultHandler {
         void handle(String result);
+        void sendId(String ids);
     }
 
     private ResultHandler handler;
@@ -44,6 +46,8 @@ public class CustomCityPicker {
 
     private TextView tv_cancle, tv_select;
     private String mProvince, mCity, mArea;
+    private String mProvinceId, mCityId, mAreaId;
+
     private List<Province> provinceList = new ArrayList<>();
     private List<String> provinces = new ArrayList<>();
     private List<List<String>> citys = new ArrayList<List<String>>();
@@ -94,11 +98,12 @@ public class CustomCityPicker {
         tv_select.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mProvince.equals(mCity)) {
+              /*  if (mProvince.equals(mCity)) {
                     handler.handle(mCity + "-" + mArea);
                 } else {
-                    handler.handle(mProvince + "-" + mCity + "-" + mArea);
-                }
+                }*/
+                handler.handle(mProvince + "-" + mCity + "-" + mArea);
+                handler.sendId(mProvinceId+"-"+mCityId+"-"+mAreaId);
                 cityPickerDialog.dismiss();
             }
         });
@@ -128,9 +133,12 @@ public class CustomCityPicker {
 
     //int type :  0 正常模式 ;1 只显示陕西省市区 ;2 第3级多一个全市区
     //提前加载数据，这样不需要花费过长时间
-    public void initJson() {
+    public void initJson(String json) {
         initArrayList();
-        String json = getJson(context, "city.json");
+        if(json==null){
+
+            json = getJson(context, "localCity.json");
+        }
         provinceList.addAll(JSON.parseArray(json, Province.class));
         int provinceSize = provinceList.size();
         //添加省
@@ -138,8 +146,8 @@ public class CustomCityPicker {
             Province pro;
             pro = provinceList.get(x);
 //            if (type == 1) {
-//                if (pro.getAreaName().equals("陕西省")) {
-//                    provinces.add(pro.getAreaName());
+//                if (pro.getArea_name().equals("陕西省")) {
+//                    provinces.add(pro.getArea_name());
 //                    List<City> cities = pro.getCities();
 //                    List<String> xCities = new ArrayList<String>();
 //                    List<List<String>> xCounties = new ArrayList<List<String>>();
@@ -147,16 +155,16 @@ public class CustomCityPicker {
 //                    //添加地市
 //                    for (int y = 0; y < citySize; y++) {
 //                        City cit = cities.get(y);
-//                        xCities.add(cit.getAreaName());
+//                        xCities.add(cit.getArea_name());
 //                        List<County> counties = cit.getCounties();
 //                        List<String> yCounties = new ArrayList<String>();
 //                        int countySize = counties.size();
 //                        //添加区县
 //                        if (countySize == 0) {
-//                            yCounties.add(cit.getAreaName());
+//                            yCounties.add(cit.getArea_name());
 //                        } else {
 //                            for (int z = 0; z < countySize; z++) {
-//                                yCounties.add(counties.get(z).getAreaName());
+//                                yCounties.add(counties.get(z).getArea_name());
 //                            }
 //                        }
 //                        xCounties.add(yCounties);
@@ -167,7 +175,7 @@ public class CustomCityPicker {
 //            }
 //
 //            if (type == 2) {
-//                provinces.add(pro.getAreaName());
+//                provinces.add(pro.getArea_name());
 //                List<City> cities = pro.getCities();
 //                List<String> xCities = new ArrayList<String>();
 //                List<List<String>> xCounties = new ArrayList<List<String>>();
@@ -175,17 +183,17 @@ public class CustomCityPicker {
 //                //添加地市
 //                for (int y = 0; y < citySize; y++) {
 //                    City cit = cities.get(y);
-//                    xCities.add(cit.getAreaName());
+//                    xCities.add(cit.getArea_name());
 //                    List<County> counties = cit.getCounties();
 //                    List<String> yCounties = new ArrayList<String>();
 //                    int countySize = counties.size();
 //                    //添加区县
 //                    if (countySize == 0) {
-//                        yCounties.add(cit.getAreaName());
+//                        yCounties.add(cit.getArea_name());
 //                    } else {
 //                        yCounties.add("全市区");
 //                        for (int z = 0; z < countySize; z++) {
-//                            yCounties.add(counties.get(z).getAreaName());
+//                            yCounties.add(counties.get(z).getArea_name());
 //                        }
 //                    }
 //                    xCounties.add(yCounties);
@@ -194,25 +202,25 @@ public class CustomCityPicker {
 //                countys.add(xCounties);
 //            }
 //            if (type == 0) {
-            provinces.add(pro.getAreaName());
-            List<City> cities = pro.getCities();
+            provinces.add(pro.getArea_name());
+            List<City> cities = pro.getLevel();
             List<String> xCities = new ArrayList<String>();
             List<List<String>> xCounties = new ArrayList<List<String>>();
             int citySize = cities.size();
             //添加地市
             for (int y = 0; y < citySize; y++) {
                 City cit = cities.get(y);
-                xCities.add(cit.getAreaName());
-                List<County> counties = cit.getCounties();
+                xCities.add(cit.getArea_name());
+                List<County> counties = cit.getLevel();
                 List<String> yCounties = new ArrayList<String>();
                 int countySize = counties.size();
                 //添加区县
                 if (countySize == 0) {
-                    yCounties.add(cit.getAreaName());
+                    yCounties.add(cit.getArea_name());
                 } else {
 //                    if (type == 2) yCounties.add("全市区");
                     for (int z = 0; z < countySize; z++) {
-                        yCounties.add(counties.get(z).getAreaName());
+                        yCounties.add(counties.get(z).getArea_name());
                     }
                 }
                 xCounties.add(yCounties);
@@ -230,53 +238,36 @@ public class CustomCityPicker {
         /**
          * The Area id.
          */
-        String areaId;
+        String area_id;
         /**
          * The Area name.
          */
-        String areaName;
+        String area_name;
+        String area_parent_id;
 
-        /**
-         * Gets area id.
-         *
-         * @return the area id
-         */
-        public String getAreaId() {
-            return areaId;
+        public String getArea_id() {
+            return area_id;
         }
 
-        /**
-         * Sets area id.
-         *
-         * @param areaId the area id
-         */
-        public void setAreaId(String areaId) {
-            this.areaId = areaId;
+        public void setArea_id(String area_id) {
+            this.area_id = area_id;
         }
 
-        /**
-         * Gets area name.
-         *
-         * @return the area name
-         */
-        public String getAreaName() {
-            return areaName;
+        public String getArea_name() {
+            return area_name;
         }
 
-        /**
-         * Sets area name.
-         *
-         * @param areaName the area name
-         */
-        public void setAreaName(String areaName) {
-            this.areaName = areaName;
+        public void setArea_name(String area_name) {
+            this.area_name = area_name;
         }
 
-        @Override
-        public String toString() {
-            return "areaId=" + areaId + ",areaName=" + areaName;
+        public String getArea_parent_id() {
+            return area_parent_id;
         }
 
+        public void setArea_parent_id(String area_parent_id) {
+            this.area_parent_id = area_parent_id;
+        }
     }
 
     /**
@@ -293,7 +284,7 @@ public class CustomCityPicker {
          *
          * @return the cities
          */
-        public List<City> getCities() {
+        public List<City> getLevel() {
             return cities;
         }
 
@@ -302,7 +293,7 @@ public class CustomCityPicker {
          *
          * @param cities the cities
          */
-        public void setCities(List<City> cities) {
+        public void setLevel(List<City> cities) {
             this.cities = cities;
         }
 
@@ -319,7 +310,7 @@ public class CustomCityPicker {
          *
          * @return the counties
          */
-        public List<County> getCounties() {
+        public List<County> getLevel() {
             return counties;
         }
 
@@ -328,7 +319,7 @@ public class CustomCityPicker {
          *
          * @param counties the counties
          */
-        public void setCounties(ArrayList<County> counties) {
+        public void setLevel(ArrayList<County> counties) {
             this.counties = counties;
         }
 
@@ -373,9 +364,11 @@ public class CustomCityPicker {
         city_pv.setData(citys.get(0));
         area_pv.setData(countys.get(0).get(0));
         mProvince = provinces.get(0);
+        mProvinceId = provinceList.get(0).getArea_id();
         mCity = citys.get(0).get(0);
+        mCityId =  provinceList.get(0).getLevel().get(0).getArea_id();
         mArea = countys.get(0).get(0).get(0);
-
+        mAreaId =  provinceList.get(0).getLevel().get(0).getLevel().get(0).getArea_id();
         province_pv.setSelected(0);
         city_pv.setSelected(0);
         area_pv.setSelected(0);
@@ -397,6 +390,7 @@ public class CustomCityPicker {
                     }
                 }
                 mProvince = text;
+                mProvinceId = provinceList.get(provinceSelect).getArea_id();
                 changeCity(provinceSelect);
             }
         });
@@ -411,6 +405,7 @@ public class CustomCityPicker {
                     }
                 }
                 mCity = text;
+                mCityId =  provinceList.get(provinceSelect).getLevel().get(citySelect).getArea_id();
                 changeArea(provinceSelect, citySelect);
             }
         });
@@ -418,6 +413,12 @@ public class CustomCityPicker {
         area_pv.setOnSelectListener(new ScrollPickerView.onSelectListener() {
             @Override
             public void onSelect(String text) {
+                for (int i = 0; i < provinceList.get(provinceSelect).getLevel().get(citySelect).getLevel().size(); i++) {
+                    if (countys.get(provinceSelect).get(citySelect).get(i).equals(text)) {
+                        mAreaId = provinceList.get(provinceSelect).getLevel().get(citySelect).getLevel().get(i).getArea_id();
+                        break;
+                    }
+                }
                 mArea = text;
             }
         });
@@ -427,6 +428,7 @@ public class CustomCityPicker {
         city_pv.setData(citys.get(temp));
         city_pv.setSelected(0);
         mCity = citys.get(temp).get(0);
+        mCityId = provinceList.get(temp).getLevel().get(0).getArea_id();
         executeAnimator(city_pv);
         city_pv.postDelayed(new Runnable() {
             @Override
@@ -440,7 +442,7 @@ public class CustomCityPicker {
         area_pv.setData(countys.get(temp).get(temp2));
         area_pv.setSelected(0);
         mArea = countys.get(temp).get(temp2).get(0);
-
+        mAreaId = provinceList.get(temp).getLevel().get(temp2).getLevel().get(0).getArea_id();
         executeAnimator(area_pv);
     }
 

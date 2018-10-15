@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="zhonghuass.ssml">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,7 +21,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
+
         <activity
             android:name=".mvp.ui.activity.MainActivity"
             android:launchMode="singleTask">
@@ -53,22 +56,30 @@
         <activity android:name=".mvp.ui.activity.RealNameActivity" />
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
-        <activity android:name=".mvp.ui.activity.TradeDetailActivity" />
+        <activity
+            android:name=".mvp.ui.activity.TradeDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity android:name=".mvp.ui.activity.ConcernActivity" />
         <activity android:name=".mvp.ui.activity.PraiseActivity" />
         <activity android:name=".mvp.ui.activity.CommentActivity" />
         <activity android:name=".mvp.ui.activity.ShareMeActivity" />
         <activity android:name=".mvp.ui.activity.MessageListActivity" />
-        <activity android:name=".mvp.ui.activity.SearchActivity" />
+        <activity android:name=".mvp.ui.activity.SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+
+            />
         <activity android:name=".mvp.ui.activity.MyConcernActivity" />
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
-        <activity android:name=".mvp.ui.activity.PublishActivity" />
+        <activity android:name=".mvp.ui.activity.PublishActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
-        <activity android:name=".mvp.ui.activity.PostVideosActivity"
-             android:windowSoftInputMode = "stateAlwaysHidden|adjustPan"
-            ></activity>
+        <activity
+            android:name=".mvp.ui.activity.PostVideosActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
         <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
             >
@@ -80,7 +91,10 @@
         <activity android:name=".mvp.ui.activity.PublishMediaActivity" />
         <activity android:name=".mvp.ui.activity.UpLoadDetailActivity" />
         <activity android:name=".mvp.ui.activity.PicEditActivity" />
-        <activity android:name=".mvp.ui.activity.GraphicDetailsActivity" />
+        <activity android:name=".mvp.ui.activity.GraphicDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+
+            />
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
+import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
 
 public class DailyAdapter extends BaseQuickAdapter<DailyChoicenessBean, RecyclerView.ViewHolder> {
 
@@ -39,6 +41,9 @@ public class DailyAdapter extends BaseQuickAdapter<DailyChoicenessBean, Recycler
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
         int imgWidth = (screenWidth) / 2;
         int resize = Integer.parseInt(cover_width) / imgWidth;
+        if(resize==0){
+            resize=1;
+        }
         int imghight = Integer.parseInt(cover_height) / resize;
 
         ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
@@ -62,6 +67,11 @@ public class DailyAdapter extends BaseQuickAdapter<DailyChoicenessBean, Recycler
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
+                intent.putExtra("content_id",item.getContent_id());
+                intent.putExtra("member_id",item.getMember_id());
+                intent.putExtra("member_type",item.getMember_type());
+                mContext.startActivity(intent);
             }
         });
     }

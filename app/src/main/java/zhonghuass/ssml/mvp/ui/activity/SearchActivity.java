@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import zhonghuass.ssml.di.module.SearchModule;
 import zhonghuass.ssml.mvp.contract.SearchContract;
 import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
 import zhonghuass.ssml.mvp.presenter.SearchPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.SearchHistoryAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -65,6 +67,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         rvSearchHistory.setLayoutManager(gridLayoutManager);
         historyAdapter = new SearchHistoryAdapter(R.layout.search_history_item,mList);

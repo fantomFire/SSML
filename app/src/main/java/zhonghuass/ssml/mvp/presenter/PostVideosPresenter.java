@@ -1,13 +1,16 @@
 package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
+import com.luck.picture.lib.entity.LocalMedia;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +24,7 @@ import okhttp3.RequestBody;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PostVideosContract;
 import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
+import zhonghuass.ssml.mvp.model.appbean.RecomDetailBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -49,41 +53,97 @@ public class PostVideosPresenter extends BasePresenter<PostVideosContract.Model,
         this.mApplication = null;
     }
 
-    public void getInviteData(String ep_id, int page, int pagesize) {
-        mModel.getInviteData(ep_id, page, pagesize)
+    public void getInviteData() {
+        mModel.getInviteData()
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<IniviteBean>>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<RecomDetailBean>>>(mErrorHandler) {
                     @Override
-                    public void onNext(BaseResponse<IniviteBean> iniviteBeanBaseResponse) {
-                        if (iniviteBeanBaseResponse.isSuccess()) {
-                            mRootView.showdata(iniviteBeanBaseResponse);
-                        } else if (iniviteBeanBaseResponse.getStatus().equals("201")) {
-//                            mRootView.showdatatoast();
-                        } else {
-                            mRootView.showMessage(iniviteBeanBaseResponse.getMessage());
+                    public void onNext(BaseResponse<List<RecomDetailBean>> recomDetail) {
+                        if (recomDetail.isSuccess()) {
+                            mRootView.showdata(recomDetail.getData());
                         }
+                    }
+
+                });
+    }
+
+    public void upLoadData(String mediaPath, String mContent, String theme_id, String userId, String member_type, String imagePath) {
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("content_type", convertToRequestBody("1"));
+        map.put("member_id", convertToRequestBody(userId));
+        map.put("member_type", convertToRequestBody("1"));
+        map.put("content_title", convertToRequestBody("jfasdlkfadsfadskfjasdoi"));
+        map.put("content_category", convertToRequestBody("1"));
+        map.put("content_theme", convertToRequestBody(theme_id));
+        map.put("content_position", convertToRequestBody("西安"));
+        map.put("content_detail", convertToRequestBody(mContent));
+
+
+        //封面
+        final File file = new File(imagePath);
+        System.out.println("fileName" + file.getName());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part coverPart = MultipartBody.Part.createFormData("content_cover", file.getName(), requestFile);
+
+        //视频
+        final File mediaFile = new File(mediaPath);
+        System.out.println("mediaFile" + mediaFile.getName());
+        RequestBody mediaBody = RequestBody.create(MediaType.parse("multipart/form-data"), mediaFile);
+        MultipartBody.Part mediaPart = MultipartBody.Part.createFormData("video", mediaFile.getName(), mediaBody);
+
+
+        mModel.upLoadData(map, coverPart, mediaPart)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.hideLoading();
+                        System.out.println("voidBaseResponse" + voidBaseResponse.getStatus());
+                    }
+                });
+
+    }
+
+
+    public void upImages(ArrayList<LocalMedia> paths, String content, String theme_id, String userId, String member_type) {
+        System.out.println("userId" + userId);
+        HashMap<String, RequestBody> map = new HashMap<>();
+        map.put("content_type", convertToRequestBody("0"));
+        map.put("member_id", convertToRequestBody("1"));
+        map.put("member_type", convertToRequestBody("1"));
+        map.put("content_title", convertToRequestBody("jfasdlkfadsfadskfjasdoi"));
+        map.put("content_category", convertToRequestBody("1"));
+        map.put("content_theme", convertToRequestBody(theme_id));
+        map.put("content_position", convertToRequestBody("西安"));
+        map.put("content_detail", convertToRequestBody(content));
+        //封面
+        final File file = new File(paths.get(0).getPath());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part coverPart = MultipartBody.Part.createFormData("content_cover", file.getName(), requestFile);
+        //详情图片
+        MultipartBody.Part[] parts = new MultipartBody.Part[paths.size()];
+        int cnt = 0;
+        for (LocalMedia localMedia : paths) {
+            final File imgFile = new File(localMedia.getPath());
+            RequestBody upLoadFile = RequestBody.create(MediaType.parse("multipart/form-data"), imgFile);
+            MultipartBody.Part imagesPart = MultipartBody.Part.createFormData("image" + cnt, file.getName(), upLoadFile);
+            parts[cnt] = imagesPart;
+            cnt++;
+        }
+
+
+        mModel.upLoadImages(map, coverPart, parts)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        System.out.println("voidBaseResponse" + voidBaseResponse.getMessage());
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                        mRootView.hideLoading();
                     }
                 });
     }
 
-    public void upLoadData(List<String> paths, String mContent, String userEare, String dailyTag) {
-        HashMap<String, RequestBody> map = new HashMap<>();
-        map.put("uid", convertToRequestBody(mContent));
-        map.put("truename", convertToRequestBody(userEare));
-        map.put("identity_card", convertToRequestBody(dailyTag));
-        MultipartBody.Part[] parts = new MultipartBody.Part[paths.size()];
-        int cnt = 0;
-        for (String imgPath : paths) {
-            final File file = new File(imgPath);
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("uploadfile[]", file.getName(), requestFile);
-            parts[cnt] = filePart;
-            cnt++;
-        }
-      /*  mModel.upLoadData(map,parts)
-                .c*/
-
-    }
     private RequestBody convertToRequestBody(String param) {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), param);
         return requestBody;

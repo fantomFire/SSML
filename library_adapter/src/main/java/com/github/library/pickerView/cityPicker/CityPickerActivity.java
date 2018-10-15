@@ -125,31 +125,31 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         provinces.clear();
         citys.clear();
         countys.clear();
-        String json = getJson(this, "city.json");
+        String json = getJson(this, "localCity.json");
         provinceList.addAll(JSON.parseArray(json, CustomCityPicker.Province.class));
         int provinceSize = provinceList.size();
         //添加省
         for (int x = 0; x < provinceSize; x++) {
             CustomCityPicker.Province pro;
             pro = provinceList.get(x);
-            provinces.add(pro.getAreaName());
-            List<CustomCityPicker.City> cities = pro.getCities();
+            provinces.add(pro.getArea_name());
+            List<CustomCityPicker.City> cities = pro.getLevel();
             List<String> xCities = new ArrayList<String>();
             List<List<String>> xCounties = new ArrayList<List<String>>();
             int citySize = cities.size();
             //添加地市
             for (int y = 0; y < citySize; y++) {
                 CustomCityPicker.City cit = cities.get(y);
-                xCities.add(cit.getAreaName());
-                List<CustomCityPicker.County> counties = cit.getCounties();
+                xCities.add(cit.getArea_name());
+                List<CustomCityPicker.County> counties = cit.getLevel();
                 List<String> yCounties = new ArrayList<String>();
                 int countySize = counties.size();
                 //添加区县
                 if (countySize == 0) {
-                    yCounties.add(cit.getAreaName());
+                    yCounties.add(cit.getArea_name());
                 } else {
                     for (int z = 0; z < countySize; z++) {
-                        yCounties.add(counties.get(z).getAreaName());
+                        yCounties.add(counties.get(z).getArea_name());
                     }
                 }
                 xCounties.add(yCounties);
@@ -336,6 +336,7 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String name = countys.get(provinceSelect).get(citySelect).get(position);
+                String pinyin = mAllCities.get(provinceSelect).getPinyin();
                 mTvArea.setText(name);
                 popupWindow.dismiss();
                 back(name);

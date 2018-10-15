@@ -8,6 +8,7 @@ import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,7 @@ import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PostVideosContract;
 import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
+import zhonghuass.ssml.mvp.model.appbean.RecomDetailBean;
 
 
 @ActivityScope
@@ -40,13 +42,20 @@ public class PostVideosModel extends BaseModel implements PostVideosContract.Mod
     }
 
     @Override
-    public Observable<BaseResponse<IniviteBean>> getInviteData(String ep_id, int page, int pagesize) {
-        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getInviteData(ep_id,page,pagesize);
+    public Observable<BaseResponse<List<RecomDetailBean>>> getInviteData() {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getRecomDetail();
+    }
+
+
+    @Override
+    public Observable<BaseResponse<Void>> upLoadImages(HashMap<String, RequestBody> map, MultipartBody.Part parts, MultipartBody.Part[] parts1) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .upLoadImages(map,parts,parts1);
     }
 
     @Override
-    public Observable<BaseResponse<Void>> upLoadData(HashMap<String, RequestBody> map, MultipartBody.Part[] parts) {
+    public Observable<BaseResponse<Void>> upLoadData(HashMap<String, RequestBody> map, MultipartBody.Part coverPart, MultipartBody.Part mediaPart) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .upLoadData(map,parts);
+                .upLoadData(map,coverPart,mediaPart);
     }
 }

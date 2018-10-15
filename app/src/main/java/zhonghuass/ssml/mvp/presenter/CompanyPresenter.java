@@ -7,15 +7,25 @@ import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.CompanyContract;
+import zhonghuass.ssml.mvp.model.appbean.AreaBean;
 import zhonghuass.ssml.mvp.model.appbean.TradeBean;
+import zhonghuass.ssml.mvp.model.appbean.TradeItemBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -60,5 +70,55 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.Model, Compa
                 });
 
 
+    }
+
+    public void getAreaData() {
+        mModel.getAreaData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        try {
+                            String mString = responseBody.string();
+                            String data ="\"data\":";
+                            int i = mString.indexOf(data);
+                            String substring = mString.substring(i + data.length(), mString.length() - 1);
+                            mRootView.showAreaData(substring);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                    e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
+
+
+    }
+
+    public void getTradeItem() {
+        mModel.getTradeItem()
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<TradeItemBean>>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<List<TradeItemBean>> listBaseResponse) {
+                    if(listBaseResponse.isSuccess()){
+                        mRootView.showTradeItem(listBaseResponse.getData());
+
+                    }
+                    }
+                });
     }
 }

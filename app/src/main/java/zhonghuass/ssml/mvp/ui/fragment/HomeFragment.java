@@ -42,6 +42,7 @@ import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
 import zhonghuass.ssml.mvp.ui.activity.MSMQActivity;
 import zhonghuass.ssml.mvp.ui.activity.PublishActivity;
+import zhonghuass.ssml.mvp.ui.activity.SearchActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -177,6 +178,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
+                ArmsUtils.startActivity(SearchActivity.class);
                 break;
             case R.id.home_mess:
                 ArmsUtils.startActivity(MSMQActivity.class);
