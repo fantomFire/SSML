@@ -72,7 +72,6 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-      //  llTop.setVisibility(View.GONE);
 
         Intent intent = getIntent();
       /*   content_id = intent.getStringExtra("content_id");
