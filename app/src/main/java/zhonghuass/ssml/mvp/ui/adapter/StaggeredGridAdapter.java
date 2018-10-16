@@ -32,7 +32,7 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
 
     // 图片的宽度
     private int mPhotoWidth;
-    private int resize=1;
+    private int resize = 1;
 
 
     public StaggeredGridAdapter(Context context) {
@@ -56,7 +56,7 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
     protected void convert(final BaseViewHolder holder, final RecommendBean item) {
         holder.setText(R.id.company_name, item.getMember_name())
                 .setText(R.id.company_title, item.getContent_title())
-                .setText(R.id.like_num,item.getAmount_of_praise());
+                .setText(R.id.like_num, item.getAmount_of_praise());
         holder.convertView.setOnClickListener((v) -> {
                     Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
                     mContext.startActivity(intent);
@@ -64,13 +64,13 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         );
         //设置红心
         ImageView likeImg = holder.getView(R.id.iflike);
-        if(item.isPraise_tag()){
+        if (item.isPraise_tag()) {
             likeImg.setBackgroundResource(R.mipmap.home_icon_4);
-        }else {
+        } else {
             likeImg.setBackgroundResource(R.mipmap.home_icon_3);
         }
 
-    //设置theme
+        //设置theme
         TextView flag = holder.getView(R.id.tv_flag);
         String theme_title = item.getTheme_title();
         if (theme_title != null && !theme_title.equals("")) {
@@ -83,21 +83,16 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         }
 
 
-
-
-        final int cover_width =Integer.parseInt(item.getCover_width());
+        final int cover_width = Integer.parseInt(item.getCover_width());
         final int cover_height = Integer.parseInt(item.getCover_height());
         int screenWidth = ArmsUtils.getScreenWidth(mContext);
         int imgWidth = (screenWidth) / 2;
-        System.out.println("cover_width"+cover_width);
-        System.out.println("cover_height"+cover_height);
-        System.out.println("imgWidth"+imgWidth);
-            resize = (cover_width) / imgWidth;
+        resize = (cover_width) / imgWidth;
 
-        if(resize==0){
-            resize=1;
+        if (resize == 0) {
+            resize = 1;
         }
-        int imghight = cover_height/ resize;
+        int imghight = cover_height / resize;
 
         ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();
@@ -122,9 +117,9 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
-                intent.putExtra("content_id",item.getContent_id());
-                intent.putExtra("member_id",item.getMember_id());
-                intent.putExtra("member_type",item.getMember_type());
+                intent.putExtra("content_id", item.getContent_id());
+                intent.putExtra("member_id", item.getMember_id());
+                intent.putExtra("member_type", item.getMember_type());
                 mContext.startActivity(intent);
             }
         });
