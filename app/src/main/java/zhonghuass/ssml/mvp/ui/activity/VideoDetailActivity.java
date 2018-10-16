@@ -10,7 +10,8 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.mvp.ui.activity.di.di.component.DaggerVideoDetailComponent;
+
+import zhonghuass.ssml.di.component.DaggerVideoDetailComponent;
 import zhonghuass.ssml.mvp.model.VideoDetailModule;
 import zhonghuass.ssml.mvp.contract.VideoDetailContract;
 import zhonghuass.ssml.mvp.presenter.VideoDetailPresenter;
