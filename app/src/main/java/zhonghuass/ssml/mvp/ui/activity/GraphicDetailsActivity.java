@@ -74,10 +74,9 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
 
         Intent intent = getIntent();
-      /*   content_id = intent.getStringExtra("content_id");
+         content_id = intent.getStringExtra("content_id");
         member_id = intent.getStringExtra("member_id");
         member_type = intent.getStringExtra("member_type");
-*/
         System.out.println("content_id"+content_id+"   member_id"+member_id);
         mPresenter.getGraphicData("71","1", "0");
     }
@@ -112,7 +111,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     @Override
     public void showGraphicData(GraphicBean.DataBean data) {
-        System.out.println("wwwwwwwww"+data.getTheme_title());
+
         Glide.with(this)
                 .load(data.getMember_image())
                 .into(civIcon1);
