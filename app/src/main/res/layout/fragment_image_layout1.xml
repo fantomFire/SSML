@@ -20,6 +20,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="280dp"
                 android:layout_height="180dp"
+                android:background="@color/bg_gray_30"
         />
 
 
@@ -48,7 +49,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_width="280dp"
                 android:layout_height="180dp"
-                />
+                android:background="@color/bg_gray_30"
+        />
     </RelativeLayout>
     <RelativeLayout
             android:focusable="false"

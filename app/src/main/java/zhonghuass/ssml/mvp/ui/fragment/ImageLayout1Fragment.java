@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.media.ExifInterface;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -20,6 +17,9 @@ import com.github.chrisbanes.photoview.OnSingleFlingListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -31,16 +31,16 @@ import zhonghuass.ssml.mvp.ToFragmentMsg;
 import zhonghuass.ssml.mvp.contract.ImageLayout1Contract;
 import zhonghuass.ssml.mvp.presenter.ImageLayout1Presenter;
 import zhonghuass.ssml.mvp.ui.activity.ImageEditorActivity;
-import zhonghuass.ssml.utils.CircleImageView;
-import zhonghuass.ssml.utils.CustomRadioGroup;
 import zhonghuass.ssml.utils.EventBusUtils;
-import zhonghuass.ssml.utils.ImageUtils;
-import zhonghuass.ssml.utils.image.*;
+import zhonghuass.ssml.utils.image.MessageEvent;
+import zhonghuass.ssml.utils.image.MessageEventCurrent;
+import zhonghuass.ssml.utils.image.MyViewBean;
+import zhonghuass.ssml.utils.image.PhotoView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
@@ -174,11 +174,14 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             case R.id.rl_mb:
                 break;
             case R.id.iv1:
-                Log.e("--", "点击了，弹菜单。");
                 clickImageView = image1;
+                clickIVNum = 0;
                 imageMenuPop.showAsDropDown(image1);
                 break;
             case R.id.iv2:
+                clickImageView = image2;
+                clickIVNum = 1;
+                imageMenuPop.showAsDropDown(image2);
                 break;
             case R.id.tv1:
                 toShowPop(0, 1);
@@ -187,9 +190,10 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     }
 
     private PhotoView clickImageView;
-    private boolean imageMenuPopShow;
+    private int clickIVNum;//标记点击的是那个iv
 
-    private int rotateNum = 0;
+    private int rotateNum = 0;//点击旋转的次数，每次旋转90°
+    private int maxNum = 0;//点击放大次数
 
     private void initBackPopupWindow() {
         View contentview = getLayoutInflater().inflate(R.layout.popupwindow_image_menu, null);
@@ -201,34 +205,75 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
         TextView tvChange = contentview.findViewById(R.id.tv_change);
         TextView tvRotate = contentview.findViewById(R.id.tv_rotate);
+        TextView tvAmplify = contentview.findViewById(R.id.tv_amplify);
+        TextView tvReduce = contentview.findViewById(R.id.tv_reduce);
 
+        // 替换
+        tvChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //选择图片
+                selectPhoto(PictureMimeType.ofImage(), 1);
+            }
+        });
+
+
+        // 旋转
         tvRotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 rotateNum++;
-//                Matrix matrix = new Matrix(); //旋转图片 动作
-//                matrix.setRotate(90);//旋转角度
-//                Bitmap bitmap = ((BitmapDrawable) ((PhotoView) clickImageView).getDrawable()).getBitmap();
-////                Bitmap bitmap = ImageUtils.getBitMBitmap(selectList.get(0).getPath());
-//                int width = selectList.get(0).getWidth();
-//                int height = selectList.get(0).getHeight(); // 创建新的图片
-//                Log.e("--", "图片宽高" + width + "-" + height);
-//                int width2 = bitmap.getWidth();
-//                int height2 = bitmap.getHeight(); // 创建新的图片
-//                Log.e("--", "view宽高" + width2 + "-" + height2);
-////                Bitmap resizedBitmap;
-////                if ((rotateNum ^ 2) == 0) {
-////                    resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-////                } else {
-////                    resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, height, width, matrix, true);
-////                }
-//                Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width2, height2, matrix, true);
-//                BitmapDrawable bitmapDrawable = new BitmapDrawable(resizedBitmap);
-//                clickImageView.setImageDrawable(bitmapDrawable);
-
-                Bitmap bmp = BitmapFactory.decodeFile(selectList.get(0).getPath());
+                String path = "";
+                if (clickIVNum == 0) {
+                    path = mList.get(0).imgPath;
+                }
+                if (clickIVNum == 1) {
+                    path = mList.get(1).imgPath;
+                }
+                Bitmap bmp = BitmapFactory.decodeFile(path);
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(rotaingImageView(90 * rotateNum, bmp));
-                clickImageView.setImageDrawable(bitmapDrawable);
+                clickImageView.setScaleType(ImageView.ScaleType.CENTER);
+                clickImageView.setAdjustViewBounds(true);
+                Glide.with(getActivity())
+                        .load(bitmapDrawable)
+                        .into(clickImageView);
+//                clickImageView.setImageDrawable(bitmapDrawable);
+            }
+        });
+
+        // 放大
+        tvAmplify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float n = (float) ((maxNum + 1) * 0.25 + 1);
+                if (n > 3) {
+                    Toast.makeText(getActivity(), "不能再大啦！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                clickImageView.setScale(n,
+                        (clickImageView.getRight()) / 2,
+                        (contentview.getBottom()) / 2,
+                        true);
+                maxNum++;
+
+            }
+        });
+
+        // 缩小
+        tvReduce.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                float n = (float) ((maxNum - 1) * 0.25 + 1);
+                if (n < 1) {
+                    Toast.makeText(getActivity(), "不能再小啦！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                clickImageView.setScale(n,
+                        (clickImageView.getRight()) / 2,
+                        (contentview.getBottom()) / 2,
+                        true);
+                maxNum--;
+
             }
         });
 
@@ -240,6 +285,73 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
     }
 
+    private void selectPhoto(int type, int request_code) {
+        PictureSelector.create(this)
+                .openGallery(type)//全部.PictureMimeType.ofAll()、图片.ofImage()、视频.ofVideo()、音频.ofAudio()
+                .theme(R.style.picture_default_style)//主题样式(不设置为默认样式) 也可参考demo values/styles下 例如：R.style.picture.white.style
+                .maxSelectNum(1)// 最大图片选择数量 int
+                .minSelectNum(1)// 最小选择数量 int
+                .imageSpanCount(4)// 每行显示个数 int
+                .selectionMode(PictureConfig.MULTIPLE)// 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
+                .previewImage(true)// 是否可预览图片 true or false
+                .previewVideo(true)// 是否可预览视频 true or false
+                .enablePreviewAudio(true) // 是否可播放音频 true or false
+                .isCamera(true)// 是否显示拍照按钮 true or false
+                .imageFormat(PictureMimeType.PNG)// 拍照保存图片格式后缀,默认jpeg
+                .isZoomAnim(true)// 图片列表点击 缩放效果 默认true
+                .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
+                .setOutputCameraPath("/CustomPath")// 自定义拍照保存路径,可不填
+                //  .enableCrop(true)// 是否裁剪 true or false
+                .compress(true)// 是否压缩 true or false
+                // .glideOverride()// int glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
+                // .withAspectRatio()// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
+                .hideBottomControls(true)// 是否显示uCrop工具栏，默认不显示 true or false
+                .isGif(false)// 是否显示gif图片 true or false
+                //.compressSavePath(getPath())//压缩图片保存地址
+                //.freeStyleCropEnabled(true)// 裁剪框是否可拖拽 true or false
+                .circleDimmedLayer(true)// 是否圆形裁剪 true or false
+                .showCropFrame(false)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
+                .openClickSound(false)// 是否开启点击声音 true or false
+                //.selectionMedia()// 是否传入已选图片 List<LocalMedia> list
+                .previewEggs(false)// 预览图片时 是否增强左右滑动图片体验(图片滑动一半即可看到上一张是否选中) true or false
+                .cropCompressQuality(90)// 裁剪压缩质量 默认90 int
+                .minimumCompressSize(100)// 小于100kb的图片不压缩
+                .synOrAsy(true)//同步true或异步false 压缩 默认同步
+                // .cropWH()// 裁剪宽高比，设置如果大于图片本身宽高则无效 int
+                .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
+                .scaleEnabled(true)// 裁剪是否可放大缩小图片 true or false
+                .videoQuality(1)// 视频录制质量 0 or 1 int
+                .videoMaxSecond(150)// 显示多少秒以内的视频or音频也可适用 int
+                .recordVideoSecond(60)//视频秒数录制 默认60s int
+                .isDragFrame(false)// 是否可拖动裁剪框(固定)
+                .forResult(request_code);//结果回调onActivityResult code
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            if (data != null) {
+                List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                if (clickIVNum == 0) {
+                    path1 = selectList.get(0).getPath();
+                    Glide.with(this)
+                            .load(path1)
+                            .into(image1);
+                    mList.get(clickIVNum).imgPath = path1;
+                }
+                if (clickIVNum == 1) {
+                    path2 = selectList.get(0).getPath();
+                    Glide.with(this)
+                            .load(path2)
+                            .into(image2);
+                    mList.get(clickIVNum).imgPath = path2;
+                }
+            }
+        }
+    }
 
     /*
      * 旋转图片
@@ -253,13 +365,17 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
         matrix.postRotate(angle);
 
 
-        float nn = bitmap.getWidth() / image1.getWidth();
+        double nn = (double) clickImageView.getWidth() / bitmap.getWidth();
         int w = (int) (nn * bitmap.getWidth());
         int h = (int) (nn * bitmap.getHeight());
 
-        
-        Log.e("--","图宽"+bitmap.getWidth());
-        Log.e("--","V宽"+image1.getWidth());
+
+        Log.e("--", "NN" + nn);
+        Log.e("--", "WW" + w);
+        Log.e("--", "HH" + h);
+        Log.e("--", "图宽" + bitmap.getWidth());
+        Log.e("--", "图高" + bitmap.getHeight());
+        Log.e("--", "V宽" + clickImageView.getWidth());
 
 
         // 创建新的图片
@@ -267,7 +383,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     }
 
 
-    //通知编辑页面弹出底部菜单
+    //通知编辑页面弹出底部菜单 pop 用来区分是tag还是text
     private void toShowPop(int id, int pop) {
         eventMsg = new ToActivityMsg();
         if (pop == 1) {
