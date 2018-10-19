@@ -29,18 +29,13 @@ public class QQLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qqlogin);
-        mTencent = Tencent.createInstance("3103866703", QQLoginActivity.this.getApplicationContext());
+        mTencent = Tencent.createInstance("3103866703",this);
     }
 
     public void qqLogin(View view) {
 
         mTencent.login(QQLoginActivity.this, "all", mIUiListener);
     }
-
-    public void qqLogout(View view) {
-    }
-
-
     /**
      * QQ的三方授权回调监听
      */
