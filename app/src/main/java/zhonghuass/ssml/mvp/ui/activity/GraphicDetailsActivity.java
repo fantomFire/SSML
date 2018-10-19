@@ -131,6 +131,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     }
 
 
+
     @OnClick({R.id.vp_banner, R.id.iv_back, R.id.iv_right, R.id.civ_icon1, R.id.btn_focus})
     public void onViewClicked(View view) {
         switch (view.getId()) {

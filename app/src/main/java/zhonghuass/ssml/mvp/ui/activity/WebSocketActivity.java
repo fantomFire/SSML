@@ -41,6 +41,7 @@ public class WebSocketActivity extends AppCompatActivity {
     Button btnSms;
     private WebSocketClient mSocketClient;
     private Handler handler = new Handler() {
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -70,7 +71,7 @@ public class WebSocketActivity extends AppCompatActivity {
                             if (mSocketClient != null) {
                                 JSONObject parameters = new JSONObject();
                                 parameters.put("message_type", "register");
-                                parameters.put("member", "1_1");
+                                parameters.put("member", "1_2");
                                 parameters.put("user_agent", "android");
                                 mSocketClient.send(parameters.toJSONString());
                             }
@@ -108,12 +109,18 @@ public class WebSocketActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mSocketClient != null) {
                     JSONObject parameters = new JSONObject();
-                    parameters.put("message_type", "message");
-                    parameters.put("receiver", "1_1");
-                    parameters.put("sender", "1_2");
-                    parameters.put("message_random", getRandomFileName());
-                    parameters.put("message", "123456");
-                    parameters.put("type", "0");
+                    parameters.put("message_type", "history");
+                    parameters.put("member", "1_2");
+                    parameters.put("target", "1_1");
+                    parameters.put("message_id", "");
+
+
+//                    parameters.put("message_type", "message");
+//                    parameters.put("receiver", "1_2");
+//                    parameters.put("sender", "1_1");
+//                    parameters.put("message_random", getRandomFileName());
+//                    parameters.put("message", "123456");
+//                    parameters.put("type", "0");
                     mSocketClient.send(parameters.toJSONString());
                 }
             }

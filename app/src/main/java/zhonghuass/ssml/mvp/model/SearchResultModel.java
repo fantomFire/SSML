@@ -15,19 +15,19 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
-import zhonghuass.ssml.mvp.contract.MessageListContract;
-import zhonghuass.ssml.mvp.model.appbean.MessageListBean;
+import zhonghuass.ssml.mvp.contract.SearchResultContract;
+import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 
 
 @ActivityScope
-public class MessageListModel extends BaseModel implements MessageListContract.Model {
+public class SearchResultModel extends BaseModel implements SearchResultContract.Model {
     @Inject
     Gson mGson;
     @Inject
     Application mApplication;
 
     @Inject
-    public MessageListModel(IRepositoryManager repositoryManager) {
+    public SearchResultModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
     }
 
@@ -39,8 +39,8 @@ public class MessageListModel extends BaseModel implements MessageListContract.M
     }
 
     @Override
-    public Observable<BaseResponse<List<MessageListBean>>> getMessageListData(String member_id, String member_type, int page) {
-        return  null;
-
+    public Observable<BaseResponse<List<RecommendBean>>> getSearchResult(String member_id, String member_type, int page) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .getSearchResultData(member_id,member_type,page+"");
     }
 }

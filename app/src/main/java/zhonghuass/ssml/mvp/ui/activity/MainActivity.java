@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.library.layoutView.BottomNavigationViewEx;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
@@ -26,9 +27,16 @@ import com.jess.arms.utils.ArmsUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -85,12 +93,14 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     private CompanyFragment companyFragment;
     private DialyFragment dialyFragment;
     private MycenterFragment mycenterFragment;
+    private WebSocketClient mSocketClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         EventBusUtils.register(this);
+//        init();
     }
 
     @Override
@@ -304,5 +314,50 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 ArmsUtils.startActivity(MySettingActivity.class);
                 break;
         }
+    }
+    private void init() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //TODO 这里URL 别忘了切换到自己的IP
+                    mSocketClient = new WebSocketClient(new URI("ws://video.zhonghuass.cn:10000")) {
+                        @Override
+                        public void onOpen(ServerHandshake handshakedata) {
+                            Log.d("picher_log", "打开通道" + handshakedata.getHttpStatus());
+                            if (mSocketClient != null) {
+                                JSONObject parameters = new JSONObject();
+                                parameters.put("message_type", "register");
+                                parameters.put("member", "1_2");
+                                parameters.put("user_agent", "android");
+                                mSocketClient.send(parameters.toJSONString());
+                            }
+                        }
+
+                        @Override
+                        public void onMessage(String message) {
+                            Log.d("picher_log", "接收消息" + message);
+
+                        }
+
+                        @Override
+                        public void onClose(int code, String reason, boolean remote) {
+                            Log.d("picher_log", "通道关闭");
+                        }
+
+                        @Override
+                        public void onError(Exception ex) {
+                            Log.d("picher_log", "链接错误");
+                        }
+                    };
+                    mSocketClient.connect();
+
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+
     }
 }

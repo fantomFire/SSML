@@ -41,8 +41,10 @@ import zhonghuass.ssml.di.module.HomeFragmentModule;
 import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
 import zhonghuass.ssml.mvp.ui.activity.MSMQActivity;
+import zhonghuass.ssml.mvp.ui.activity.MessageListActivity;
 import zhonghuass.ssml.mvp.ui.activity.PublishActivity;
 import zhonghuass.ssml.mvp.ui.activity.SearchActivity;
+import zhonghuass.ssml.mvp.ui.activity.WebSocketActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -174,23 +176,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     }
 
-    @OnClick({R.id.tv_search, R.id.home_mess})
-    public void onClick(View view) {
+
+    @OnClick({R.id.tv_search, R.id.home_mess, R.id.img_edit})
+    public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_search:
                 ArmsUtils.startActivity(SearchActivity.class);
                 break;
             case R.id.home_mess:
-                ArmsUtils.startActivity(MSMQActivity.class);
-                break;
-        }
-    }
-    @OnClick({R.id.tv_search, R.id.home_mess, R.id.img_edit})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_search:
-                break;
-            case R.id.home_mess:
+                ArmsUtils.startActivity(MessageListActivity.class);
                 break;
             case R.id.img_edit:
                 ArmsUtils.startActivity(PublishActivity.class);
