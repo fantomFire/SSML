@@ -135,6 +135,7 @@ public class QQLoginActivity extends Activity {
             Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
         }
 
+
     }
 
 
