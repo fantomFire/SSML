@@ -10,7 +10,6 @@ public class Constants {
     public static final String EP_IDE ="identity" ;
 
 
-
     //qq登录开放平台key
     public static final String QQ_APP_ID= "ALWXD91B79ST";
     //微信开放平台KEY
