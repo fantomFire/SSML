@@ -20,4 +20,5 @@ public class MyApp  extends BaseApplication{
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
 }

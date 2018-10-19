@@ -7,17 +7,26 @@
               android:orientation="vertical">
 
 
-    <LinearLayout
-            android:id="@+id/ll_close"
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:layout_height="40dp">
 
         <ImageView
+                android:id="@+id/iv_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:background="@drawable/arrow_down"/>
-    </LinearLayout>
+
+        <ImageView
+                android:id="@+id/iv_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/arrow_down"/>
+    </RelativeLayout>
 
     <View
             android:layout_width="match_parent"

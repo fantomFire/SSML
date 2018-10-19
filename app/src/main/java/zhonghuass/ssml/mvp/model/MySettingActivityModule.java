@@ -1,4 +1,4 @@
-package zhonghuass.ssml.mvp.ui.activity.di.module;
+package zhonghuass.ssml.mvp.model;
 
 import com.jess.arms.di.scope.ActivityScope;
 

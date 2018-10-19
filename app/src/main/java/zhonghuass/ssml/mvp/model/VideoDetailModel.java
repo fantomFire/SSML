@@ -15,20 +15,20 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
 import zhonghuass.ssml.http.BaseResponse;
-import zhonghuass.ssml.mvp.contract.GraphicDetailsContract;
+import zhonghuass.ssml.mvp.contract.VideoDetailContract;
 import zhonghuass.ssml.mvp.model.appbean.DiscussBean;
 import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
 
 
 @ActivityScope
-public class GraphicDetailsModel extends BaseModel implements GraphicDetailsContract.Model {
+public class VideoDetailModel extends BaseModel implements VideoDetailContract.Model {
     @Inject
     Gson mGson;
     @Inject
     Application mApplication;
 
     @Inject
-    public GraphicDetailsModel(IRepositoryManager repositoryManager) {
+    public VideoDetailModel(IRepositoryManager repositoryManager) {
         super(repositoryManager);
     }
 
@@ -40,14 +40,9 @@ public class GraphicDetailsModel extends BaseModel implements GraphicDetailsCont
     }
 
     @Override
-    public Observable<GraphicBean> getGraphicData(String content_id, String member_id, String member_type) {
-        return mRepositoryManager.obtainRetrofitService(ApiServer.class).getGraphicData(content_id, member_id, member_type);
-    }
-
-    @Override
-    public Observable<BaseResponse<List<DiscussBean>>> getDiscussList(String content_id, String member_id, String member_type, int page) {
+    public Observable<GraphicBean> getVedioData(String content_id, String member_id, String member_type) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .getDiscussData(content_id, member_id, member_type, page + "")
+                .getGraphicData(content_id, member_id, member_type)
                 ;
     }
 
@@ -71,6 +66,13 @@ public class GraphicDetailsModel extends BaseModel implements GraphicDetailsCont
     }
 
     @Override
+    public Observable<BaseResponse<List<DiscussBean>>> getDiscussList(String content_id, String member_id, String member_type, int page) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .getDiscussData(content_id, member_id, member_type, page + "")
+                ;
+    }
+
+    @Override
     public Observable<BaseResponse<Void>> addPublish(String user_id, String member_type, String content_id, String mContext) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
                 .addPublish(user_id, member_type, content_id, mContext)
@@ -79,8 +81,8 @@ public class GraphicDetailsModel extends BaseModel implements GraphicDetailsCont
 
     @Override
     public Observable<BaseResponse<Void>> addContentLike(String user_id, String user_type, String comment_id) {
-       return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .addContentZan(user_id, user_type, comment_id)
-        ;
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .addContentZan(user_id,user_type,comment_id)
+                ;
     }
 }

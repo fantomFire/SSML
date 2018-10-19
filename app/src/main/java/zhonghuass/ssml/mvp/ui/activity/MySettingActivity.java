@@ -14,9 +14,9 @@ import com.jess.arms.utils.ArmsUtils;
 import butterknife.BindView;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
+import zhonghuass.ssml.di.component.DaggerMySettingActivityComponent;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
-import zhonghuass.ssml.mvp.ui.activity.di.component.DaggerMySettingActivityComponent;
-import zhonghuass.ssml.mvp.ui.activity.di.module.MySettingActivityModule;
+import zhonghuass.ssml.mvp.model.MySettingActivityModule;
 import zhonghuass.ssml.mvp.contract.MySettingActivityContract;
 import zhonghuass.ssml.mvp.presenter.MySettingActivityPresenter;
 

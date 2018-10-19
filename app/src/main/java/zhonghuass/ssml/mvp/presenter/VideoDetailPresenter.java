@@ -15,14 +15,14 @@ import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 import zhonghuass.ssml.http.BaseResponse;
-import zhonghuass.ssml.mvp.contract.GraphicDetailsContract;
+import zhonghuass.ssml.mvp.contract.VideoDetailContract;
 import zhonghuass.ssml.mvp.model.appbean.DiscussBean;
 import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
-public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContract.Model, GraphicDetailsContract.View> {
+public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Model, VideoDetailContract.View> {
     @Inject
     RxErrorHandler mErrorHandler;
     @Inject
@@ -33,7 +33,7 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
     AppManager mAppManager;
 
     @Inject
-    public GraphicDetailsPresenter(GraphicDetailsContract.Model model, GraphicDetailsContract.View rootView) {
+    public VideoDetailPresenter(VideoDetailContract.Model model, VideoDetailContract.View rootView) {
         super(model, rootView);
     }
 
@@ -46,26 +46,52 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
         this.mApplication = null;
     }
 
-    public void getGraphicData(String content_id, String member_id, String member_type) {
-        mModel.getGraphicData(content_id, member_id, member_type)
+    public void vedioData(String content_id, String member_id, String member_type) {
+        mModel.getVedioData(content_id,member_id,member_type)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<GraphicBean>(mErrorHandler) {
                     @Override
-                    public void onNext(GraphicBean listBaseResponse) {
-                        System.out.println("结果" + listBaseResponse.getStatus());
-                        //  System.out.println("结果"+ listBaseResponse.getData().getContent_title());
-                        String status = listBaseResponse.getStatus();
-
-                        if (status.equals("200")) {
-
-                            mRootView.showGraphicData(listBaseResponse.getData());
-                        } else {
-
-                            mRootView.showMessage(listBaseResponse.getMsg());
+                    public void onNext(GraphicBean graphicBean) {
+                        if(graphicBean.getStatus().equals("200")){
+                            mRootView.showVeidoData(graphicBean.getData());
+                        }else {
+                            mRootView.showMessage(graphicBean.getMsg());
                         }
                     }
                 });
+    }
 
+    public void addFocus(String user_id, String user_type, String member_id, String member_type) {
+        mModel.addFocus(user_id,user_type,member_id,member_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                    mRootView.showMessage(voidBaseResponse.getMessage());
+                    }
+                });
+    }
+
+    public void addLike(String user_id, String content_id, String user_type) {
+        mModel.addLike(user_id,content_id,user_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                    }
+                });
+    }
+
+    public void addCollect(String user_id, String content_id, String user_type) {
+        mModel.addCollect(user_id,content_id,user_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                    }
+                });
     }
 
     public void getDiscussList(String content_id, String member_id, String member_type, int page) {
@@ -83,51 +109,6 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                             mRootView.showMessage(discussBeanBaseResponse.getMessage());
                         }
 
-
-                    }
-                });
-    }
-
-    public void addFocus(String user_id, String user_type, String member_id, String member_type) {
-        mModel.addFocus(user_id,user_type,member_id,member_type)
-                .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseResponse<Void> voidBaseResponse) {
-
-                        mRootView.showMessage(voidBaseResponse.getMessage());
-                        if(voidBaseResponse.isSuccess()){
-                            mRootView.changeFocusState();
-                        }
-                    }
-                });
-
-    }
-
-    public void addCollect(String user_id, String content_id, String user_type) {
-        mModel.addCollect(user_id,content_id,user_type)
-                .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseResponse<Void> voidBaseResponse) {
-                        mRootView.showMessage(voidBaseResponse.getMessage());
-
-                    }
-                });
-
-    }
-
-    public void addLike(String user_id, String content_id, String user_type) {
-        mModel.addLike(user_id,content_id,user_type)
-                .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
-                    @Override
-                    public void onNext(BaseResponse<Void> voidBaseResponse) {
-                        mRootView.showMessage(voidBaseResponse.getMessage());
-                        System.out.println("diandddddd"+voidBaseResponse.getMessage());
-                        if(voidBaseResponse.isSuccess()){
-                            mRootView.changeLikeState();
-                        }
                     }
                 });
     }
@@ -142,11 +123,9 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                             mRootView.showPopState();
                         }
                         System.out.println("评论结果"+voidBaseResponse.getStatus()+voidBaseResponse.getMessage());
-                    mRootView.showMessage(voidBaseResponse.getMessage());
+                        mRootView.showMessage(voidBaseResponse.getMessage());
                     }
                 });
-
-
     }
 
     public void addContentLike(String user_id, String user_type, String comment_id, int position) {
@@ -155,7 +134,7 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
-                        if(voidBaseResponse.isSuccess()){
+                    if(voidBaseResponse.isSuccess()){
                             mRootView.ContentState(position);
                         }
                         mRootView.showMessage(voidBaseResponse.getMessage());

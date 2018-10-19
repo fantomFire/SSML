@@ -1,11 +1,11 @@
-package zhonghuass.ssml.mvp.ui.activity.di.component;
+package zhonghuass.ssml.di.component;
 
 import dagger.Component;
 
 import com.jess.arms.di.component.AppComponent;
 
 import zhonghuass.ssml.mvp.ui.activity.MySettingActivity;
-import zhonghuass.ssml.mvp.ui.activity.di.module.MySettingActivityModule;
+import zhonghuass.ssml.mvp.model.MySettingActivityModule;
 
 import com.jess.arms.di.scope.ActivityScope;
 

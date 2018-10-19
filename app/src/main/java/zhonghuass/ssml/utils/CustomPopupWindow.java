@@ -27,7 +27,7 @@ public class CustomPopupWindow extends PopupWindow {
         // 创建PopupWindow对象，其中：
         // 第一个参数是用于PopupWindow中的View，第二个参数是PopupWindow的宽度，
         // 第三个参数是PopupWindow的高度，第四个参数指定PopupWindow能否获得焦点
-        window = new PopupWindow(contentView, width, height, true);
+        window = new PopupWindow(contentView, width, height, false);
         // 设置PopupWindow的背景
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // 设置PopupWindow是否能响应外部点击事件
