@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
+import zhonghuass.ssml.mvp.ui.activity.VideoDetailActivity;
 
 public class VedioAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewHolder> {
     public VedioAdapter(Context activity, List<PhotoBean> mList) {
@@ -83,6 +85,12 @@ public class VedioAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewH
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(mContext, VideoDetailActivity.class);
+                intent.putExtra("content_id",item.getContent_id());
+                intent.putExtra("member_id",item.getMember_id());
+                intent.putExtra("member_type",item.getMember_type());
+                mContext.startActivity(intent);
+
             }
         });
     }

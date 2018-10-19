@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,13 +21,13 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-import com.jude.rollviewpager.RollPagerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +35,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerGraphicDetailsComponent;
-import zhonghuass.ssml.di.module.GraphicDetailsModule;
-import zhonghuass.ssml.mvp.contract.GraphicDetailsContract;
+import zhonghuass.ssml.di.component.DaggerVideoDetailComponent;
+import zhonghuass.ssml.mvp.contract.VideoDetailContract;
+import zhonghuass.ssml.mvp.model.VideoDetailModule;
 import zhonghuass.ssml.mvp.model.appbean.DiscussBean;
 import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
-import zhonghuass.ssml.mvp.presenter.GraphicDetailsPresenter;
+import zhonghuass.ssml.mvp.presenter.VideoDetailPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.DiscussAdapter;
-import zhonghuass.ssml.mvp.ui.adapter.StorePagerAdapter;
 import zhonghuass.ssml.utils.CircleImageView;
 import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.PrefUtils;
@@ -49,35 +49,22 @@ import zhonghuass.ssml.utils.PrefUtils;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter> implements GraphicDetailsContract.View {
+public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
 
-    @BindView(R.id.vp_banner)
-    RollPagerView vpBanner;
     @BindView(R.id.iv_back)
     ImageView ivBack;
-    @BindView(R.id.iv_right)
-    ImageView ivRight;
     @BindView(R.id.civ_icon1)
     CircleImageView civIcon1;
     @BindView(R.id.tv_company)
     TextView tvCompany;
     @BindView(R.id.tv_date)
     TextView tvDate;
+    @BindView(R.id.tv_counts)
+    TextView tvCounts;
     @BindView(R.id.btn_focus)
     Button btnFocus;
-    @BindView(R.id.tv_title)
-    TextView tvTitle;
-    @BindView(R.id.tv_content)
-    TextView tvContent;
-    @BindView(R.id.tv_site)
-    TextView tvSite;
-    @BindView(R.id.img_collect)
-    ImageView imgCollect;
-    @BindView(R.id.img_like)
-    ImageView imgLike;
-    @BindView(R.id.ll_pop)
-    LinearLayout llPop;
-
+    @BindView(R.id.media_view)
+    VideoView mediaView;
     @BindView(R.id.collect_num)
     TextView collectNum;
     @BindView(R.id.ll_collect)
@@ -94,44 +81,87 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     TextView likeNum;
     @BindView(R.id.ll_like)
     LinearLayout llLike;
-    private int page = 1;
-    private String content_id , member_id , member_type ;
-    private StorePagerAdapter storePagerAdapter;
-    private List<DiscussBean> mList = new ArrayList<>();
-    private DiscussAdapter discussAdapter;
+    @BindView(R.id.ll_pop)
+    LinearLayout llPop;
+    private String content_id;
+    private String member_id;
+    private String member_type;
     private String user_id;
     private String user_type;
     private PopupWindow popupWindow;
+    private DiscussAdapter discussAdapter;
+    private List<DiscussBean> mList = new ArrayList<>();
+    private int page = 1;
     private SwipeRefreshLayout swipe;
     private RecyclerView disRecycle;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerGraphicDetailsComponent //如找不到该类,请编译一下项目
+        DaggerVideoDetailComponent //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .graphicDetailsModule(new GraphicDetailsModule(this))
+                .videoDetailModule(new VideoDetailModule(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_graphic_details; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
+        return R.layout.activity_video_detail; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
-        user_id = PrefUtils.getString(this, Constants.USER_ID, "");
+        user_id = PrefUtils.getString(this,Constants.USER_ID,"");
         user_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "1");
         Intent intent = getIntent();
         content_id = intent.getStringExtra("content_id");
         member_id = intent.getStringExtra("member_id");
         member_type = intent.getStringExtra("member_type");
-        System.out.println("content_id" + content_id + "   member_id" + member_id);
-        mPresenter.getGraphicData(content_id, member_id, member_type);
+        System.out.println("content_id"+ content_id +"   member_id"+ member_id);
+        mPresenter.vedioData(content_id,member_id, member_type);
 
+    }
+    @Override
+    public void showVeidoData(GraphicBean.DataBean data) {
+        Glide.with(this)
+                .load(data.getMember_image())
+                .into(civIcon1);
+        tvCompany.setText(data.getContent_title());
+        tvDate.setText(data.getAdd_time());
+        tvCounts.setText(data.getAmount_of_reading()+"次播放");
+        collectNum.setText(data.getAmount_of_collection());
+        dicussNum.setText(data.getAmount_of_comment());
+        shareNum.setText(data.getAmount_of_forward());
+        likeNum.setText(data.getAmount_of_praise());
+        String content_cover = data.getContent_detail();
+
+
+       if(content_cover!=null){
+            mediaView.setVideoPath(content_cover);
+        }else {
+           Toast.makeText(this, "视频信息有误!", Toast.LENGTH_SHORT).show();
+       }
+
+        mediaView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+
+            }
+        });
+
+        mediaView.start();
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mediaView != null){
+            mediaView.suspend();
+        }
     }
 
     @Override
@@ -147,7 +177,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.makeText(this, message);
+        ArmsUtils.makeText(this,message);
     }
 
     @Override
@@ -162,78 +192,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     }
 
 
-    @Override
-    public void showGraphicData(GraphicBean.DataBean data) {
-
-        Glide.with(this)
-                .load(data.getMember_image())
-                .into(civIcon1);
-        tvCompany.setText(data.getMember_name());
-        tvDate.setText(data.getAdd_time());
-        tvTitle.setText(data.getContent_title());
-        tvContent.setText(data.getContent_detail());
-        tvSite.setText(data.getContent_position());
-        //设置轮播图数据
-        storePagerAdapter = new StorePagerAdapter(this, data.getContent_images());
-        vpBanner.setPlayDelay(3000);
-        vpBanner.setAnimationDurtion(500);
-        vpBanner.setAdapter(storePagerAdapter);
-        boolean praise_tag = data.isPraise_tag();
-        if (praise_tag) {
-            imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
-        }
-
-    }
-
-    @Override
-    public void showDiscussData(List<DiscussBean> data) {
-        if (swipe.isRefreshing()) {
-            swipe.setRefreshing(false);
-        }
-
-        discussAdapter.loadMoreComplete();
-        if (page > 1) {
-            mList.addAll(data);
-            discussAdapter.addData(data);
-        } else {
-            mList=data;
-            discussAdapter.setNewData(data);
-        }
-
-
-    }
-
-    @Override
-    public void changeFocusState() {
-        btnFocus.setText("已关注");
-    }
-
-    @Override
-    public void changeLikeState() {
-        imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
-    }
-
-    @Override
-    public void showPopState() {
-        if (popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        }
-        mPresenter.getDiscussList(content_id, member_id, member_type, page);
-    }
-
-    @Override
-    public void notifystate() {
-        discussAdapter.loadMoreEnd(true);
-        showMessage("没有更多数据,请稍后尝试!");    }
-
-    @Override
-    public void ContentState(int position) {
-        mList.get(position).setPraise_tag(true);
-        discussAdapter.notifyDataSetChanged();
-    }
-
-
-    @OnClick({ R.id.img_like, R.id.iv_back, R.id.btn_focus,R.id.ll_collect, R.id.ll_discuss, R.id.ll_share, R.id.ll_like})
+    @OnClick({R.id.iv_back, R.id.btn_focus, R.id.ll_collect, R.id.ll_discuss, R.id.ll_share, R.id.ll_like})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -241,43 +200,39 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
                 finish();
                 break;
             case R.id.btn_focus:
-                if (user_id.equals("")) {
+                if(user_id.equals("")){
                     showToast();
-                } else {
+                }else {
 
-                    mPresenter.addFocus(user_id, user_type, member_id, member_type);
+                    mPresenter.addFocus(user_id,user_type,member_id,member_type);
+                }
+                break;
+            case R.id.ll_collect:
+                if(user_id.equals("")){
+                    showToast();
+                }else {
+
+                    System.out.println("content_id"+content_id);
+                    mPresenter.addCollect(user_id,content_id,user_type);
                 }
                 break;
             case R.id.ll_discuss:
-                showPopowindow();
+                toDiscusss();
                 break;
-
-            case R.id.ll_collect:
-                if (user_id.equals("")) {
-                    showToast();
-                } else {
-
-
-                    mPresenter.addCollect(user_id, content_id, user_type);
-                }
+            case R.id.ll_share:
                 break;
             case R.id.ll_like:
-                if (user_id.equals("")) {
+                if(user_id.equals("")){
                     showToast();
-                } else {
+                }else {
 
-                    mPresenter.addLike(user_id, content_id, user_type);
+                    mPresenter.addLike(user_id,content_id,user_type);
                 }
-                break;
-
-            case R.id.ll_share:
                 break;
         }
     }
 
-
-    private void showPopowindow() {
-
+    private void toDiscusss() {
         mPresenter.getDiscussList(content_id, member_id, member_type,page);
 
 
@@ -310,7 +265,19 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         discussAdapter = new DiscussAdapter(R.layout.discuss_item, mList);
         disRecycle.setAdapter(discussAdapter);
 
+        discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.ll_tolike:
+                        String comment_id = mList.get(position).getComment_id();
 
+                        addContentLike(comment_id,position);
+
+                        break;
+                }
+            }
+        });
 
         discussAdapter.setOnLoadMoreListener(() -> {
             page++;
@@ -318,22 +285,11 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         });
         swipe.setOnRefreshListener(() -> {
             page = 1;
-            //   discussAdapter.isLoadMoreEnable();
+         //   discussAdapter.isLoadMoreEnable();
             mPresenter.getDiscussList(content_id, member_id, member_type,page);
 
         });
-        discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
-                    case R.id.ll_tolike:
-                        String comment_id = mList.get(position).getComment_id();
-                        addContentLike(comment_id,position);
 
-                        break;
-                }
-            }
-        });
         tvpublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -345,7 +301,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
 
     }
-
+    //内容点赞
     private void addContentLike(String comment_id, int position) {
         if(user_id.equals("")){
             showToast();
@@ -355,20 +311,59 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     }
 
     private void toPublishContext(String mContext) {
-        if (user_id.equals("")) {
+        if(user_id.equals("")){
             showToast();
         }
 
-        if (TextUtils.isEmpty(mContext)) {
+        if(TextUtils.isEmpty(mContext)){
             Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
             return;
         }
-        mPresenter.publishContext(user_id, member_type, content_id, mContext);
+        mPresenter.publishContext(user_id,member_type,content_id,mContext);
 
+
+    }
+
+    @Override
+    public void showDiscussData(List<DiscussBean> data) {
+        if (swipe.isRefreshing()) {
+            swipe.setRefreshing(false);
+        }
+
+        discussAdapter.loadMoreComplete();
+        if (page > 1) {
+            mList.addAll(data);
+            discussAdapter.addData(data);
+        } else {
+            mList=data;
+            discussAdapter.setNewData(data);
+        }
+    }
+
+    @Override
+    public void notifystate() {
+        discussAdapter.loadMoreEnd(true);
+        showMessage("没有更多数据,请稍后尝试!");
+    }
+
+    @Override
+    public void showPopState() {
+        if(popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        mPresenter.getDiscussList(content_id, member_id, member_type,page);
+    }
+
+    @Override
+    public void ContentState(int position) {
+        mList.get(position).setPraise_tag(true);
+        discussAdapter.notifyDataSetChanged();
     }
 
     private void showToast() {
         Toast.makeText(this, "您还未登录!", Toast.LENGTH_SHORT).show();
         return;
     }
+
+
 }

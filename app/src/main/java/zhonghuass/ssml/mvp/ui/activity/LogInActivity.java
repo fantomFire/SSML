@@ -17,7 +17,6 @@ import com.maning.mndialoglibrary.MProgressDialog;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -135,8 +134,10 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
                 ArmsUtils.startActivity(WeiXinLoginActivity.class);
                 break;
             case R.id.iv_qq:
+                ArmsUtils.startActivity(QQLoginActivity.class);
                 break;
             case R.id.iv_weibo:
+                ArmsUtils.startActivity(WeiXinLoginActivity.class);
                 break;
             case R.id.iv_tip_choose:
                 toAgreement();

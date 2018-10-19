@@ -1,78 +1,67 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 
-import com.jess.arms.base.BaseActivity;
-import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.ArmsUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerWeiXinLoginComponent;
-import zhonghuass.ssml.di.module.WeiXinLoginModule;
-import zhonghuass.ssml.mvp.contract.WeiXinLoginContract;
-import zhonghuass.ssml.mvp.presenter.WeiXinLoginPresenter;
-
-import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class WeiXinLoginActivity extends BaseActivity<WeiXinLoginPresenter> implements WeiXinLoginContract.View {
+public class WeiXinLoginActivity extends Activity implements View.OnClickListener {
+    private Button login;
 
+    // 微信登录
+    private static IWXAPI WXapi;
+    private String WX_APP_ID = "wx3d07975422d43a75";
 
     @Override
-    public void setupActivityComponent(@NonNull AppComponent appComponent) {
-        DaggerWeiXinLoginComponent //如找不到该类,请编译一下项目
-                .builder()
-                .appComponent(appComponent)
-                .weiXinLoginModule(new WeiXinLoginModule(this))
-                .build()
-                .inject(this);
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        // 启动activity时不自动弹出软键盘
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_wei_xin_login);
+        init();
+    }
+
+    private void init() {
+        login = findViewById(R.id.btn_login);
+        login.setOnClickListener(this);
     }
 
     @Override
-    public int initView(@Nullable Bundle savedInstanceState) {
-        return R.layout.activity_wei_xin_login; //如果你不需要框架帮你设置 setContentView(id) 需要自行设置,请返回 0
-    }
+    public void onClick(View v) {
+        // TODO Auto-generated method stub
+        switch (v.getId()) {
 
-    @Override
-    public void initData(@Nullable Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void hideLoading() {
+            case R.id.btn_login:
+                WXLogin();
+                break;
+            default:
+                break;
+        }
 
     }
 
-    @Override
-    public void showMessage(@NonNull String message) {
-        checkNotNull(message);
-        ArmsUtils.snackbarText(message);
-    }
+    /**
+     * 登录微信
+     */
+    private void WXLogin() {
+        WXapi = WXAPIFactory.createWXAPI(this, WX_APP_ID, true);
+        WXapi.registerApp(WX_APP_ID);
+        SendAuth.Req req = new SendAuth.Req();
+        req.scope = "snsapi_userinfo";
+        req.state = "wechat_sdk_demo";
+        WXapi.sendReq(req);
 
-    @Override
-    public void launchActivity(@NonNull Intent intent) {
-        checkNotNull(intent);
-        ArmsUtils.startActivity(intent);
     }
-
-    @Override
-    public void killMyself() {
-        finish();
-    }
-
 }

@@ -18,7 +18,21 @@ android {
         versionName "1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //qq登录
+        ndk {
+            //根据需要 自行选择添加的对应cpu类型的.so库。
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }
+        manifestPlaceholders = [
+                //ALWXD91B79ST 属于应用"盛世名录"独有的 Android AppKey, 用于配置SDK
+                MTA_APPKEY : "ALWXD91B79ST",
+                //标注应用推广渠道用以区分新用户来源，可填写如应用宝，豌豆荚等
+                MTA_CHANNEL: "渠道名称"
+        ]
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -29,6 +43,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -74,4 +89,14 @@ dependencies {
     implementation 'com.jude:rollviewpager:1.2.9'
 }
     implementation 'com.jude:rollviewpager:1.2.9'
-    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'}
+    implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
+    //qq登录
+    //MTA主包
+    implementation 'com.qq.mta:mta:3.4.7-release'
+    //MID基础包
+    implementation 'com.tencent.mid:mid:4.06-Release'
+    implementation files('src/main/libs/open_sdk_r6008_lite.jar')
+    //微信登陆
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+}
+

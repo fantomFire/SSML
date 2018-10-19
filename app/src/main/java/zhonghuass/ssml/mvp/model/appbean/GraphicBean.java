@@ -91,6 +91,16 @@ public class GraphicBean {
         private String theme_title;
         private String member_name;
         private String member_image;
+
+        public String getContent_cover() {
+            return content_cover;
+        }
+
+        public void setContent_cover(String content_cover) {
+            this.content_cover = content_cover;
+        }
+
+        private String content_cover;
         private List<String> content_images;
 
         public String getContent_id() {

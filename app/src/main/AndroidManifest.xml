@@ -36,6 +36,7 @@
         <receiver android:name="com.zhangke.websocket.NetworkChangedReceiver" />
 
         <activity android:name=".mvp.ui.activity.LogInActivity" />
+        <activity android:name=".mvp.ui.activity.MainActivity" />
         <activity android:name=".mvp.ui.activity.GuideActivity" />
         <activity android:name=".mvp.ui.activity.WelcomeActivity" />
         <activity android:name=".mvp.ui.activity.RegisterActivity" />
@@ -64,20 +65,21 @@
         <activity android:name=".mvp.ui.activity.CommentActivity" />
         <activity android:name=".mvp.ui.activity.ShareMeActivity" />
         <activity android:name=".mvp.ui.activity.MessageListActivity" />
-        <activity android:name=".mvp.ui.activity.SearchActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-
-            />
+        <activity
+            android:name=".mvp.ui.activity.SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".mvp.ui.activity.MyConcernActivity" />
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
         <activity android:name=".mvp.ui.activity.ChattingActivity" />
-        <activity android:name=".mvp.ui.activity.PublishActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            />
+        <activity
+            android:name=".mvp.ui.activity.PublishActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".mvp.ui.activity.ImageEditorActivity" />
         <activity
             android:name=".mvp.ui.activity.PostVideosActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity android:name=".mvp.ui.activity.MediaPlayerActivity" />
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
         <activity android:name=".mvp.ui.activity.MediaPlayerActivity">
 
@@ -90,10 +92,38 @@
         <activity android:name=".mvp.ui.activity.PublishMediaActivity" />
         <activity android:name=".mvp.ui.activity.UpLoadDetailActivity" />
         <activity android:name=".mvp.ui.activity.PicEditActivity" />
-        <activity android:name=".mvp.ui.activity.GraphicDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity
+            android:name=".mvp.ui.activity.GraphicDetailsActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".mvp.ui.activity.VideoDetailActivity"></activity>
+        <activity android:name=".mvp.ui.activity.QQLoginActivity" />
+        <activity android:name=".mvp.ui.activity.WeiXinLoginActivity" />
+        //QQ登录
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-            />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent3103866703" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>

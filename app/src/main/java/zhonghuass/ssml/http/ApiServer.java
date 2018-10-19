@@ -7,7 +7,6 @@ import okhttp3.ResponseBody;
 import retrofit2.http.*;
 import zhonghuass.ssml.mvp.model.appbean.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -185,26 +184,54 @@ public interface ApiServer {
     Observable<BaseResponse<IniviteBean>> getInviteData(@Query("eid") String ep_id,
                                                         @Query("page") int page,
                                                         @Query("pagesize") int pagesize);
+
     //上传视频
     @Multipart
     @POST("/Api/content/publish")
-
     Observable<BaseResponse<Void>> upLoadData(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part mediaparts, @Part MultipartBody.Part mediaPart); //,视频
+
     //上传图片
     @Multipart
     @POST("/Api/content/publish")
-    Observable<BaseResponse<Void>> upLoadImages(@PartMap Map<String, RequestBody> map,@Part MultipartBody.Part file,@Part MultipartBody.Part[] parts);
+    Observable<BaseResponse<Void>> upLoadImages(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file, @Part MultipartBody.Part[] parts);
+
     //详情页推荐
     @GET("/Api/theme/recommend")
     Observable<BaseResponse<List<RecomDetailBean>>> getRecomDetail();
+
     //区域分类
     @GET("/Api/Enterprise/getAreaContent")
     Observable<ResponseBody> getAreaData();
+
     //行业选择
     @GET("/Api/Enterprise/getIndustryContent")
     Observable<BaseResponse<List<TradeItemBean>>> getTradeItem();
+
     //公司简介
     @GET("/Api/Enterprise/synopsis")
     Observable<BaseResponse<List<BriefBean>>> getBriefData(@Query("eid") String eid);
+
+    //内容点赞
+    @FormUrlEncoded
+    @POST("/Api/content/praise")
+    Observable<BaseResponse<Void>> addLike(@Field("member_id") String user_id, @Field("content_id") String content_id,
+                                           @Field("member_type") String user_type);
+
+    //收藏
+    @FormUrlEncoded
+    @POST("/Api/content/collection")
+    Observable<BaseResponse<Void>> addColect(@Field("member_id") String user_id, @Field("content_id") String content_id, @Field("member_type") String user_type);
+
+    //评论列表
+    @GET("/Api/comment/list")
+    Observable<BaseResponse<List<DiscussBean>>>  getDiscussData(@Query("content_id") String content_id, @Query("member_id") String member_id, @Query("member_type") String member_type, @Query("page") String page);
+    //评论
+    @FormUrlEncoded
+    @POST("/Api/comment/comment")
+    Observable<BaseResponse<Void>> addPublish(@Field("member_id") String user_id, @Field("member_type") String member_type, @Field("content_id") String content_id, @Field("comment_detail") String mContext);
+
+    @FormUrlEncoded
+    @POST("/Api/content/praise")
+    Observable<BaseResponse<Void>> addContentZan(@Field("member_id")String user_id, @Field("member_type")String user_type, @Field("content_id")String comment_id);
 }
 
