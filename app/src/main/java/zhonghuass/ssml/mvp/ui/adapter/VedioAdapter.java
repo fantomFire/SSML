@@ -86,6 +86,9 @@ public class VedioAdapter extends BaseQuickAdapter<PhotoBean, RecyclerView.ViewH
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, VideoDetailActivity.class);
+                intent.putExtra("content_id",item.getContent_id());
+                intent.putExtra("member_id",item.getMember_id());
+                intent.putExtra("member_type",item.getMember_type());
                 mContext.startActivity(intent);
 
             }

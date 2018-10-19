@@ -4,27 +4,47 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 import com.jude.rollviewpager.RollPagerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerGraphicDetailsComponent;
 import zhonghuass.ssml.di.module.GraphicDetailsModule;
 import zhonghuass.ssml.mvp.contract.GraphicDetailsContract;
+import zhonghuass.ssml.mvp.model.appbean.DiscussBean;
 import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
 import zhonghuass.ssml.mvp.presenter.GraphicDetailsPresenter;
-import zhonghuass.ssml.mvp.ui.MBaseActivity;
+import zhonghuass.ssml.mvp.ui.adapter.DiscussAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.StorePagerAdapter;
 import zhonghuass.ssml.utils.CircleImageView;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -51,8 +71,39 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     TextView tvContent;
     @BindView(R.id.tv_site)
     TextView tvSite;
-    private String content_id="71",member_id="1", member_type="0";
+    @BindView(R.id.img_collect)
+    ImageView imgCollect;
+    @BindView(R.id.img_like)
+    ImageView imgLike;
+    @BindView(R.id.ll_pop)
+    LinearLayout llPop;
+
+    @BindView(R.id.collect_num)
+    TextView collectNum;
+    @BindView(R.id.ll_collect)
+    LinearLayout llCollect;
+    @BindView(R.id.dicuss_num)
+    TextView dicussNum;
+    @BindView(R.id.ll_discuss)
+    LinearLayout llDiscuss;
+    @BindView(R.id.share_num)
+    TextView shareNum;
+    @BindView(R.id.ll_share)
+    LinearLayout llShare;
+    @BindView(R.id.like_num)
+    TextView likeNum;
+    @BindView(R.id.ll_like)
+    LinearLayout llLike;
+    private int page = 1;
+    private String content_id , member_id , member_type ;
     private StorePagerAdapter storePagerAdapter;
+    private List<DiscussBean> mList = new ArrayList<>();
+    private DiscussAdapter discussAdapter;
+    private String user_id;
+    private String user_type;
+    private PopupWindow popupWindow;
+    private SwipeRefreshLayout swipe;
+    private RecyclerView disRecycle;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -72,13 +123,15 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
 
-
+        user_id = PrefUtils.getString(this, Constants.USER_ID, "");
+        user_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "1");
         Intent intent = getIntent();
-         content_id = intent.getStringExtra("content_id");
+        content_id = intent.getStringExtra("content_id");
         member_id = intent.getStringExtra("member_id");
         member_type = intent.getStringExtra("member_type");
-        System.out.println("content_id"+content_id+"   member_id"+member_id);
-        mPresenter.getGraphicData("71","1", "0");
+        System.out.println("content_id" + content_id + "   member_id" + member_id);
+        mPresenter.getGraphicData(content_id, member_id, member_type);
+
     }
 
     @Override
@@ -94,7 +147,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+        ArmsUtils.makeText(this, message);
     }
 
     @Override
@@ -125,6 +178,197 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         vpBanner.setPlayDelay(3000);
         vpBanner.setAnimationDurtion(500);
         vpBanner.setAdapter(storePagerAdapter);
+        boolean praise_tag = data.isPraise_tag();
+        if (praise_tag) {
+            imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
+        }
 
+    }
+
+    @Override
+    public void showDiscussData(List<DiscussBean> data) {
+        if (swipe.isRefreshing()) {
+            swipe.setRefreshing(false);
+        }
+
+        discussAdapter.loadMoreComplete();
+        if (page > 1) {
+            mList.addAll(data);
+            discussAdapter.addData(data);
+        } else {
+            mList=data;
+            discussAdapter.setNewData(data);
+        }
+
+
+    }
+
+    @Override
+    public void changeFocusState() {
+        btnFocus.setText("已关注");
+    }
+
+    @Override
+    public void changeLikeState() {
+        imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
+    }
+
+    @Override
+    public void showPopState() {
+        if (popupWindow.isShowing()) {
+            popupWindow.dismiss();
+        }
+        mPresenter.getDiscussList(content_id, member_id, member_type, page);
+    }
+
+    @Override
+    public void notifystate() {
+        discussAdapter.loadMoreEnd(true);
+        showMessage("没有更多数据,请稍后尝试!");    }
+
+    @Override
+    public void ContentState(int position) {
+        mList.get(position).setPraise_tag(true);
+        discussAdapter.notifyDataSetChanged();
+    }
+
+
+    @OnClick({ R.id.img_like, R.id.iv_back, R.id.btn_focus,R.id.ll_collect, R.id.ll_discuss, R.id.ll_share, R.id.ll_like})
+    public void onViewClicked(View view) {
+
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.btn_focus:
+                if (user_id.equals("")) {
+                    showToast();
+                } else {
+
+                    mPresenter.addFocus(user_id, user_type, member_id, member_type);
+                }
+                break;
+            case R.id.ll_discuss:
+                showPopowindow();
+                break;
+
+            case R.id.ll_collect:
+                if (user_id.equals("")) {
+                    showToast();
+                } else {
+
+
+                    mPresenter.addCollect(user_id, content_id, user_type);
+                }
+                break;
+            case R.id.ll_like:
+                if (user_id.equals("")) {
+                    showToast();
+                } else {
+
+                    mPresenter.addLike(user_id, content_id, user_type);
+                }
+                break;
+
+            case R.id.ll_share:
+                break;
+        }
+    }
+
+
+    private void showPopowindow() {
+
+        mPresenter.getDiscussList(content_id, member_id, member_type,page);
+
+
+        popupWindow = new PopupWindow(this);
+        popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        int screenHeidth = ArmsUtils.getScreenHeidth(this);
+        popupWindow.setHeight(screenHeidth/5*3);
+        //  View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss, null);
+        View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss_item, null);
+        popupWindow.setContentView(popView);
+        //获取评论内容
+
+        popupWindow.setFocusable(true);
+        popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        popupWindow.showAtLocation(llPop, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+
+
+        swipe = popView.findViewById(R.id.discuss_swi);
+        disRecycle = popView.findViewById(R.id.dis_rec);
+        EditText mEdit = popView.findViewById(R.id.et_context);
+        TextView tvpublish = popView.findViewById(R.id.tv_publish);
+
+
+        mEdit.setFocusableInTouchMode(true);
+        mEdit.requestFocus();
+        mEdit.setFocusable(true);
+
+
+        disRecycle.setLayoutManager(new LinearLayoutManager(this));
+        discussAdapter = new DiscussAdapter(R.layout.discuss_item, mList);
+        disRecycle.setAdapter(discussAdapter);
+
+
+
+        discussAdapter.setOnLoadMoreListener(() -> {
+            page++;
+            mPresenter.getDiscussList(content_id, member_id, member_type,page);
+        });
+        swipe.setOnRefreshListener(() -> {
+            page = 1;
+            //   discussAdapter.isLoadMoreEnable();
+            mPresenter.getDiscussList(content_id, member_id, member_type,page);
+
+        });
+        discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()){
+                    case R.id.ll_tolike:
+                        String comment_id = mList.get(position).getComment_id();
+                        addContentLike(comment_id,position);
+
+                        break;
+                }
+            }
+        });
+        tvpublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String mContext = mEdit.getText().toString().trim();
+
+                toPublishContext(mContext);
+            }
+        });
+
+
+    }
+
+    private void addContentLike(String comment_id, int position) {
+        if(user_id.equals("")){
+            showToast();
+        }
+
+        mPresenter.addContentLike(user_id,user_type,comment_id,position);
+    }
+
+    private void toPublishContext(String mContext) {
+        if (user_id.equals("")) {
+            showToast();
+        }
+
+        if (TextUtils.isEmpty(mContext)) {
+            Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        mPresenter.publishContext(user_id, member_type, content_id, mContext);
+
+    }
+
+    private void showToast() {
+        Toast.makeText(this, "您还未登录!", Toast.LENGTH_SHORT).show();
+        return;
     }
 }
