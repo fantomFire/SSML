@@ -24,6 +24,7 @@ import java.util.List;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
+import zhonghuass.ssml.mvp.ui.activity.VideoDetailActivity;
 
 public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView.ViewHolder> {
     Context mContext;
@@ -106,7 +107,7 @@ public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView
                     intent.putExtra("member_type",item.getMember_type());
                     mContext.startActivity(intent);
                 }else {
-                    Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
+                    Intent intent = new Intent(mContext, VideoDetailActivity.class);
                     intent.putExtra("content_id",item.getContent_id());
                     intent.putExtra("member_id",item.getMember_id());
                     intent.putExtra("member_type",item.getMember_type());
