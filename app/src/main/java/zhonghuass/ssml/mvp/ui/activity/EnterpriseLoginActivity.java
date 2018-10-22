@@ -10,7 +10,9 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -47,8 +49,10 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     TextView tvAgreement;
     @BindView(R.id.iv_tip_choose)
     ImageView ivTipChoose;
+    @BindView(R.id.ll_tip_choose)
+    LinearLayout llTipChoose;
     private boolean isChecked = true;
-    private boolean isflag;
+    private boolean isflag=true;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -68,6 +72,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         llTop.setVisibility(View.GONE);
+        ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
     }
 
     @Override
@@ -97,7 +102,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
         finish();
     }
 
-    @OnClick({R.id.iv_passworld_choose, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_tip_choose})
+    @OnClick({R.id.iv_passworld_choose, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.ll_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_passworld_choose:
@@ -111,7 +116,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
                 break;
             case R.id.tv_agreement:
                 break;
-            case R.id.iv_tip_choose:
+            case R.id.ll_tip_choose:
                 toAgreement();
                 break;
         }
@@ -133,10 +138,10 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
 
     private void toAgreement() {
         if (isflag) {
-            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
             isflag = false;
         } else {
-            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
             isflag = true;
         }
     }
@@ -144,6 +149,10 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     private void eptoLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mPassworld = edtKey.getText().toString().trim();
+        if (isflag==false){
+            Toast.makeText(this, "请阅读用户协议，并确认勾选协议", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (TextUtils.isEmpty(mPhone)) {
             ArmsUtils.makeText(this, "请输入手机号码!");
             return;
@@ -165,4 +174,10 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
         EnterpriseLoginActivity.this.finish();
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }
