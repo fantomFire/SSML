@@ -18,9 +18,11 @@ import com.dl7.recycler.adapter.BaseQuickAdapter;
 import com.dl7.recycler.adapter.BaseViewHolder;
 import com.github.library.layoutView.CircleImageView;
 import com.jess.arms.utils.ArmsUtils;
+
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
 import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
+import zhonghuass.ssml.mvp.ui.activity.VideoDetailActivity;
 
 import java.util.List;
 
@@ -95,6 +97,7 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         int imghight = cover_height / resize;
 
         ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
+        ImageView ivVideo = (ImageView) holder.getView(R.id.iv_video);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();
         layoutParams.width = imgWidth;
         layoutParams.height = imghight;
@@ -109,6 +112,11 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
                 .load(item.getContent_cover())
 //                .apply(requestOptions)
                 .into(iv);
+        if (item.getContent_type().equals("0")){
+            ivVideo.setVisibility(View.GONE);
+        }else {
+            ivVideo.setVisibility(View.VISIBLE);
+        }
         Glide.with(mContext)
                 .load(item.getMember_image())
                 //.apply(requestOptions)
@@ -116,11 +124,19 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
-                intent.putExtra("content_id", item.getContent_id());
-                intent.putExtra("member_id", item.getMember_id());
-                intent.putExtra("member_type", item.getMember_type());
-                mContext.startActivity(intent);
+                if (item.getContent_type().equals("0")) {
+                    Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
+                    intent.putExtra("content_id", item.getContent_id());
+                    intent.putExtra("member_id", item.getMember_id());
+                    intent.putExtra("member_type", item.getMember_type());
+                    mContext.startActivity(intent);
+                } else {
+                    Intent intent = new Intent(mContext, VideoDetailActivity.class);
+                    intent.putExtra("content_id", item.getContent_id());
+                    intent.putExtra("member_id", item.getMember_id());
+                    intent.putExtra("member_type", item.getMember_type());
+                    mContext.startActivity(intent);
+                }
             }
         });
 

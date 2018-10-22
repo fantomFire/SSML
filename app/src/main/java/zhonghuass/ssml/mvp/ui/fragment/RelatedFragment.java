@@ -22,6 +22,7 @@ import zhonghuass.ssml.di.component.DaggerRelatedComponent;
 import zhonghuass.ssml.di.module.RelatedModule;
 import zhonghuass.ssml.mvp.contract.RelatedContract;
 import zhonghuass.ssml.mvp.presenter.RelatedPresenter;
+import zhonghuass.ssml.mvp.ui.activity.ChattingActivity;
 import zhonghuass.ssml.mvp.ui.activity.CommentActivity;
 import zhonghuass.ssml.mvp.ui.activity.ConcernActivity;
 import zhonghuass.ssml.mvp.ui.activity.MessageListActivity;
@@ -162,7 +163,7 @@ public class RelatedFragment extends BaseFragment<RelatedPresenter> implements R
                 break;
             case R.id.ll_message:
                 //跳转到消息--与我相关--私信我的页面
-                ArmsUtils.startActivity(MessageListActivity.class);
+                ArmsUtils.startActivity(ChattingActivity.class);
                 break;
         }
     }

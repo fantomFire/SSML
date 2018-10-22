@@ -72,9 +72,9 @@ public interface ApiServer {
     Observable<BaseResponse<List<CommentBean>>> getCommentData(@Query("member_id") String area, @Query("member_type") String type,
                                                                @Query("page") String page);
 
-    //私信列表
-    @GET("")
-    Observable<BaseResponse<List<MessageListBean>>> getMessageListData(@Query("member_id") String area, @Query("member_type") String type,
+    //搜索内容
+    @GET("Api/search/search")
+    Observable<BaseResponse<List<RecommendBean>>> getSearchResultData(@Query("member_id") String area, @Query("member_type") String type,
                                                                        @Query("page") String page);
 
     //首页推荐

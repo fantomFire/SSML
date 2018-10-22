@@ -24,6 +24,7 @@ import java.util.List;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
+import zhonghuass.ssml.mvp.ui.activity.VideoDetailActivity;
 
 public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView.ViewHolder> {
     Context mContext;
@@ -72,6 +73,7 @@ public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView
         int imghight = Integer.parseInt(cover_height) / resize;
 
         ImageView iv = (ImageView) holder.getView(R.id.recommend_img);
+        ImageView ivVideo = (ImageView) holder.getView(R.id.iv_video);
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.getView(R.id.recommend_img).getLayoutParams();
         layoutParams.width = imgWidth;
         layoutParams.height = imghight;
@@ -81,10 +83,16 @@ public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.shape_iv_bg);
-        Glide.with(mContext)
-                .load(item.getContent_cover())
+            Glide.with(mContext)
+                    .load(item.getContent_cover())
 //                .apply(requestOptions)
-                .into(iv);
+                    .into(iv);
+        if (item.getContent_type().equals("0")){
+            ivVideo.setVisibility(View.GONE);
+        }else {
+            ivVideo.setVisibility(View.VISIBLE);
+        }
+
         Glide.with(mContext)
                 .load(item.getMember_image())
                 //.apply(requestOptions)
@@ -92,11 +100,21 @@ public class DanymicAdapter extends BaseQuickAdapter<DanynimicBean, RecyclerView
         holder.getConvertView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
-                intent.putExtra("content_id",item.getContent_id());
-                intent.putExtra("member_id",item.getMember_id());
-                intent.putExtra("member_type",item.getMember_type());
-                mContext.startActivity(intent);
+                if (item.getContent_type().equals("0")){
+                    Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
+                    intent.putExtra("content_id",item.getContent_id());
+                    intent.putExtra("member_id",item.getMember_id());
+                    intent.putExtra("member_type",item.getMember_type());
+                    mContext.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(mContext, VideoDetailActivity.class);
+                    intent.putExtra("content_id",item.getContent_id());
+                    intent.putExtra("member_id",item.getMember_id());
+                    intent.putExtra("member_type",item.getMember_type());
+                    mContext.startActivity(intent);
+                }
+
+
             }
         });
     }

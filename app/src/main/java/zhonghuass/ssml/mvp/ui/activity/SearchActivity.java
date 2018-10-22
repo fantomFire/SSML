@@ -20,13 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerSearchComponent;
 import zhonghuass.ssml.di.module.SearchModule;
 import zhonghuass.ssml.mvp.contract.SearchContract;
 import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
 import zhonghuass.ssml.mvp.presenter.SearchPresenter;
-import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.adapter.SearchHistoryAdapter;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -46,9 +47,11 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
     RelativeLayout rvHistoryDelete;
     @BindView(R.id.rv_search_history)
     RecyclerView rvSearchHistory;
+    @BindView(R.id.rl_search_right)
+    RelativeLayout rlSearchRight;
     private SearchHistoryAdapter historyAdapter;
-    private String member_id="1",member_type="1";
-    private List<HistoryBean> mList=new ArrayList<>();
+    private String member_id = "1", member_type = "1";
+    private List<HistoryBean> mList = new ArrayList<>();
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -70,10 +73,9 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4, GridLayoutManager.VERTICAL, false);
         rvSearchHistory.setLayoutManager(gridLayoutManager);
-        historyAdapter = new SearchHistoryAdapter(R.layout.search_history_item,mList);
+        historyAdapter = new SearchHistoryAdapter(R.layout.search_history_item, mList);
         rvSearchHistory.setAdapter(historyAdapter);
         mPresenter.getSearchHistoryData(member_id, member_type);
-
 
 
     }
@@ -110,5 +112,18 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         mList.clear();
         mList.addAll(data);
         historyAdapter.notifyDataSetChanged();
+    }
+
+    @OnClick({R.id.ll_search_back, R.id.edt_search, R.id.rv_history_delete})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_search_back:
+                break;
+            case R.id.edt_search:
+                ArmsUtils.startActivity(SearchResultActivity.class);
+                break;
+            case R.id.rv_history_delete:
+                break;
+        }
     }
 }
