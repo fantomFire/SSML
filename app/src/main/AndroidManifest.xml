@@ -115,4 +115,5 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
     </application>
 
+
 </manifest>
