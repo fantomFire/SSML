@@ -24,7 +24,7 @@ import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerEnterpriseLoginComponent;
 import zhonghuass.ssml.di.module.EnterpriseLoginModule;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.model.appbean.EPLoginBean;
 import zhonghuass.ssml.mvp.presenter.EnterpriseLoginPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.utils.Constants;
@@ -165,7 +165,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     }
 
     @Override
-    public void gotoActivity(LoginBean voidBaseResponse) {
+    public void gotoActivity(EPLoginBean voidBaseResponse) {
         PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_ID, voidBaseResponse.data.eid);
         PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_NAME, voidBaseResponse.data.name);
         PrefUtils.putString(EnterpriseLoginActivity.this, Constants.EP_MAILBOX, voidBaseResponse.data.mailbox);

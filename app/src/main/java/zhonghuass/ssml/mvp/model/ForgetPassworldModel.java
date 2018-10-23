@@ -37,7 +37,7 @@ public class ForgetPassworldModel extends BaseModel implements ForgetPassworldCo
 
     @Override
     public Observable<BaseResponse<Void>> toForgetPassworldVerification(String mPhone, String mCode) {
-        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toForgetPassworldVerification(mPhone, mCode);
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toForgetPassworldVerification(mPhone, mCode,"2");
     }
 
     @Override

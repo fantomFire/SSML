@@ -3,18 +3,16 @@ package zhonghuass.ssml.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
-
-import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import zhonghuass.ssml.http.ApiServer;
-import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.model.appbean.EPLoginBean;
 
 
 @ActivityScope
@@ -37,7 +35,7 @@ public class EnterpriseLoginModel extends BaseModel implements EnterpriseLoginCo
     }
 
     @Override
-    public Observable<LoginBean> eptoLogin(String mPhone, String mPassworld) {
-        return mRepositoryManager.obtainRetrofitService(ApiServer.class).topwLogin(mPhone,mPassworld,"3");
+    public Observable<EPLoginBean> eptoLogin(String mPhone, String mPassworld) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).toepLogin(mPhone,mPassworld,"3");
     }
 }

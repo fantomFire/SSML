@@ -1,13 +1,9 @@
 package zhonghuass.ssml.mvp.contract;
 
-import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
-
-
-import java.util.function.DoubleUnaryOperator;
+import com.jess.arms.mvp.IView;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import zhonghuass.ssml.http.BaseResponse;
 
 

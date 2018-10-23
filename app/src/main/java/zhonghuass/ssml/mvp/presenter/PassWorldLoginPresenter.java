@@ -2,23 +2,18 @@ package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
 
-import com.google.gson.JsonObject;
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PassWorldLoginContract;
 import zhonghuass.ssml.mvp.model.appbean.LoginBean;
-import zhonghuass.ssml.mvp.ui.activity.PassWorldLoginActivity;
-import zhonghuass.ssml.utils.Constants;
-import zhonghuass.ssml.utils.PrefUtils;
+import zhonghuass.ssml.mvp.model.appbean.PWLoginBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -50,10 +45,10 @@ public class PassWorldLoginPresenter extends BasePresenter<PassWorldLoginContrac
     public void pwtoLogin(String mPhone, String mPassworld) {
         mModel.pwtoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<PWLoginBean>(mErrorHandler) {
 
                     @Override
-                    public void onNext(LoginBean loginBeanBaseResponse) {
+                    public void onNext(PWLoginBean loginBeanBaseResponse) {
                         mRootView.showMessage(loginBeanBaseResponse.msg);
                         String status = loginBeanBaseResponse.status;
                         if (status.equals("200")) {

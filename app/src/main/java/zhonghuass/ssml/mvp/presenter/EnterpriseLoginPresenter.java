@@ -2,19 +2,17 @@ package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.http.imageloader.ImageLoader;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import com.jess.arms.integration.AppManager;
+import com.jess.arms.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.EnterpriseLoginContract;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
+import zhonghuass.ssml.mvp.model.appbean.EPLoginBean;
 import zhonghuass.ssml.utils.RxUtils;
 
 
@@ -46,14 +44,15 @@ public class EnterpriseLoginPresenter extends BasePresenter<EnterpriseLoginContr
     public void eptoLogin(String mPhone, String mPassworld) {
         mModel.eptoLogin(mPhone, mPassworld)
                 .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<LoginBean>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<EPLoginBean>(mErrorHandler) {
                     @Override
-                    public void onNext(LoginBean voidBaseResponse) {
+                    public void onNext(EPLoginBean voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.msg);
                         if (voidBaseResponse.status.equals("200")){
                             mRootView.gotoActivity(voidBaseResponse);
                         }
                     }
+
                 });
     }
 }

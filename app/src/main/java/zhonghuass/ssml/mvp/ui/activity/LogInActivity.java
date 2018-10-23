@@ -8,7 +8,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -17,6 +19,7 @@ import com.maning.mndialoglibrary.MProgressDialog;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,8 +61,10 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     ImageView ivWeibo;
     @BindView(R.id.iv_tip_choose)
     ImageView ivTipChoose;
+    @BindView(R.id.ll_tip_choose)
+    LinearLayout llTipChoose;
     private Disposable mDispos;
-    private boolean isflag;
+    private boolean isflag = true;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -80,6 +85,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         llTop.setVisibility(View.GONE);
+        ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
     }
 
     @Override
@@ -109,7 +115,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     }
 
 
-    @OnClick({R.id.tv_getcode, R.id.tv_register, R.id.tv_passworld_login, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_weixin, R.id.iv_qq, R.id.iv_weibo, R.id.iv_tip_choose})
+    @OnClick({R.id.tv_getcode, R.id.tv_register, R.id.tv_passworld_login, R.id.tv_upload, R.id.tv_enter, R.id.tv_agreement, R.id.iv_weixin, R.id.iv_qq, R.id.iv_weibo, R.id.ll_tip_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_getcode:
@@ -139,7 +145,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
             case R.id.iv_weibo:
                 ArmsUtils.startActivity(WeiXinLoginActivity.class);
                 break;
-            case R.id.iv_tip_choose:
+            case R.id.ll_tip_choose:
                 toAgreement();
                 break;
         }
@@ -173,6 +179,10 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
     private void toLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mCode = edtCode.getText().toString().trim();
+        if (isflag == false) {
+            Toast.makeText(this, "请阅读用户协议，并确认勾选协议", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (TextUtils.isEmpty(mPhone)) {
             ArmsUtils.makeText(this, "请输入手机号码！");
             return;
@@ -181,16 +191,17 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
             ArmsUtils.makeText(this, "请输入手机号验证码！");
             return;
         }
+
         mPresenter.toLogin(mPhone, mCode);
 
     }
 
     private void toAgreement() {
         if (isflag) {
-            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
             isflag = false;
         } else {
-            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5_1);
+            ivTipChoose.setBackgroundResource(R.mipmap.login_icon_5);
             isflag = true;
         }
     }
@@ -202,5 +213,12 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         PrefUtils.putString(LogInActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
         ArmsUtils.startActivity(MainActivity.class);
         LogInActivity.this.finish();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

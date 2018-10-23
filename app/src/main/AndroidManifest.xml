@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".mvp.ui.activity.MainActivity"
+            android:name=".mvp.ui.activity.LogInActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".mvp.ui.activity.LogInActivity" />
+        <activity android:name=".mvp.ui.activity.MainActivity" />
 
         <activity android:name=".mvp.ui.activity.GuideActivity" />
         <activity android:name=".mvp.ui.activity.WelcomeActivity" />
@@ -53,6 +53,8 @@
         <activity android:name=".mvp.ui.activity.RealNameActivity" />
         <activity android:name=".mvp.ui.activity.PassWorldLoginActivity" />
         <activity android:name=".mvp.ui.activity.EnterpriseLoginActivity" />
+        <activity android:name=".mvp.ui.activity.ForgetPassworldActivity"/>
+        <activity android:name=".mvp.ui.activity.ConfirModiActivity"/>
         <activity
             android:name=".mvp.ui.activity.TradeDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -105,14 +107,14 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 

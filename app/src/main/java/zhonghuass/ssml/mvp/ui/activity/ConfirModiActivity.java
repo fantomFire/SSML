@@ -15,7 +15,6 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerConfirModiComponent;
@@ -45,6 +44,8 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     private boolean isChecked;
     private boolean isChecked2;
     private boolean isflag;
+    private String phone;
+    private String code;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -64,6 +65,9 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         llTop.setVisibility(View.GONE);
+        Intent intent = getIntent();
+        phone = intent.getStringExtra("forgetmPhone");
+        code = intent.getStringExtra("forgetmmCode");
     }
 
     @Override
@@ -149,11 +153,10 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
     }
 
     private void toConfirModi() {
-        Intent intent = getIntent();
-        String phone = intent.getStringExtra("forgetmPhone");
-        String code = intent.getStringExtra("forgetmmCode");
+
         String newpw = edtPhone.getText().toString().trim();
         String oldpw = edtPassworld.getText().toString().trim();
+        System.out.println("oldpw = " + phone+"code="+code+"new="+newpw);
         mPresenter.toConfirModi(phone, code, newpw, oldpw);
 
     }
@@ -164,11 +167,5 @@ public class ConfirModiActivity extends MBaseActivity<ConfirModiPresenter> imple
         ConfirModiActivity.this.finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 
 }
