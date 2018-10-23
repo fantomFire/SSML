@@ -29,7 +29,7 @@ public class QQLoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qqlogin);
-        mTencent = Tencent.createInstance("3103866703",this);
+        mTencent = Tencent.createInstance("3103866703",this.getApplicationContext());
     }
 
     public void qqLogin(View view) {

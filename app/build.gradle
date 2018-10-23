@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.33'
     //轮播图控件
     implementation 'com.jude:rollviewpager:1.2.9'
-}
+
     implementation 'com.jude:rollviewpager:1.2.9'
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     //qq登录

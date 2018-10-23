@@ -17,12 +17,12 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageListBean.DataBea
 
     public MessageListAdapter(int layoutResId, List<MessageListBean.DataBean> data) {
         super(layoutResId, data);
-        System.out.println(data.get(0).getMember()+"99999");
+        //System.out.println(data.get(0).getMember()+"99999");
     }
 
     @Override
     protected void convert(BaseViewHolder helper, MessageListBean.DataBean item) {
-        helper.setText(R.id.tv_message_list_name,item.getMember_name())
+       /* helper.setText(R.id.tv_message_list_name,item.getMember_name())
                 .setText(R.id.tv_message_list_date,item.getMessages().get(0).getAdd_time())
                 .setText(R.id.tv_message_list_num,item.getUnread())
                 .setText(R.id.tv_message_list_details,item.getMessages().get(0).getMessage());
@@ -33,9 +33,9 @@ public class MessageListAdapter extends BaseQuickAdapter<MessageListBean.DataBea
         helper.convertView.setOnClickListener((v) ->{
 //            ArmsUtils.startActivity(ChattingActivity.class);
                 }
+*/
 
-
-        );
+     //   );
     }
     }
 

@@ -202,7 +202,7 @@ public class MessageListActivity extends MBaseActivity<MessageListPresenter> imp
                             }
                             mList=messageListBean.getData();
                             rvMessageList.setLayoutManager(new LinearLayoutManager(MessageListActivity.this));
-                            System.out.println("接收消息" + mList.get(0).getMember_name());
+                          //  System.out.println("接收消息" + mList.get(0).getMember_name());
                             messageListAdapter = new MessageListAdapter(R.layout.message_list_item, mList);
                             rvMessageList.setAdapter(messageListAdapter);
 
