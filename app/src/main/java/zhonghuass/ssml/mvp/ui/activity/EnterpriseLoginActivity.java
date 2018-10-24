@@ -18,7 +18,6 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerEnterpriseLoginComponent;
@@ -52,7 +51,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     @BindView(R.id.ll_tip_choose)
     LinearLayout llTipChoose;
     private boolean isChecked = true;
-    private boolean isflag=true;
+    private boolean isflag = true;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -88,7 +87,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -149,7 +148,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
     private void eptoLogin() {
         String mPhone = edtPhone.getText().toString().trim();
         String mPassworld = edtKey.getText().toString().trim();
-        if (isflag==false){
+        if (isflag == false) {
             Toast.makeText(this, "请阅读用户协议，并确认勾选协议", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -174,10 +173,4 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
         EnterpriseLoginActivity.this.finish();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

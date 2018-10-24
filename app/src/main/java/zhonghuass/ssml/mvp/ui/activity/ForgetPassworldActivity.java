@@ -18,7 +18,6 @@ import com.jess.arms.utils.ArmsUtils;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -187,12 +186,5 @@ public class ForgetPassworldActivity extends MBaseActivity<ForgetPassworldPresen
         if (mDispos != null) {
             mDispos.dispose();
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }
