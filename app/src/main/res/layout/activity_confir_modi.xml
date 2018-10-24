@@ -39,6 +39,7 @@
                         android:background="@mipmap/login_icon_2" />
 
                     <EditText
+                        android:maxLength="12"
                         android:inputType="textPassword"
                         android:id="@+id/edt_phone"
                         android:layout_width="wrap_content"
@@ -77,6 +78,7 @@
                         android:background="@mipmap/login_icon_2" />
 
                     <EditText
+                        android:maxLength="12"
                         android:inputType="textPassword"
                         android:id="@+id/edt_passworld"
                         android:layout_width="wrap_content"

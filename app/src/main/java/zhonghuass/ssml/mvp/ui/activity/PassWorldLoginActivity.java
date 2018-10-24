@@ -168,8 +168,8 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
 
     @Override
     public void gotoActivity(PWLoginBean voidBaseResponse) {
+        PrefUtils.putString(PassWorldLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
         PrefUtils.putString(PassWorldLoginActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
-//        PrefUtils.putString(PassWorldLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
         ArmsUtils.startActivity(MainActivity.class);
         PassWorldLoginActivity.this.finish();
     }

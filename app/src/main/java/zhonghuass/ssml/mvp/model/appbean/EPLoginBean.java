@@ -23,7 +23,7 @@ public class EPLoginBean {
          * member_type : 0
          */
 
-        public String eid;
+        public String uid;
         public String name;
         public String mailbox;
         public String introduction;

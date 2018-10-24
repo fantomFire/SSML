@@ -24,42 +24,44 @@
                 android:orientation="vertical"
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:layout_marginTop="100dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="17dp"
-                        android:layout_height="17dp"
-                        android:background="@mipmap/login_icon_1" />
+                        <ImageView
+                            android:layout_width="17dp"
+                            android:layout_height="17dp"
+                            android:background="@mipmap/login_icon_1" />
 
-                    <EditText
-                        android:maxLength="11"
-                        android:id="@+id/edt_phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:background="@null"
-                        android:hint="请输入手机号"
-                        android:textColorHint="@color/corlor28"
-                        android:textSize="13dp" />
+                        <EditText
+                            android:inputType="number"
+                            android:maxLength="11"
+                            android:id="@+id/edt_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            android:background="@null"
+                            android:hint="请输入手机号"
+                            android:textColorHint="@color/corlor28"
+                            android:textSize="13dp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1.2dp"
-                    android:layout_marginTop="17dp"
                     android:background="@color/colorf5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_height="50dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -69,10 +71,11 @@
                         android:background="@mipmap/login_icon_2" />
 
                     <EditText
+                        android:maxLength="12"
                         android:inputType="textPassword"
                         android:id="@+id/edt_passworld"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="15dp"
                         android:layout_weight="1"
                         android:background="@null"
@@ -90,7 +93,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1.2dp"
-                    android:layout_marginTop="17dp"
                     android:background="@color/colorf5" />
 
                 <LinearLayout
