@@ -133,7 +133,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
         llFans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArmsUtils.startActivity(PicEditActivity.class);
+                ArmsUtils.startActivity(MyFansActivity.class);
             }
         });
     }

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import android.support.v7.widget.RecyclerView;
+import butterknife.BindView;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -21,6 +23,9 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class SelectMBActivity extends BaseActivity<SelectMBPresenter> implements SelectMBContract.View {
+
+    @BindView(R.id.rvMb)
+    RecyclerView rvMb;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {

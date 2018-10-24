@@ -1,12 +1,13 @@
 package zhonghuass.ssml.mvp.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.*;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -102,7 +103,12 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     public void initData(@Nullable Bundle savedInstanceState) {
         initBackPopupWindow();
         path1 = selectList.get(0).getPath();
-        path2 = selectList.get(1).getPath();
+
+        if (selectList.size() < 2) {
+            path2 = path1;
+        } else {
+            path2 = selectList.get(1).getPath();
+        }
         pathList.add(path1);
         pathList.add(path2);
 
@@ -134,6 +140,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
 
     }
+
 
     @Override
     public void setData(@Nullable Object data) {
@@ -192,7 +199,8 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     private PhotoView clickImageView;
     private int clickIVNum;//标记点击的是那个iv
 
-    private int rotateNum = 0;//点击旋转的次数，每次旋转90°
+    private int rotateNum1 = 0;//点击旋转的次数，每次旋转90°
+    private int rotateNum2 = 0;//点击旋转的次数，每次旋转90°
     private int maxNum = 0;//点击放大次数
 
     private void initBackPopupWindow() {
@@ -222,22 +230,27 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
         tvRotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rotateNum++;
                 String path = "";
+                int rotateNum = 0;
                 if (clickIVNum == 0) {
+                    rotateNum1++;
+                    rotateNum = rotateNum1;
                     path = mList.get(0).imgPath;
                 }
                 if (clickIVNum == 1) {
+                    rotateNum2++;
+                    rotateNum = rotateNum2;
                     path = mList.get(1).imgPath;
                 }
+
+
                 Bitmap bmp = BitmapFactory.decodeFile(path);
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(rotaingImageView(90 * rotateNum, bmp));
-                clickImageView.setScaleType(ImageView.ScaleType.CENTER);
-                clickImageView.setAdjustViewBounds(true);
-                Glide.with(getActivity())
-                        .load(bitmapDrawable)
-                        .into(clickImageView);
+//                BitmapDrawable bitmapDrawable = new BitmapDrawable(rotaingImageView(90 * rotateNum, bmp));
+                //setImageDrawable图片就被缩放了。
 //                clickImageView.setImageDrawable(bitmapDrawable);
+                Bitmap newBmp = rotaingImageView(90 * rotateNum, bmp);
+                clickImageView.setImageBitmap(newBmp);
+
             }
         });
 
@@ -277,11 +290,42 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             }
         });
 
-
         imageMenuPop.setBackgroundDrawable(new ColorDrawable(0x11111111));
         // 设置好参数之后再show
         imageMenuPop.setOutsideTouchable(true);
 
+
+    }
+
+    /**
+     * 自适应图片的ImageView(根据屏幕宽度适应)
+     */
+    public void setImageViewMathParent(Activity context,
+                                       PhotoView view, Bitmap bitmap) {
+        //获得屏幕密度
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        context.getWindowManager().getDefaultDisplay()
+                .getMetrics(displayMetrics);
+        //获得屏幕宽度和图片宽度的比例
+        float scalew = (float) displayMetrics.widthPixels
+                / (float) bitmap.getWidth();
+        //获得ImageView的参数类
+        ViewGroup.LayoutParams vgl = view.getLayoutParams();
+        //设置ImageView的宽度为屏幕的宽度
+        vgl.width = displayMetrics.widthPixels;
+        //设置ImageView的高度
+        vgl.height = (int) (bitmap.getHeight() * scalew);
+
+        view.setLayoutParams(vgl);
+        view.setImageBitmap(bitmap);
+        //等比例缩放
+        view.setAdjustViewBounds(true);
+        //设置图片充满ImageView控件
+        view.setScaleType(ImageView.ScaleType.CENTER);
+
+        if (bitmap != null && bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
 
     }
 
@@ -354,29 +398,30 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     }
 
     /*
-     * 旋转图片
+     * 旋转缩放图片
      * @param angle
      * @param bitmap
      * @return Bitmap
      */
     public Bitmap rotaingImageView(int angle, Bitmap bitmap) {
+
+
+        float scaleWidth = (float) clickImageView.getWidth() / bitmap.getWidth();
+        float scaleHeight = (float) clickImageView.getHeight() / bitmap.getHeight();
+
         //旋转图片 动作
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
 
 
-        double nn = (double) clickImageView.getWidth() / bitmap.getWidth();
-        int w = (int) (nn * bitmap.getWidth());
-        int h = (int) (nn * bitmap.getHeight());
-
-
-        Log.e("--", "NN" + nn);
-        Log.e("--", "WW" + w);
-        Log.e("--", "HH" + h);
-        Log.e("--", "图宽" + bitmap.getWidth());
-        Log.e("--", "图高" + bitmap.getHeight());
-        Log.e("--", "V宽" + clickImageView.getWidth());
-
+        //因为ImageView.ScaleType.CENTER默认保证原图大小不变的情况下，按比例将图片宽或者高让等于view的宽高来缩放
+        //不设置下面的缩放，图片旋转之后会ScaleType.CENTER失效。图片变成原来大小。
+        if (bitmap.getHeight() >= bitmap.getWidth()) { //如果图片是竖直方向的
+            matrix.postScale(scaleWidth, scaleWidth);
+        }
+        if (bitmap.getHeight() < bitmap.getWidth()) {//如果图片是水平方向的
+            matrix.postScale(scaleHeight, scaleHeight);
+        }
 
         // 创建新的图片
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -502,7 +547,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     private void addTagView(ToFragmentMsg msg) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.layout_add_tag, null);
         LinearLayout llTag = (LinearLayout) view.findViewById(R.id.ll_tag);
-        llTag.setBackgroundColor(getResources().getColor(msg.type));
+        llTag.setBackground(getResources().getDrawable(msg.type));
         TextView textView = (TextView) view.findViewById(R.id.tv_tag);
         ImageView ivDelete = (ImageView) view.findViewById(R.id.iv_delete);
         textView.setText(msg.text);

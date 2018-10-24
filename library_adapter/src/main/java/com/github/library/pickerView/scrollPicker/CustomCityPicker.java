@@ -34,7 +34,7 @@ public class CustomCityPicker {
      */
     public interface ResultHandler {
         void handle(String result);
-        void sendId(String ids);
+        void sendId(String mProvinceId,String mCityId,String mAreaId);
     }
 
     private ResultHandler handler;
@@ -103,7 +103,7 @@ public class CustomCityPicker {
                 } else {
                 }*/
                 handler.handle(mProvince + "-" + mCity + "-" + mArea);
-                handler.sendId(mProvinceId+"-"+mCityId+"-"+mAreaId);
+                handler.sendId(mProvinceId,mCityId,mAreaId);
                 cityPickerDialog.dismiss();
             }
         });

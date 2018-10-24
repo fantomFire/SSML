@@ -15,23 +15,31 @@
             android:background="@mipmap/sticker_delete"/>
 
 
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/ll_tag"
             android:layout_margin="20dp"
             android:layout_width="wrap_content"
-            android:padding="5dp"
-            android:gravity="center"
-            android:background="@color/gray"
             android:layout_height="wrap_content">
-
-        <TextView
-                android:id="@+id/tv_tag"
+        <ImageView
+                android:id="@+id/iv_tag"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/whiteSmoke"
+                android:src="@mipmap/edit_1a"
+        />
+
+        <TextView
+                android:layout_toRightOf="@id/iv_tag"
+                android:id="@+id/tv_tag"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textSize="15sp"
-                />
-    </LinearLayout>
+                android:background="@mipmap/edit_1b9b"
+        />
+    </RelativeLayout>
 
 
 

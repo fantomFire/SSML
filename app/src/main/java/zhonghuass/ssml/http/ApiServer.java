@@ -1,43 +1,15 @@
 package zhonghuass.ssml.http;
 
-import java.util.List;
-import java.util.Map;
-
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.PartMap;
-import retrofit2.http.Query;
-import zhonghuass.ssml.mvp.model.appbean.BriefBean;
-import zhonghuass.ssml.mvp.model.appbean.CollectionBean;
-import zhonghuass.ssml.mvp.model.appbean.ComanyrfBean;
-import zhonghuass.ssml.mvp.model.appbean.CommentBean;
-import zhonghuass.ssml.mvp.model.appbean.ConcernFansBean;
-import zhonghuass.ssml.mvp.model.appbean.DailyBean;
-import zhonghuass.ssml.mvp.model.appbean.DailyChoicenessBean;
-import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
-import zhonghuass.ssml.mvp.model.appbean.DiscussBean;
-import zhonghuass.ssml.mvp.model.appbean.EPLoginBean;
-import zhonghuass.ssml.mvp.model.appbean.FocusBean;
-import zhonghuass.ssml.mvp.model.appbean.GraphicBean;
-import zhonghuass.ssml.mvp.model.appbean.HistoryBean;
-import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
-import zhonghuass.ssml.mvp.model.appbean.LoginBean;
-import zhonghuass.ssml.mvp.model.appbean.PWLoginBean;
-import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
-import zhonghuass.ssml.mvp.model.appbean.RecomDetailBean;
-import zhonghuass.ssml.mvp.model.appbean.RecommendBean;
-import zhonghuass.ssml.mvp.model.appbean.SearchBean;
-import zhonghuass.ssml.mvp.model.appbean.ShareMeBean;
-import zhonghuass.ssml.mvp.model.appbean.TradeBean;
-import zhonghuass.ssml.mvp.model.appbean.TradeItemBean;
+import retrofit2.http.*;
+import zhonghuass.ssml.mvp.model.appbean.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface ApiServer {
     //注册
@@ -272,5 +244,12 @@ public interface ApiServer {
     @FormUrlEncoded
     @POST("/Api/content/praise")
     Observable<BaseResponse<Void>> addContentZan(@Field("member_id") String user_id, @Field("member_type") String user_type, @Field("content_id") String comment_id);
+
+    //更新个人资料
+    @Multipart
+    @POST("/Api/Member/Editing")
+    Observable<BaseResponse<List<UserInfoBean>>> updateMyInfo(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file);
+
+
 }
 

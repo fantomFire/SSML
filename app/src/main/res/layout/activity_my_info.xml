@@ -7,7 +7,30 @@
               android:focusable="true"
               android:focusableInTouchMode="true"
               android:orientation="vertical">
+    <FrameLayout
+            android:visibility="gone"
+            android:id="@+id/fl_progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+        <ProgressBar
+                android:layout_gravity="center"
+                android:id="@+id/progress_bar"
+                android:layout_marginBottom="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+        />
 
+        <TextView
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在提交..."
+                android:textColor="@color/corlor28"
+                android:textSize="15sp"/>
+    </FrameLayout>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +55,8 @@
                     android:textColor="@color/corlor28"
                     android:textSize="15sp"/>
 
-            <com.github.library.layoutView.CircleImageView
+            <zhonghuass.ssml.utils.CircleImageView
+                    android:id="@+id/civ_photo"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@mipmap/meizi"/>
@@ -54,16 +78,19 @@
                 android:paddingRight="16dp">
 
             <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="昵称"
                     android:textColor="@color/corlor28"
                     android:textSize="15sp"/>
 
-            <TextView
-                    android:layout_width="wrap_content"
+            <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="right"
                     android:text="美女"
                     android:textColor="@color/color66"
                     android:textSize="13sp"/>
@@ -143,4 +170,6 @@
                 android:text="0/140"
                 android:textSize="11sp"/>
     </LinearLayout>
+
+
 </LinearLayout>

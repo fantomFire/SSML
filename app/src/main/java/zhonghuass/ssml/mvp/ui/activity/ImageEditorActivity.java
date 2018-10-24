@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,10 +20,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -34,6 +32,7 @@ import zhonghuass.ssml.mvp.ToActivityMsg;
 import zhonghuass.ssml.mvp.ToFragmentMsg;
 import zhonghuass.ssml.mvp.contract.ImageEditorContract;
 import zhonghuass.ssml.mvp.presenter.ImageEditorPresenter;
+import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.fragment.ImageLayout1Fragment;
 import zhonghuass.ssml.mvp.ui.fragment.ImageLayout2Fragment;
 import zhonghuass.ssml.utils.CircleImageView;
@@ -43,25 +42,16 @@ import zhonghuass.ssml.utils.FragmentUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> implements ImageEditorContract.View {
+public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> implements ImageEditorContract.View {
 
     @BindView(R.id.rl_edit)
     RelativeLayout relativeLayout;
-    @BindView(R.id.iv_back)
-    ImageView ivBack;
-    @BindView(R.id.tv_save)
-    TextView tvSave;
-    //    @BindView(R.id.edit_img)
-////    ZoomImageView editImg;
-////    @BindView(R.id.out_bg)
-////    RelativeLayout outBg;
     @BindView(R.id.moban_item)
     LinearLayout mobanItem;
     @BindView(R.id.back_item)
@@ -75,12 +65,13 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     @BindView(R.id.fl_image)
     FrameLayout flImage;
     private List<Integer> mList;
+    private List<Integer> tagList, tagIconList;
     private PopupWindow backPopupWindow, fontPopupWindow, tagPopupWindow;
     private int textSize = 15;
     private int fragment = 1;
     private int viewId;
-    private int textColor = R.color.bar_grey;
-    private int tagType = R.color.white;
+    private int textColor = R.color.gray;
+    private int tagType;
 
     private Integer[] sizes = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
     private Integer[] colors = {
@@ -95,6 +86,14 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
             R.color.white, R.color.blue, R.color.red,
             R.color.blue, R.color.white
+    };
+    private Integer[] tagsIcon = {
+            R.mipmap.edit_icon_1_on, R.mipmap.edit_icon_4_on
+
+    };
+    private Integer[] tags = {
+            R.mipmap.edit_1a,
+            R.mipmap.edit_1a
     };
     private List<Fragment> mFragments;
     private FragmentManager fm;
@@ -133,6 +132,15 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        initToolBar("图片编辑", true, "保存");
+        tvRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveImage();
+            }
+        });
+
+
         Bundle mBundle = getIntent().getExtras();
         int imgMB = mBundle.getInt("template_num", 0);
         selectList = mBundle.getParcelableArrayList("imageList");
@@ -141,6 +149,8 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
 
         mList = Arrays.asList(colors);
+        tagList = Arrays.asList(tags);
+        tagIconList = Arrays.asList(tagsIcon);
         initBackPopupWindow();
         initFontPopupWindow();
         initTagPopupWindow();
@@ -151,9 +161,13 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
     private void initFragment(int imgMB) {
         fm = getSupportFragmentManager();
         switch (imgMB) {
-            case 0:
+            case 1://两张张图模板
                 fragment1 = ImageLayout1Fragment.newInstance(selectList);
                 initImageLayout(fragment1);
+                break;
+            case 0://一张图模板
+                fragment2 = ImageLayout2Fragment.newInstance(selectList);
+                initImageLayout(fragment2);
                 break;
         }
         imageLayout = imgMB;
@@ -217,7 +231,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 //                outBg.setBackgroundColor(getResources().getColor(colors[position]));
                 switch (imageLayout) {
                     case 0:
-                        ImageLayout1Fragment image1 = (ImageLayout1Fragment) fm.getFragments().get(0);
+                        ImageLayout2Fragment image1 = (ImageLayout2Fragment) fm.getFragments().get(0);
                         image1.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
                         break;
                 }
@@ -345,6 +359,30 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         tvFont.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Drawable drawableLeft = getResources().getDrawable(
+                        R.mipmap.fb_icon_24);
+                tvFont.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                        null, null, null);
+                tvFont.setCompoundDrawablePadding(10);
+                tvFont.setTextColor(Color.GRAY);
+
+
+                Drawable drawableLeft2 = getResources().getDrawable(
+                        R.mipmap.fb_icon_22);
+                tvSize.setCompoundDrawablesWithIntrinsicBounds(drawableLeft2,
+                        null, null, null);
+                tvSize.setCompoundDrawablePadding(10);
+                tvSize.setTextColor(Color.WHITE);
+
+
+                Drawable drawableLeft3 = getResources().getDrawable(
+                        R.mipmap.fb_icon_25);
+                tvColor.setCompoundDrawablesWithIntrinsicBounds(drawableLeft3,
+                        null, null, null);
+                tvColor.setCompoundDrawablePadding(10);
+                tvColor.setTextColor(Color.WHITE);
+
+
                 sv.setVisibility(View.VISIBLE);
                 crg.setVisibility(View.GONE);
                 sv2.setVisibility(View.GONE);
@@ -353,6 +391,30 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         tvSize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Drawable drawableLeft = getResources().getDrawable(
+                        R.mipmap.fb_icon_20);
+                tvFont.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                        null, null, null);
+                tvFont.setCompoundDrawablePadding(10);
+                tvFont.setTextColor(Color.WHITE);
+
+
+                Drawable drawableLeft2 = getResources().getDrawable(
+                        R.mipmap.fb_icon_23);
+                tvSize.setCompoundDrawablesWithIntrinsicBounds(drawableLeft2,
+                        null, null, null);
+                tvSize.setCompoundDrawablePadding(10);
+                tvSize.setTextColor(Color.GRAY);
+
+
+                Drawable drawableLeft3 = getResources().getDrawable(
+                        R.mipmap.fb_icon_25);
+                tvColor.setCompoundDrawablesWithIntrinsicBounds(drawableLeft3,
+                        null, null, null);
+                tvColor.setCompoundDrawablePadding(10);
+                tvColor.setTextColor(Color.WHITE);
+
+
                 sv2.setVisibility(View.VISIBLE);
                 crg.setVisibility(View.GONE);
                 sv.setVisibility(View.GONE);
@@ -361,6 +423,29 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
         tvColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Drawable drawableLeft = getResources().getDrawable(
+                        R.mipmap.fb_icon_20);
+                tvFont.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,
+                        null, null, null);
+                tvFont.setCompoundDrawablePadding(10);
+                tvFont.setTextColor(Color.WHITE);
+
+                Drawable drawableLeft2 = getResources().getDrawable(
+                        R.mipmap.fb_icon_22);
+                tvSize.setCompoundDrawablesWithIntrinsicBounds(drawableLeft2,
+                        null, null, null);
+                tvSize.setCompoundDrawablePadding(10);
+                tvSize.setTextColor(Color.WHITE);
+
+
+                Drawable drawableLeft3 = getResources().getDrawable(
+                        R.mipmap.fb_icon_21);
+                tvColor.setCompoundDrawablesWithIntrinsicBounds(drawableLeft3,
+                        null, null, null);
+                tvColor.setCompoundDrawablePadding(10);
+                tvColor.setTextColor(Color.GRAY);
+
+
                 crg.setVisibility(View.VISIBLE);
                 sv.setVisibility(View.GONE);
                 sv2.setVisibility(View.GONE);
@@ -415,6 +500,8 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
         tagPopupWindow.setFocusable(true);
 
+        tagType = tags[0];
+
         ImageView ivClose = (ImageView) contentview.findViewById(R.id.iv_close);
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -430,9 +517,11 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
                 // 关闭，添加
                 ToFragmentMsg msg = new ToFragmentMsg();
                 msg.text = etTag.getText().toString();
+                Log.e("--", "ET: " + msg.type);
                 msg.fragment = fragment;
                 msg.viewId = viewId;
                 msg.type = tagType;
+                Log.e("--", "IV1: " + msg.type);
                 msg.size = textSize;
                 msg.isTagOk = true;
                 EventBusUtils.post(msg);
@@ -440,13 +529,14 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
             }
         });
-        LinearLayout llTag = contentview.findViewById(R.id.ll_tag);
+        RelativeLayout llTag = contentview.findViewById(R.id.ll_tag);
+        ImageView ivTag = contentview.findViewById(R.id.iv_tag);
         RadioGroup rg = contentview.findViewById(R.id.rg2);
 
-        for (int i = 0; i < mList.size(); i++) {
+        for (int i = 0; i < tagIconList.size(); i++) {
             View radioButton = getLayoutInflater().inflate(R.layout.item_edit_bg_1, null);
             CircleImageView civ = radioButton.findViewById(R.id.civ);
-            civ.setImageResource(mList.get(i));
+            civ.setImageResource(tagIconList.get(i));
             radioButton.setTag(i);
             radioButton.setPadding(5, 0, 5, 0);
             rg.addView(radioButton);
@@ -454,8 +544,8 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
                 @Override
                 public void onClick(View v) {
                     int position = (int) v.getTag();
-                    tagType = colors[position];
-                    llTag.setBackgroundColor(getResources().getColor(tagType));
+                    tagType = tags[position];
+                    ivTag.setImageResource(tagType);
                 }
             });
         }
@@ -495,7 +585,7 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
     private int imageLayout = -1;
 
-    @OnClick({R.id.iv_back, R.id.tv_save, R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
+    @OnClick({R.id.iv_back, R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
     public void onViewClicked(View view) {
         //发这消息是为了关闭TextView上的菜单
         ToFragmentMsg msg = new ToFragmentMsg();
@@ -506,10 +596,6 @@ public class ImageEditorActivity extends BaseActivity<ImageEditorPresenter> impl
 
             case R.id.iv_back:
                 finish();
-                break;
-            case R.id.tv_save:
-                // 保存当前fragment图片
-                saveImage();
                 break;
             case R.id.moban_item:
 //                FragmentUtils.removeAllFragments(fm);

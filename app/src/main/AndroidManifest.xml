@@ -70,6 +70,7 @@
         <activity android:name=".mvp.ui.activity.MyConcernActivity" />
         <activity android:name=".mvp.ui.activity.MyFansActivity" />
         <activity android:name=".mvp.ui.activity.MyCollectionActivity" />
+        <activity android:name=".mvp.ui.activity.ChattingActivity" />
         <activity
             android:name=".mvp.ui.activity.PublishActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

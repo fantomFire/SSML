@@ -109,9 +109,10 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
             }
 
             @Override
-            public void sendId(String ids) {
-                int i = ids.lastIndexOf("-");
-                area = ids.substring(i);
+            public void sendId(String ids1, String ids2, String ids3) {
+//                int i = ids.lastIndexOf("-");
+//                area = ids.substring(i);
+                area = ids2;
                 mPresenter.getTradeData(area, type, currentPage, pagesize);
             }
         });
@@ -215,7 +216,7 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     }
 
     private void showPopupWindow() {
-        popupWindow.showAsDropDown(llTitle,0,10);
+        popupWindow.showAsDropDown(llTitle, 0, 10);
         tradeItemAdapter.setNewData(tradeData);
 
 

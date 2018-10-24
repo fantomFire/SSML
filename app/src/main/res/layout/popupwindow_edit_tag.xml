@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="#8000"
+              android:background="#9000"
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/arrow_down"/>
+                android:background="@mipmap/icon_font_ok"/>
     </RelativeLayout>
 
     <View
@@ -34,22 +34,31 @@
             android:background="@color/whiteSmoke"
     />
 
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/ll_tag"
             android:layout_margin="20dp"
-            android:layout_width="300dp"
-            android:gravity="center"
-            android:background="@color/whiteSmoke"
-            android:layout_height="40dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:id="@+id/iv_tag"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/edit_1a"/>
 
         <EditText
+                android:layout_toRightOf="@id/iv_tag"
                 android:id="@+id/et_tag"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:hint="请输入文字内容"
-                android:background="@null"/>
-    </LinearLayout>
+                android:background="@mipmap/edit_1b9b"
+                android:hint="请输入标签"
+        />
+    </RelativeLayout>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
