@@ -214,4 +214,11 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         ArmsUtils.startActivity(MainActivity.class);
         LogInActivity.this.finish();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mDispos != null) {
+            mDispos.dispose();
+        }
+    }
 }

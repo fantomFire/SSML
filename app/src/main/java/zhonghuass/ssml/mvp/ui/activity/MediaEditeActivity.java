@@ -133,7 +133,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         initPlay();
     }
 
-    @OnClick({R.id.tv_right})
+    @OnClick({R.id.tv_right,R.id.back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_right:
@@ -148,7 +148,9 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
                 //发布视频界面
 
                 break;
-
+            case R.id.back:
+                finish();
+                break;
         }
     }
     private void getCutMedia() {

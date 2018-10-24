@@ -77,7 +77,6 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
         imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx4.png");
         imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx3.png");
         ImageLoadFactory.getInstance().setImageClient(new GlideImageClient());
-        System.out.println(imgList.get(1));
         CardPagerAdapter cardAdapter = new CardPagerAdapter(this);
         cardAdapter.addImgUrlList(imgList);  //放置图片url的list，v1.0.3版本imgList集合类型为List<Obj>，只要Glide支持的都可以加载
 
@@ -227,6 +226,7 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
         if(resultCode==RESULT_OK&&requestCode == 1){
             if(data!=null){
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
+                System.out.println("@@@@@@@@@@@@"+selectList.size());
                 Intent intent = new Intent(this, ImageEditorActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("template_num",TEMPLATE_NUM);
