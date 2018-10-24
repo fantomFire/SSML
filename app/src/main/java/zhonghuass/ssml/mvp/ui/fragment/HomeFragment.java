@@ -40,12 +40,16 @@ import zhonghuass.ssml.di.component.DaggerHomeFragmentComponent;
 import zhonghuass.ssml.di.module.HomeFragmentModule;
 import zhonghuass.ssml.mvp.contract.HomeFragmentContract;
 import zhonghuass.ssml.mvp.presenter.HomeFragmentPresenter;
+import zhonghuass.ssml.mvp.ui.activity.LogInActivity;
 import zhonghuass.ssml.mvp.ui.activity.MSMQActivity;
+import zhonghuass.ssml.mvp.ui.activity.MainActivity;
 import zhonghuass.ssml.mvp.ui.activity.MessageListActivity;
 import zhonghuass.ssml.mvp.ui.activity.PublishActivity;
 import zhonghuass.ssml.mvp.ui.activity.SearchActivity;
 import zhonghuass.ssml.mvp.ui.activity.WebSocketActivity;
 import zhonghuass.ssml.mvp.ui.adapter.MyPagerAdapter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -183,11 +187,33 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
                 ArmsUtils.startActivity(SearchActivity.class);
                 break;
             case R.id.home_mess:
-                ArmsUtils.startActivity(MessageListActivity.class);
+                if (checkIfUpload()) {
+                    ArmsUtils.startActivity(MessageListActivity.class);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
+                }
                 break;
             case R.id.img_edit:
-                ArmsUtils.startActivity(PublishActivity.class);
+                if (checkIfUpload()) {
+                    ArmsUtils.startActivity(PublishActivity.class);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
+                }
+
                 break;
         }
     }
+
+    private boolean checkIfUpload() {
+
+        String member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        if (member_id.equals("")) {
+
+            return false;
+
+        }
+        return true;
+    }
+
+
 }

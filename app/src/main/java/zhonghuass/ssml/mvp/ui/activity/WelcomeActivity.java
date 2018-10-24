@@ -43,7 +43,7 @@ public class WelcomeActivity extends Activity {
                 intent.setClass(WelcomeActivity.this, GuideActivity.class);
                 startActivity(intent);
             } else {
-                startActivity(new Intent(WelcomeActivity.this, LogInActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
             }
             finish();
         }

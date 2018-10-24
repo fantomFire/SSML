@@ -33,11 +33,13 @@ import zhonghuass.ssml.mvp.contract.MycenterContract;
 import zhonghuass.ssml.mvp.presenter.MycenterPresenter;
 
 import zhonghuass.ssml.R;
+import zhonghuass.ssml.mvp.ui.activity.LogInActivity;
 import zhonghuass.ssml.mvp.ui.activity.MyConcernActivity;
 import zhonghuass.ssml.mvp.ui.activity.MyFansActivity;
 import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
 import zhonghuass.ssml.mvp.ui.activity.PicEditActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ViewPagerAdapter;
+import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.PrefUtils;
 

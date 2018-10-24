@@ -95,7 +95,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     @BindView(R.id.ll_like)
     LinearLayout llLike;
     private int page = 1;
-    private String content_id , member_id , member_type ;
+    private String content_id, member_id, member_type;
     private StorePagerAdapter storePagerAdapter;
     private List<DiscussBean> mList = new ArrayList<>();
     private DiscussAdapter discussAdapter;
@@ -173,6 +173,10 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         tvTitle.setText(data.getContent_title());
         tvContent.setText(data.getContent_detail());
         tvSite.setText(data.getContent_position());
+        collectNum.setText(data.getAmount_of_collection());
+        dicussNum.setText(data.getAmount_of_comment());
+        shareNum.setText(data.getAmount_of_forward());
+        likeNum.setText(data.getAmount_of_praise());
         //设置轮播图数据
         storePagerAdapter = new StorePagerAdapter(this, data.getContent_images());
         vpBanner.setPlayDelay(3000);
@@ -196,7 +200,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
             mList.addAll(data);
             discussAdapter.addData(data);
         } else {
-            mList=data;
+            mList = data;
             discussAdapter.setNewData(data);
         }
 
@@ -224,7 +228,8 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     @Override
     public void notifystate() {
         discussAdapter.loadMoreEnd(true);
-        showMessage("没有更多数据,请稍后尝试!");    }
+        showMessage("没有更多数据,请稍后尝试!");
+    }
 
     @Override
     public void ContentState(int position) {
@@ -233,7 +238,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     }
 
 
-    @OnClick({ R.id.img_like, R.id.iv_back, R.id.btn_focus,R.id.ll_collect, R.id.ll_discuss, R.id.ll_share, R.id.ll_like})
+    @OnClick({R.id.img_like, R.id.iv_back, R.id.btn_focus, R.id.ll_collect, R.id.ll_discuss, R.id.ll_share, R.id.ll_like})
     public void onViewClicked(View view) {
 
         switch (view.getId()) {
@@ -241,33 +246,32 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
                 finish();
                 break;
             case R.id.btn_focus:
-                if (user_id.equals("")) {
-                    showToast();
-                } else {
 
+                if (checkIfUpload()) {
                     mPresenter.addFocus(user_id, user_type, member_id, member_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
                 }
+
                 break;
             case R.id.ll_discuss:
                 showPopowindow();
                 break;
 
             case R.id.ll_collect:
-                if (user_id.equals("")) {
-                    showToast();
-                } else {
-
-
+                if (checkIfUpload()) {
                     mPresenter.addCollect(user_id, content_id, user_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
                 }
                 break;
             case R.id.ll_like:
-                if (user_id.equals("")) {
-                    showToast();
-                } else {
-
+                if (checkIfUpload()) {
                     mPresenter.addLike(user_id, content_id, user_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
                 }
+
                 break;
 
             case R.id.ll_share:
@@ -278,13 +282,13 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     private void showPopowindow() {
 
-        mPresenter.getDiscussList(content_id, member_id, member_type,page);
+        mPresenter.getDiscussList(content_id, member_id, member_type, page);
 
 
         popupWindow = new PopupWindow(this);
         popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         int screenHeidth = ArmsUtils.getScreenHeidth(this);
-        popupWindow.setHeight(screenHeidth/5*3);
+        popupWindow.setHeight(screenHeidth / 5 * 3);
         //  View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss, null);
         View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss_item, null);
         popupWindow.setContentView(popView);
@@ -311,24 +315,23 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         disRecycle.setAdapter(discussAdapter);
 
 
-
         discussAdapter.setOnLoadMoreListener(() -> {
             page++;
-            mPresenter.getDiscussList(content_id, member_id, member_type,page);
+            mPresenter.getDiscussList(content_id, member_id, member_type, page);
         });
         swipe.setOnRefreshListener(() -> {
             page = 1;
             //   discussAdapter.isLoadMoreEnable();
-            mPresenter.getDiscussList(content_id, member_id, member_type,page);
+            mPresenter.getDiscussList(content_id, member_id, member_type, page);
 
         });
         discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.ll_tolike:
                         String comment_id = mList.get(position).getComment_id();
-                        addContentLike(comment_id,position);
+                        addContentLike(comment_id, position);
 
                         break;
                 }
@@ -347,28 +350,33 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     }
 
     private void addContentLike(String comment_id, int position) {
-        if(user_id.equals("")){
-            showToast();
+        if (checkIfUpload()) {
+            mPresenter.addContentLike(user_id, user_type, comment_id, position);
+        } else {
+            ArmsUtils.startActivity(LogInActivity.class);
         }
 
-        mPresenter.addContentLike(user_id,user_type,comment_id,position);
     }
 
     private void toPublishContext(String mContext) {
-        if (user_id.equals("")) {
-            showToast();
+        if (checkIfUpload()) {
+            if(TextUtils.isEmpty(mContext)){
+                Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            mPresenter.publishContext(user_id, member_type, content_id, mContext);
+        } else {
+            ArmsUtils.startActivity(LogInActivity.class);
         }
-
-        if (TextUtils.isEmpty(mContext)) {
-            Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        mPresenter.publishContext(user_id, member_type, content_id, mContext);
-
     }
+    private boolean checkIfUpload() {
 
-    private void showToast() {
-        Toast.makeText(this, "您还未登录!", Toast.LENGTH_SHORT).show();
-        return;
+        String member_id = PrefUtils.getString(this, Constants.USER_ID, "");
+        if (member_id.equals("")) {
+
+            return false;
+
+        }
+        return true;
     }
 }

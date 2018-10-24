@@ -200,21 +200,23 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 finish();
                 break;
             case R.id.btn_focus:
-                if(user_id.equals("")){
-                    showToast();
-                }else {
-
+                if (checkIfUpload()) {
                     mPresenter.addFocus(user_id,user_type,member_id,member_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
                 }
+
+
                 break;
             case R.id.ll_collect:
-                if(user_id.equals("")){
-                    showToast();
-                }else {
-
-                    System.out.println("content_id"+content_id);
+                if (checkIfUpload()) {
                     mPresenter.addCollect(user_id,content_id,user_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
                 }
+
+
+
                 break;
             case R.id.ll_discuss:
                 toDiscusss();
@@ -222,12 +224,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             case R.id.ll_share:
                 break;
             case R.id.ll_like:
-                if(user_id.equals("")){
-                    showToast();
-                }else {
-
+                if (checkIfUpload()) {
                     mPresenter.addLike(user_id,content_id,user_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
                 }
+
                 break;
         }
     }
@@ -303,23 +305,29 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
     //内容点赞
     private void addContentLike(String comment_id, int position) {
-        if(user_id.equals("")){
-            showToast();
+        if(checkIfUpload()){
+            mPresenter.addContentLike(user_id,user_type,comment_id,position);
+        }else {
+            ArmsUtils.startActivity(LogInActivity.class);
         }
 
-        mPresenter.addContentLike(user_id,user_type,comment_id,position);
+
     }
 
     private void toPublishContext(String mContext) {
-        if(user_id.equals("")){
-            showToast();
+        if(checkIfUpload()){
+
+            if(TextUtils.isEmpty(mContext)){
+                Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            mPresenter.publishContext(user_id,member_type,content_id,mContext);
+
+        }else {
+            ArmsUtils.startActivity(LogInActivity.class);
         }
 
-        if(TextUtils.isEmpty(mContext)){
-            Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        mPresenter.publishContext(user_id,member_type,content_id,mContext);
+
 
 
     }
@@ -364,6 +372,15 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         Toast.makeText(this, "您还未登录!", Toast.LENGTH_SHORT).show();
         return;
     }
+    private boolean checkIfUpload() {
 
+        String member_id = PrefUtils.getString(this, Constants.USER_ID, "");
+        if (member_id.equals("")) {
+
+            return false;
+
+        }
+        return true;
+    }
 
 }

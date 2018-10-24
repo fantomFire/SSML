@@ -50,8 +50,10 @@ import zhonghuass.ssml.mvp.ui.fragment.CompanyFragment;
 import zhonghuass.ssml.mvp.ui.fragment.DialyFragment;
 import zhonghuass.ssml.mvp.ui.fragment.HomeFragment;
 import zhonghuass.ssml.mvp.ui.fragment.MycenterFragment;
+import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.FragmentUtils;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 import static zhonghuass.ssml.utils.EventBusTags.ACTIVITY_FRAGMENT_REPLACE;
@@ -181,7 +183,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
 
         bottomMenu.setOnNavigationItemSelectedListener(menuSelect);
 
-
         //底部菜单栏图标字体点击颜色变化在这里修改
 //        int[][] states = new int[][]{
 //                new int[]{-android.R.attr.state_checked},
@@ -217,10 +218,21 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 changeFragment();
                 return true; //不返回图标不变色
             case R.id.bottom_menu4:
-                mReplace = 3;
-                changeFragment();
-                mycenterFragment.setData(1);
-                return true; //不返回图标不变色
+
+                String member_id = PrefUtils.getString(MainActivity.this, Constants.USER_ID, "");
+                System.out.println("member_id!!!!!!"+member_id);
+                if(member_id.equals("")){
+                    ArmsUtils.startActivity(LogInActivity.class);
+
+                }else {
+
+                    mReplace = 3;
+                    changeFragment();
+                    mycenterFragment.setData(1);
+                    return true; //不返回图标不变色
+                }
+
+
         }
         return false;
     };

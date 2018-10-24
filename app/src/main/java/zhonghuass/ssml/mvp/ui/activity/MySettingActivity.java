@@ -19,6 +19,8 @@ import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.model.MySettingActivityModule;
 import zhonghuass.ssml.mvp.contract.MySettingActivityContract;
 import zhonghuass.ssml.mvp.presenter.MySettingActivityPresenter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -76,7 +78,7 @@ public class MySettingActivity extends MBaseActivity<MySettingActivityPresenter>
     }
 
 
-    @OnClick({R.id.ll_account_info, R.id.ll_update})
+    @OnClick({R.id.ll_account_info, R.id.ll_update,R.id.btn_exit})
     public void onViewClicked(View view) {
         super.onViewClicked(view);
         switch (view.getId()) {
@@ -86,6 +88,17 @@ public class MySettingActivity extends MBaseActivity<MySettingActivityPresenter>
             case R.id.ll_update:
                 ArmsUtils.startActivity(MyAppUpdateActivity.class);
                 break;
+            case R.id.btn_exit:
+                exitapp();
+
+                break;
         }
+    }
+
+    private void exitapp() {
+        PrefUtils.remove(this, Constants.USER_ID);
+        PrefUtils.remove(this, Constants.MEMBER_TYPE);
+
+        ArmsUtils.exitApp();
     }
 }

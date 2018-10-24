@@ -211,8 +211,9 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         PrefUtils.putString(LogInActivity.this, Constants.USER_ID, voidBaseResponse.data.member_type);
         PrefUtils.putString(LogInActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
         ArmsUtils.startActivity(MainActivity.class);
-        LogInActivity.this.finish();
+        finish();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
