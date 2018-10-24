@@ -165,7 +165,7 @@ public class EnterpriseLoginActivity extends MBaseActivity<EnterpriseLoginPresen
 
     @Override
     public void gotoActivity(EPLoginBean voidBaseResponse) {
-        PrefUtils.putString(EnterpriseLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
+        PrefUtils.putString(EnterpriseLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.member_id);
         PrefUtils.putString(EnterpriseLoginActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
 
         ArmsUtils.startActivity(MainActivity.class);

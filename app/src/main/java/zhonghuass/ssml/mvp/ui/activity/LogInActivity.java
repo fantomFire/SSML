@@ -19,7 +19,6 @@ import com.maning.mndialoglibrary.MProgressDialog;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -209,7 +208,7 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
 
     @Override
     public void gotoActivity(LoginBean voidBaseResponse) {
-        PrefUtils.putString(LogInActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
+        PrefUtils.putString(LogInActivity.this, Constants.USER_ID, voidBaseResponse.data.member_type);
         PrefUtils.putString(LogInActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
         ArmsUtils.startActivity(MainActivity.class);
         LogInActivity.this.finish();

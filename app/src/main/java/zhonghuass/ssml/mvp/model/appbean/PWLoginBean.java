@@ -1,10 +1,11 @@
 package zhonghuass.ssml.mvp.model.appbean;
 
 public class PWLoginBean {
+
     /**
      * status : 200
      * msg : 登录成功！
-     * data : {"eid":"1","name":"北京盛世时代网络科技发展股份有限公司","mailbox":"123456789@qq.com","introduction":"华为是全球领先的ICT（信息与通信）基础设施和智能终端提供商，致力于把数字世界带入每个人、每个家庭、每个组织，构建万物互联的智能世界。我们在通信网络、IT、智能终端和云服务等领域为客户提供有竞争力、安全可信赖的产品、解决方案与服务，与生态伙伴开放合作，持续为客户创造价值，释放个人潜能，丰富家庭生活，激发组织创新。华为坚持围绕客户需求持续创新，加大基础研究投入，厚积薄发，推动世界进步。华为成立于1987年，是一家由员工持有全部股份的民营企业，目前有18万员工，业务遍及170多个国家和地区。","identity":"0","member_type":"0"}
+     * data : {"member_id":"27","member_name":"17794334178","member_image":"http://video.zhonghuass.cn/public/uploadfile/default.png","login_name":"17794334178","introduction":"当前用户什么都没有留下","identity":"10","member_type":"1"}
      */
 
     public String status;
@@ -13,17 +14,19 @@ public class PWLoginBean {
 
     public static class DataBean {
         /**
-         * eid : 1
-         * name : 北京盛世时代网络科技发展股份有限公司
-         * mailbox : 123456789@qq.com
-         * introduction : 华为是全球领先的ICT（信息与通信）基础设施和智能终端提供商，致力于把数字世界带入每个人、每个家庭、每个组织，构建万物互联的智能世界。我们在通信网络、IT、智能终端和云服务等领域为客户提供有竞争力、安全可信赖的产品、解决方案与服务，与生态伙伴开放合作，持续为客户创造价值，释放个人潜能，丰富家庭生活，激发组织创新。华为坚持围绕客户需求持续创新，加大基础研究投入，厚积薄发，推动世界进步。华为成立于1987年，是一家由员工持有全部股份的民营企业，目前有18万员工，业务遍及170多个国家和地区。
-         * identity : 0
-         * member_type : 0
+         * member_id : 27
+         * member_name : 17794334178
+         * member_image : http://video.zhonghuass.cn/public/uploadfile/default.png
+         * login_name : 17794334178
+         * introduction : 当前用户什么都没有留下
+         * identity : 10
+         * member_type : 1
          */
 
-        public String uid;
-        public String name;
-        public String mailbox;
+        public String member_id;
+        public String member_name;
+        public String member_image;
+        public String login_name;
         public String introduction;
         public String identity;
         public String member_type;

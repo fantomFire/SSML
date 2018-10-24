@@ -168,7 +168,7 @@ public class PassWorldLoginActivity extends MBaseActivity<PassWorldLoginPresente
 
     @Override
     public void gotoActivity(PWLoginBean voidBaseResponse) {
-        PrefUtils.putString(PassWorldLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.uid);
+        PrefUtils.putString(PassWorldLoginActivity.this, Constants.USER_ID, voidBaseResponse.data.member_id);
         PrefUtils.putString(PassWorldLoginActivity.this, Constants.MEMBER_TYPE, voidBaseResponse.data.member_type);
         ArmsUtils.startActivity(MainActivity.class);
         PassWorldLoginActivity.this.finish();
