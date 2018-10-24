@@ -60,8 +60,7 @@ public class WeiXinLoginActivity extends Activity implements View.OnClickListene
         WXapi.registerApp(WX_APP_ID);
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
-        req.state = "wechat_sdk_demo";
+        req.state = "wechat_sdk_demo_test";
         WXapi.sendReq(req);
-
     }
 }
