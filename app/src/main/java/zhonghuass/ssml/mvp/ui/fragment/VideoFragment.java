@@ -31,6 +31,7 @@ import zhonghuass.ssml.mvp.presenter.VideoPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.PhotoAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.VedioAdapter;
+import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -76,8 +77,9 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     public void initData(@Nullable Bundle savedInstanceState) {
         page=1;
         eid = PrefUtils.getString(getActivity(), "eid", "1");
+        member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
         System.out.println("photo"+eid);
-        eid="1";
         initRecycle();
         mPresenter.getPhotoData(eid,target_type,content_type,member_id,member_type,page);
     }

@@ -88,7 +88,9 @@
         <activity
             android:name=".mvp.ui.activity.GraphicDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".mvp.ui.activity.VideoDetailActivity"></activity>
+        <activity android:name=".mvp.ui.activity.VideoDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            ></activity>
         <activity android:name=".mvp.ui.activity.QQLoginActivity" />
         <activity android:name=".mvp.ui.activity.WeiXinLoginActivity" />
         //QQ登录

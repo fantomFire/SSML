@@ -87,8 +87,6 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.33'
     //轮播图控件
     implementation 'com.jude:rollviewpager:1.2.9'
-
-    implementation 'com.jude:rollviewpager:1.2.9'
     implementation 'com.daimajia.numberprogressbar:library:1.4@aar'
     //qq登录
     //MTA主包
@@ -98,5 +96,7 @@ dependencies {
     implementation files('src/main/libs/open_sdk_r6008_lite.jar')
     //微信登陆
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation 'com.amap.api:location:latest.integration'
+    implementation 'com.amap.api:navi-3dmap:latest.integration'
 }
 

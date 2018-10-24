@@ -32,6 +32,8 @@ import zhonghuass.ssml.mvp.model.appbean.DanynimicBean;
 import zhonghuass.ssml.mvp.presenter.DanymicPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.DanymicAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -43,9 +45,8 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
     RecyclerView recommendDny;
     @BindView(R.id.dany_refresh)
     SwipeRefreshLayout danyRefresh;
-    Unbinder unbinder;
-    private String member_id = "1";
-    private String member_type = "1";
+    private String member_id ;
+    private String member_type;
     private int page = 1;
     private DanymicAdapter danymicAdapter;
     List<DanynimicBean> mlist = new ArrayList<>();
@@ -72,6 +73,9 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
+
         initRecycleView();
 
         mPresenter.getDanymicData(member_id, member_type, page);

@@ -31,6 +31,8 @@ import zhonghuass.ssml.mvp.model.appbean.FocusBean;
 import zhonghuass.ssml.mvp.presenter.FocusPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.FocusAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -41,12 +43,11 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
     RecyclerView foRecy;
     @BindView(R.id.refresh_fo)
     SwipeRefreshLayout refreshFo;
-    Unbinder unbinder;
     private List<FocusBean> mList = new ArrayList<>();
     private FocusAdapter focusAdapter;
     private int page;
-    private String member_id="1";
-    private String member_type = "1";
+    private String member_id;
+    private String member_type;
 
     public static FocusFragment newInstance() {
         FocusFragment fragment = new FocusFragment();
@@ -70,6 +71,8 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
         initRecycleView();
         mPresenter.getFocusData(member_id,member_type,page);
 

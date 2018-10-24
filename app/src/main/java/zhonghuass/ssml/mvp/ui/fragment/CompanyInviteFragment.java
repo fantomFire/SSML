@@ -79,7 +79,7 @@ public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> 
         iniviteAdapter.openLoadAnimation();
         iniviteAdapter.setOnLoadMoreListener(this);
         inviteRecycle.setAdapter(iniviteAdapter);
-        mPresenter.getInviteData("1", page, pagesize);
+        mPresenter.getInviteData(ep_id, page, pagesize);
     }
 
     /**
@@ -178,6 +178,6 @@ public class CompanyInviteFragment extends BaseFragment<CompanyInvitePresenter> 
     @Override
     public void onLoadMoreRequested() {
         page++;
-        mPresenter.getInviteData("1", page, pagesize);
+        mPresenter.getInviteData(ep_id, page, pagesize);
     }
 }

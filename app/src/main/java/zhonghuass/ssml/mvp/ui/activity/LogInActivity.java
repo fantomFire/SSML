@@ -214,11 +214,4 @@ public class LogInActivity extends MBaseActivity<LogInPresenter> implements LogI
         ArmsUtils.startActivity(MainActivity.class);
         LogInActivity.this.finish();
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

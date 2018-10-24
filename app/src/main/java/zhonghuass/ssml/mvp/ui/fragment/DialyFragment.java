@@ -34,6 +34,8 @@ import zhonghuass.ssml.mvp.presenter.DialyPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.DailyAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.utils.CircleImageView;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -49,7 +51,7 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
     private List<DailyChoicenessBean> mList = new ArrayList<>();
     private TextView tvLabel, tvFirstName, tvFirstIntro, tvSecondName, tvSecondIntro, tvThirdlyIntro, tvThirdlyName;
     private CircleImageView civFirstIcon, civSecondIcon, civThirdlyIcon;
-    private String member_id = "1", member_type = "1";
+    private String member_id , member_type ;
     private int page = 1;
 
 
@@ -75,6 +77,8 @@ public class DialyFragment extends BaseFragment<DialyPresenter> implements Dialy
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
         initRecycleView();
         //请求每日一语排行数据
         mPresenter.getDailyHeaderData();

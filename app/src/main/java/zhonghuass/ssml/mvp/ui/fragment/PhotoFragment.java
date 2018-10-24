@@ -33,6 +33,7 @@ import zhonghuass.ssml.mvp.model.appbean.PhotoBean;
 import zhonghuass.ssml.mvp.presenter.PhotoPresenter;
 import zhonghuass.ssml.mvp.ui.adapter.PhotoAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
+import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -77,6 +78,8 @@ public class PhotoFragment extends BaseFragment<PhotoPresenter> implements Photo
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
         init = true;
         initRecycle();
         Log.e("--", "我的图文initData" + eid);

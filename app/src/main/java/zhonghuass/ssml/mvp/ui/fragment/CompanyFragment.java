@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,10 +53,10 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     LinearLayout llTrade;
     @BindView(R.id.trade_recycle)
     RecyclerView tradeRecycle;
-    Unbinder unbinder;
     @BindView(R.id.ll_title)
     LinearLayout llTitle;
-    Unbinder unbinder1;
+    @BindView(R.id.company_recycle)
+    SwipeRefreshLayout comepanyRecycle;
     private String area;
     private String type;
     private int currentPage = 1;
@@ -94,12 +95,27 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
         tradeAdapter = new TradeAdapter(R.layout.trade_item, mList);
         tradeRecycle.setAdapter(tradeAdapter);
         initPopupWindow();
+        System.out.println("area"+area+"type"+type +"currentPage"+currentPage);
         //获取默认信息
         mPresenter.getTradeData(area, type, currentPage, pagesize);
         //获取区域
         mPresenter.getAreaData();
         //获取行业
         mPresenter.getTradeItem();
+
+
+
+
+
+        comepanyRecycle.setOnRefreshListener(()->{
+                currentPage = 1;
+                mPresenter.getTradeData(area, type, currentPage, pagesize);
+
+        });
+        tradeAdapter.setOnLoadMoreListener(()->{
+            currentPage++;
+            mPresenter.getTradeData(area, type, currentPage, pagesize);
+        });
 
         cityPicker = new CustomCityPicker(getContext(), new CustomCityPicker.ResultHandler() {
             @Override
@@ -197,10 +213,21 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     @Override
     public void showTradeData(List<TradeBean> data) {
 
-        mList.clear();
+       /* mList.clear();
         mList.addAll(data);
-        tradeAdapter.notifyDataSetChanged();
+        tradeAdapter.notifyDataSetChanged();*/
+        if (comepanyRecycle.isRefreshing()) {
+            comepanyRecycle.setRefreshing(false);
+        }
 
+        tradeAdapter.loadMoreComplete();
+        if (currentPage > 1) {
+            mList.addAll(data);
+            tradeAdapter.addData(data);
+        } else {
+            mList=data;
+            tradeAdapter.setNewData(data);
+        }
     }
 
     @Override

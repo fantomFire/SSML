@@ -61,7 +61,7 @@ public class CompanyBriefFragment extends BaseFragment<CompanyBriefPresenter> im
     TextView legalName;
     @BindView(R.id.registe_money)
     TextView registeMoney;
-    List<String>  mList = new ArrayList<>();
+    List<String> mList = new ArrayList<>();
     private LaurelAdapter laurelAdapter;
 
     public static CompanyBriefFragment newInstance() {
@@ -87,10 +87,10 @@ public class CompanyBriefFragment extends BaseFragment<CompanyBriefPresenter> im
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         String eid = PrefUtils.getString(getContext(), "eid", "");
-        companyLaurel.setLayoutManager(new GridLayoutManager(getContext(),2));
+        companyLaurel.setLayoutManager(new GridLayoutManager(getContext(), 2));
         laurelAdapter = new LaurelAdapter(R.layout.laurel_item, mList);
         companyLaurel.setAdapter(laurelAdapter);
-        mPresenter.getDetailData("1");
+        mPresenter.getDetailData(eid);
     }
 
 
@@ -128,22 +128,21 @@ public class CompanyBriefFragment extends BaseFragment<CompanyBriefPresenter> im
 
     @Override
     public void setBriefData(BriefBean briefBean) {
-        System.out.println("introduce"+briefBean.getIntroduction());
+
         comIntroduce.setText("  " + briefBean.getIntroduction());
         comanyName.setText(briefBean.getName());
         legalName.setText(briefBean.getLegal_representative());
-        System.out.println("monet"+briefBean.getRegistered_capital());
+
         registeMoney.setText(briefBean.getRegistered_capital());
         comanyType.setText(briefBean.getI_name());
-    companyCredit.setText(briefBean.getCreditcode());
-    companyRegister.setText(briefBean.getFounded_date());
-    companyAddress.setText(briefBean.getAddr());
-    companyTel.setText(briefBean.getPhone());
-    companyEmail.setText(briefBean.getMailbox());
-    infoCome.setText(briefBean.getSource());
+        companyCredit.setText(briefBean.getCreditcode());
+        companyRegister.setText(briefBean.getFounded_date());
+        companyAddress.setText(briefBean.getAddr());
+        companyTel.setText(briefBean.getPhone());
+        companyEmail.setText(briefBean.getMailbox());
+        infoCome.setText(briefBean.getSource());
 
-    laurelAdapter.setNewData(briefBean.getHonor_img());
-
+        laurelAdapter.setNewData(briefBean.getHonor_img());
 
 
     }

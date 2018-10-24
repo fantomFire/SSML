@@ -34,6 +34,8 @@ import zhonghuass.ssml.mvp.presenter.RecommendPresenter;
 import zhonghuass.ssml.mvp.ui.activity.GraphicDetailsActivity;
 import zhonghuass.ssml.mvp.ui.adapter.SlideInBottomAdapter;
 import zhonghuass.ssml.mvp.ui.adapter.StaggeredGridAdapter;
+import zhonghuass.ssml.utils.Constants;
+import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -46,8 +48,8 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     SwipeRefreshLayout recommendSrl;
     private List<RecommendBean> recommendDatas = new ArrayList<>();
 
-    private String member_id = "1";
-    private String member_type = "1";
+    private String member_id ;
+    private String member_type ;
     private int page = 1;
     private StaggeredGridAdapter mAdapter;
     private List<RecommendBean> mData= new ArrayList<>();
@@ -74,6 +76,8 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
+        member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
         initRecycleView();
         mPresenter.getRecomendData(member_id, member_type, page);
 

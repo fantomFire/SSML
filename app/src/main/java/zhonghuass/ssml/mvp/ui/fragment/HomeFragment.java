@@ -60,10 +60,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     TextView tvSearch;
     @BindView(R.id.home_mess)
     ImageView homeMess;
-    Unbinder unbinder;
     @BindView(R.id.img_edit)
     ImageView imgEdit;
-    Unbinder unbinder1;
+
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private View inflate;
     private String[] mDataList = {"推荐", "动态", "关注"};
