@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -34,6 +35,7 @@ public class WeiXinLoginActivity extends Activity implements View.OnClickListene
     }
 
     private void init() {
+        WXapi = WXAPIFactory.createWXAPI(this, WX_APP_ID, true);
         login = findViewById(R.id.btn_login);
         login.setOnClickListener(this);
     }
@@ -56,11 +58,15 @@ public class WeiXinLoginActivity extends Activity implements View.OnClickListene
      * 登录微信
      */
     private void WXLogin() {
-        WXapi = WXAPIFactory.createWXAPI(this, WX_APP_ID, true);
+        if (!WXapi.isWXAppInstalled()) {
+            Toast.makeText(this, "您还未安装微信客户端！", Toast.LENGTH_SHORT).show();
+            return;
+        }
         WXapi.registerApp(WX_APP_ID);
         SendAuth.Req req = new SendAuth.Req();
         req.scope = "snsapi_userinfo";
         req.state = "wechat_sdk_demo_test";
         WXapi.sendReq(req);
     }
+
 }
