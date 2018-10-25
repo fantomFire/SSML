@@ -6,7 +6,7 @@ public class Constants {
 
 
     //qq登录开放平台key
-    public static final String QQ_APP_ID= "ALWXD91B79ST";
+    public static final String QQ_APP_KEY= "c9573c9f522e7213d8a3d85f2d9aada7";
     //微信开放平台KEY
     //微信开放平台SECRET
     public static final String WX_APP_KEY = "wx3d07975422d43a75";
