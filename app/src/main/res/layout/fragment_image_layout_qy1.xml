@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/rl_bg"
+        android:background="#C6E9FF"
+        android:padding="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <LinearLayout
+            android:id="@+id/rl_mb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+    >
+        <RelativeLayout
+                android:id="@+id/rl_iv1"
+                android:background="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_centerHorizontal="true"
+        >
+            <zhonghuass.ssml.utils.image.PhotoView
+                    android:id="@+id/iv1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="@color/bg_gray_30"
+            />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+                android:id="@+id/rl_tv1"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:background="@color/black"
+                android:paddingLeft="@dimen/dp_10"
+        >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_alignParentLeft="true"
+                    android:text="xx"
+                    android:textSize="40sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:id="@+id/tv1"
+            />
+        </RelativeLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+            android:focusable="false"
+            android:id="@+id/stickerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    />
+
+</RelativeLayout>

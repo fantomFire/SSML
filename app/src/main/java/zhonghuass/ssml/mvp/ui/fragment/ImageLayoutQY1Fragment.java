@@ -5,41 +5,37 @@ import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
+
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.bumptech.glide.Glide;
-import com.github.chrisbanes.photoview.OnSingleFlingListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerImageLayout1Component;
-import zhonghuass.ssml.di.component.DaggerImageLayout2Component;
-import zhonghuass.ssml.di.module.ImageLayout1Module;
-import zhonghuass.ssml.di.module.ImageLayout2Module;
+import zhonghuass.ssml.di.component.DaggerImageLayoutQY1Component;
+import zhonghuass.ssml.di.module.ImageLayoutQY1Module;
 import zhonghuass.ssml.mvp.ToActivityMsg;
 import zhonghuass.ssml.mvp.ToFragmentMsg;
-import zhonghuass.ssml.mvp.contract.ImageLayout1Contract;
-import zhonghuass.ssml.mvp.contract.ImageLayout2Contract;
-import zhonghuass.ssml.mvp.presenter.ImageLayout1Presenter;
-import zhonghuass.ssml.mvp.presenter.ImageLayout2Presenter;
-import zhonghuass.ssml.mvp.ui.activity.ImageEditorActivity;
+import zhonghuass.ssml.mvp.contract.ImageLayoutQY1Contract;
+import zhonghuass.ssml.mvp.presenter.ImageLayoutQY1Presenter;
+
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.utils.EventBusUtils;
-import zhonghuass.ssml.utils.image.MessageEvent;
-import zhonghuass.ssml.utils.image.MessageEventCurrent;
-import zhonghuass.ssml.utils.image.MyViewBean;
 import zhonghuass.ssml.utils.image.PhotoView;
 
 import java.util.ArrayList;
@@ -49,10 +45,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-/**
- * 一张图的模板
- */
-public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> implements ImageLayout2Contract.View {
+public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter> implements ImageLayoutQY1Contract.View {
 
     @BindView(R.id.stickerView)
     public RelativeLayout stickerView;
@@ -74,32 +67,31 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
     private PopupWindow imageMenuPop;
     private String path;
 
-    public static ImageLayout2Fragment newInstance() {
-        ImageLayout2Fragment fragment = new ImageLayout2Fragment();
+    public static ImageLayoutQY1Fragment newInstance() {
+        ImageLayoutQY1Fragment fragment = new ImageLayoutQY1Fragment();
         return fragment;
     }
 
-    public static ImageLayout2Fragment newInstance(List<LocalMedia> imgList) {
-        ImageLayout2Fragment fragment = new ImageLayout2Fragment();
+    public static ImageLayoutQY1Fragment newInstance(List<LocalMedia> imgList) {
+        ImageLayoutQY1Fragment fragment = new ImageLayoutQY1Fragment();
         selectList = imgList;
         return fragment;
     }
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerImageLayout2Component //如找不到该类,请编译 一下项目
+        DaggerImageLayoutQY1Component //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .imageLayout2Module(new ImageLayout2Module(this))
+                .imageLayoutQY1Module(new ImageLayoutQY1Module(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_image_layout2, container, false);
+        return inflater.inflate(R.layout.fragment_image_layout_qy1, container, false);
     }
-
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {

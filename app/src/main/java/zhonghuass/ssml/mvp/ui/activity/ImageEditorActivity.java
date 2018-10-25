@@ -35,6 +35,7 @@ import zhonghuass.ssml.mvp.presenter.ImageEditorPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
 import zhonghuass.ssml.mvp.ui.fragment.ImageLayout1Fragment;
 import zhonghuass.ssml.mvp.ui.fragment.ImageLayout2Fragment;
+import zhonghuass.ssml.mvp.ui.fragment.ImageLayout3Fragment;
 import zhonghuass.ssml.utils.CircleImageView;
 import zhonghuass.ssml.utils.CustomRadioGroup;
 import zhonghuass.ssml.utils.EventBusUtils;
@@ -100,6 +101,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     private EditText etFont;
     private ImageLayout1Fragment fragment1;
     private ImageLayout2Fragment fragment2;
+    private ImageLayout3Fragment fragment3;
     private List<LocalMedia> selectList;
     private EditText etTag;
 
@@ -110,8 +112,9 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (fragment1 instanceof IOnFocusListenable) {
-            ((IOnFocusListenable) fragment1).onWindowFocusChanged(hasFocus);
+        // 因为fragment里面的onWindowFocusChanged走不了需要从这走
+        if (fm.getFragments().get(0) instanceof IOnFocusListenable) {
+            ((IOnFocusListenable) fm.getFragments().get(0)).onWindowFocusChanged(hasFocus);
         }
     }
 
@@ -161,13 +164,18 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     private void initFragment(int imgMB) {
         fm = getSupportFragmentManager();
         switch (imgMB) {
+
+            case 0://一张图模板
+                fragment2 = ImageLayout2Fragment.newInstance(selectList);
+                initImageLayout(fragment2);
+                break;
             case 1://两张张图模板
                 fragment1 = ImageLayout1Fragment.newInstance(selectList);
                 initImageLayout(fragment1);
                 break;
-            case 0://一张图模板
-                fragment2 = ImageLayout2Fragment.newInstance(selectList);
-                initImageLayout(fragment2);
+            case 2://三张张图模板
+                fragment3 = ImageLayout3Fragment.newInstance(selectList);
+                initImageLayout(fragment3);
                 break;
         }
         imageLayout = imgMB;
@@ -231,8 +239,16 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 //                outBg.setBackgroundColor(getResources().getColor(colors[position]));
                 switch (imageLayout) {
                     case 0:
-                        ImageLayout2Fragment image1 = (ImageLayout2Fragment) fm.getFragments().get(0);
-                        image1.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        ImageLayout2Fragment image2F = (ImageLayout2Fragment) fm.getFragments().get(0);
+                        image2F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        break;
+                    case 1:
+                        ImageLayout1Fragment image1F = (ImageLayout1Fragment) fm.getFragments().get(0);
+                        image1F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        break;
+                    case 2:
+                        ImageLayout3Fragment image3F = (ImageLayout3Fragment) fm.getFragments().get(0);
+                        image3F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
                         break;
                 }
             }

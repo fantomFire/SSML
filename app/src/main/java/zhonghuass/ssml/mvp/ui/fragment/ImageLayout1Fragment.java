@@ -44,7 +44,9 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
-
+/**
+ * 两张图的模板
+ */
 public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> implements ImageLayout1Contract.View, OnSingleFlingListener, ImageEditorActivity.IOnFocusListenable {
 
     @BindView(R.id.stickerView)
@@ -831,6 +833,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
         int currentX = (int) event.x;
         int currentY = (int) event.y;
         position1 = getCurrentView(currentX, currentY);
+        Log.e("--","松开："+position1);
         if (null != mList.get(position0).v && null != mList.get(position1).v) {
             if (position0 != position1) {
                 changeImage(position0, position1);
@@ -843,6 +846,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
         int mLastX = (int) event.mLastX;
         int mLastY = (int) event.mLastY;
         position0 = getCurrentView(mLastX, mLastY);
+        Log.e("--","按下："+position0);
 
 
     }
