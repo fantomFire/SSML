@@ -232,7 +232,7 @@ public interface ApiServer {
     //上传图片
     @Multipart
     @POST("/Api/content/publish")
-    Observable<BaseResponse<Void>> upLoadImages(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file, @Part MultipartBody.Part[] parts);
+    Observable<BaseResponse<Void>> upLoadImages(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part[] parts);
 
     //详情页推荐
     @GET("/Api/theme/recommend")

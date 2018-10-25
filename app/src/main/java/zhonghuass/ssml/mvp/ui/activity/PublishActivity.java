@@ -42,7 +42,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class PublishActivity extends BaseActivity<PublishPresenter> implements PublishContract.View {
-
+    public static PublishActivity publishActivity;
     @BindView(R.id.view_page)
     BezierViewPager viewPage;
     @BindView(R.id.bezRound)
@@ -71,6 +71,7 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        publishActivity = this;
         imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx2.png");
         imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx1.jpg");
         imgList.add("http://video.zhonghuass.cn/public/admin/images/tx.jpg");
@@ -226,7 +227,6 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
         if(resultCode==RESULT_OK&&requestCode == 1){
             if(data!=null){
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                System.out.println("@@@@@@@@@@@@"+selectList.size());
                 Intent intent = new Intent(this, ImageEditorActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("template_num",TEMPLATE_NUM);
