@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
+
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,19 +21,21 @@ import com.github.chrisbanes.photoview.OnSingleFlingListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerImageLayout1Component;
-import zhonghuass.ssml.di.module.ImageLayout1Module;
+import zhonghuass.ssml.di.component.DaggerImageLayoutQY2Component;
+import zhonghuass.ssml.di.module.ImageLayoutQY2Module;
 import zhonghuass.ssml.mvp.ToActivityMsg;
 import zhonghuass.ssml.mvp.ToFragmentMsg;
-import zhonghuass.ssml.mvp.contract.ImageLayout1Contract;
-import zhonghuass.ssml.mvp.presenter.ImageLayout1Presenter;
+import zhonghuass.ssml.mvp.contract.ImageLayoutQY2Contract;
+import zhonghuass.ssml.mvp.presenter.ImageLayoutQY2Presenter;
+
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.ui.activity.ImageEditorActivity;
 import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.image.MessageEvent;
@@ -44,19 +49,19 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
-/**
- * 两张图的模板
- */
-public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> implements ImageLayout1Contract.View, OnSingleFlingListener, ImageEditorActivity.IOnFocusListenable {
+
+public class ImageLayoutQY2Fragment extends BaseFragment<ImageLayoutQY2Presenter> implements ImageLayoutQY2Contract.View, OnSingleFlingListener, ImageEditorActivity.IOnFocusListenable {
 
     @BindView(R.id.stickerView)
     public RelativeLayout stickerView;
     @BindView(R.id.rl_bg)
     public RelativeLayout rlBg;
     @BindView(R.id.rl_mb)
-    public LinearLayout rlMb;
-//    @BindView(R.id.tv1)
-//    public TextView tv1;
+    public RelativeLayout rlMb;
+    @BindView(R.id.tv1)
+    public TextView tv1;
+    @BindView(R.id.tv2)
+    public TextView tv2;
 
     @BindView(R.id.iv1)
     public PhotoView image1;
@@ -74,32 +79,31 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     private static List<LocalMedia> selectList;
     private PopupWindow imageMenuPop;
 
-    public static ImageLayout1Fragment newInstance() {
-        ImageLayout1Fragment fragment = new ImageLayout1Fragment();
+    public static ImageLayoutQY2Fragment newInstance() {
+        ImageLayoutQY2Fragment fragment = new ImageLayoutQY2Fragment();
         return fragment;
     }
 
-    public static ImageLayout1Fragment newInstance(List<LocalMedia> imgList) {
-        ImageLayout1Fragment fragment = new ImageLayout1Fragment();
+    public static ImageLayoutQY2Fragment newInstance(List<LocalMedia> imgList) {
+        ImageLayoutQY2Fragment fragment = new ImageLayoutQY2Fragment();
         selectList = imgList;
         return fragment;
     }
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerImageLayout1Component //如找不到该类,请编译 一下项目
+        DaggerImageLayoutQY2Component //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .imageLayout1Module(new ImageLayout1Module(this))
+                .imageLayoutQY2Module(new ImageLayoutQY2Module(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_image_layout1, container, false);
+        return inflater.inflate(R.layout.fragment_image_layout_qy2, container, false);
     }
-
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
@@ -125,7 +129,8 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 .into(image2);
 
         //把模板中默认的textView添加进去，因为点击之后要弹出底部菜单修改
-//        textViews.add(tv1);
+        textViews.add(tv1);
+        textViews.add(tv2);
 
 
         //获取屏幕宽高
@@ -176,7 +181,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
     }
 
-    @OnClick({R.id.rl_mb, R.id.iv1, R.id.iv2})
+    @OnClick({R.id.rl_mb, R.id.iv1, R.id.iv2, R.id.tv1, R.id.tv2})
     public void onViewClicked(View view) {
         closeTextViewMenu();
         switch (view.getId()) {
@@ -192,9 +197,12 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 clickIVNum = 1;
                 imageMenuPop.showAsDropDown(image2);
                 break;
-//            case R.id.tv1:
-//                toShowPop(0, 1);
-//                break;
+            case R.id.tv1:
+                toShowPop(0, 1);
+                break;
+            case R.id.tv2:
+                toShowPop(1, 1);
+                break;
         }
     }
 
@@ -437,6 +445,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
             eventMsg.showFontPop = true;
             eventMsg.color = textViews.get(id).getCurrentTextColor();
             eventMsg.text = textViews.get(id).getText().toString();
+
         }
         if (pop == 2) {
             eventMsg.showTagPop = true;

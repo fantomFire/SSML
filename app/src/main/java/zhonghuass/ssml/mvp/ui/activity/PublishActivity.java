@@ -77,6 +77,8 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
         imgList.add("http://video.zhonghuass.cn/public/admin/images/tx.jpg");
         imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx4.png");
         imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx3.png");
+        imgList.add("http://video.zhonghuass.cn/public/admin/images/tx.jpg");
+
         ImageLoadFactory.getInstance().setImageClient(new GlideImageClient());
         CardPagerAdapter cardAdapter = new CardPagerAdapter(this);
         cardAdapter.addImgUrlList(imgList);  //放置图片url的list，v1.0.3版本imgList集合类型为List<Obj>，只要Glide支持的都可以加载

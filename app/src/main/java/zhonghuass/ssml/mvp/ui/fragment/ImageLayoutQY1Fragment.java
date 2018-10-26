@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
-
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,21 +17,19 @@ import com.bumptech.glide.Glide;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
-
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerImageLayoutQY1Component;
 import zhonghuass.ssml.di.module.ImageLayoutQY1Module;
 import zhonghuass.ssml.mvp.ToActivityMsg;
 import zhonghuass.ssml.mvp.ToFragmentMsg;
 import zhonghuass.ssml.mvp.contract.ImageLayoutQY1Contract;
 import zhonghuass.ssml.mvp.presenter.ImageLayoutQY1Presenter;
-
-import zhonghuass.ssml.R;
 import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.image.PhotoView;
 
@@ -52,9 +47,21 @@ public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter
     @BindView(R.id.rl_bg)
     public RelativeLayout rlBg;
     @BindView(R.id.rl_mb)
-    public RelativeLayout rlMb;
+    public LinearLayout rlMb;
     @BindView(R.id.tv1)
     public TextView tv1;
+    @BindView(R.id.tv2)
+    public TextView tv2;
+    @BindView(R.id.tv3)
+    public TextView tv3;
+    @BindView(R.id.tv4)
+    public TextView tv4;
+    @BindView(R.id.tv5)
+    public TextView tv5;
+    @BindView(R.id.tv6)
+    public TextView tv6;
+    @BindView(R.id.tv7)
+    public TextView tv7;
     @BindView(R.id.iv1)
     public PhotoView image1;
 
@@ -105,6 +112,12 @@ public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter
 
         //把模板中默认的textView添加进去，因为点击之后要弹出底部菜单修改
         textViews.add(tv1);
+        textViews.add(tv2);
+        textViews.add(tv3);
+        textViews.add(tv4);
+        textViews.add(tv5);
+        textViews.add(tv6);
+        textViews.add(tv7);
 
 
         //获取屏幕宽高
@@ -150,7 +163,7 @@ public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter
 
     }
 
-    @OnClick({R.id.rl_mb, R.id.iv1, R.id.tv1})
+    @OnClick({R.id.rl_mb, R.id.iv1, R.id.tv1, R.id.tv2, R.id.tv3, R.id.tv4, R.id.tv5, R.id.tv6, R.id.tv7})
     public void onViewClicked(View view) {
         closeTextViewMenu();
         switch (view.getId()) {
@@ -163,6 +176,24 @@ public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter
                 break;
             case R.id.tv1:
                 toShowPop(0, 1);
+                break;
+            case R.id.tv2:
+                toShowPop(1, 1);
+                break;
+            case R.id.tv3:
+                toShowPop(2, 1);
+                break;
+            case R.id.tv4:
+                toShowPop(3, 1);
+                break;
+            case R.id.tv5:
+                toShowPop(4, 1);
+                break;
+            case R.id.tv6:
+                toShowPop(5, 1);
+                break;
+            case R.id.tv7:
+                toShowPop(6, 1);
                 break;
         }
     }
@@ -492,7 +523,6 @@ public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter
         View view = getActivity().getLayoutInflater().inflate(R.layout.layout_add_tag, null);
         RelativeLayout llTag = (RelativeLayout) view.findViewById(R.id.ll_tag);
         ImageView ivTag = (ImageView) view.findViewById(R.id.iv_tag);
-        Log.e("--", "IV: " + msg.type);
         ivTag.setImageResource(msg.type);
         TextView textView = (TextView) view.findViewById(R.id.tv_tag);
         ImageView ivDelete = (ImageView) view.findViewById(R.id.iv_delete);
@@ -522,7 +552,6 @@ public class ImageLayoutQY1Fragment extends BaseFragment<ImageLayoutQY1Presenter
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("--", "点击了" + ((int) textView.getTag()));
                 ivDelete.setVisibility(View.VISIBLE);
                 toShowPop((int) textView.getTag(), 2);
             }

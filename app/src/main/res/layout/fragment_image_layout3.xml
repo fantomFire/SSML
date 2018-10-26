@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
@@ -29,12 +30,10 @@
 
         <LinearLayout
                 android:id="@+id/ll_tv1"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_below="@id/iv1"
-                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
 
         >
             <TextView
@@ -44,6 +43,13 @@
                     android:textSize="15sp"
                     android:id="@+id/tv1"
             />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="春眠不觉晓，处处闻啼鸟。？"
+                    android:textSize="15sp"
+                    android:id="@+id/tv2"
+            />
         </LinearLayout>
 
 
@@ -51,7 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:layout_margin="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"
                 android:orientation="horizontal">
             <zhonghuass.ssml.utils.image.PhotoView
                     android:id="@+id/iv2"
