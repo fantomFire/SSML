@@ -48,9 +48,9 @@ public class PostVideosModel extends BaseModel implements PostVideosContract.Mod
 
 
     @Override
-    public Observable<BaseResponse<Void>> upLoadImages(HashMap<String, RequestBody> map, MultipartBody.Part parts, MultipartBody.Part[] parts1) {
+    public Observable<BaseResponse<Void>> upLoadImages(HashMap<String, RequestBody> map, MultipartBody.Part[] parts1) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class)
-                .upLoadImages(map,parts,parts1);
+                .upLoadImages(map,parts1);
     }
 
     @Override

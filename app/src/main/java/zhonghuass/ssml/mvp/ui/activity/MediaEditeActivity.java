@@ -54,7 +54,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> implements MediaEditeContract.View {
-
+    public static MediaEditeActivity mediaEditeActivity;
     @BindView(R.id.uVideoView)
     VideoView mVideoView;
     @BindView(R.id.id_rv_id)
@@ -94,8 +94,6 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-
-                    System.out.println("msg.arg1:" + msg.arg1);
                     setCurrentProgress(msg.arg1);
                     break;
                 case 2:
@@ -122,8 +120,10 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        mediaEditeActivity = this;
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("下一步");
+        llBack.setOnClickListener(v -> finish());
         Intent intent = this.getIntent();
         selectList = intent.getParcelableArrayListExtra("mediaList");
         System.out.println("视频地址" + selectList.get(0).getPath());
@@ -133,7 +133,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         initPlay();
     }
 
-    @OnClick({R.id.tv_right,R.id.back})
+    @OnClick({R.id.tv_right, R.id.back})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_right:
@@ -153,6 +153,7 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
                 break;
         }
     }
+
     private void getCutMedia() {
 
 
@@ -169,12 +170,12 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         String outFile = filesDir + "/editer" + name;
         File output = new File(outFile);
         if (output.isFile() && output.exists()) {
-            System.out.println("删除源文件");
             output.delete();
         }
-        System.out.println("存储路径" + outFile);
 
         EpVideo epVideo = new EpVideo(path);
+        int videoLength =   (int) ((rightProgress - leftProgress) / 1000);
+
         EpVideo clip = epVideo.clip((int) (leftProgress / 1000), (int) ((rightProgress - leftProgress) / 1000));
         EpEditor.OutputOption outputOption = new EpEditor.OutputOption(outFile);
        /* outputOption.setWidth(100); //输出视频宽，如果不设置则为原始视频宽高
@@ -184,13 +185,13 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         EpEditor.exec(clip, outputOption, new OnEditorListener() {
             @Override
             public void onSuccess() {
-
                 isRuning = false;
 
                 Intent intent = new Intent(MediaEditeActivity.this, PostVideosActivity.class);
-                System.out.println("==========="+outFile);
+                System.out.println("===========" + outFile);
                 intent.putExtra("mediaPath", outFile);
                 intent.putExtra("selectType", "editMedia");
+                intent.putExtra("mediaLength", videoLength);
                 startActivity(intent);
 
                 Message message = new Message();

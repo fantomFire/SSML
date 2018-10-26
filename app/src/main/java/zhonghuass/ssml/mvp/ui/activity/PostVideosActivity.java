@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -95,6 +96,8 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     private boolean isRuning;
     private String theme_id="0";
     private String member_type;
+    private String oneImagePath;
+    private String mediaLength;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -115,6 +118,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     public void initData(@Nullable Bundle savedInstanceState) {
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("发布");
+        llBack.setOnClickListener(v ->finish() );
         intent = getIntent();
         userId = PrefUtils.getString(this, Constants.USER_ID, "");
         member_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "");
@@ -127,7 +131,8 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             imgRec.setVisibility(View.GONE);
 
             mediaPath = intent.getStringExtra("mediaPath");
-            System.out.println("mediaPath" + mediaPath);
+            mediaLength = intent.getStringExtra("mediaLength");
+
             //设置图片
             if (mediaPath != null) {
                 setImage(mediaPath);
@@ -145,6 +150,11 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             //初始化多图
             initImages();
 
+        }else if(selectType.equals("oneImage")){
+            oneImagePath = intent.getStringExtra("imagePath");
+            Glide.with(this)
+                    .load(oneImagePath)
+                    .into(imageUp);
         }
 
 
@@ -268,7 +278,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+        ArmsUtils.makeText(this,message);
     }
 
     @Override
@@ -289,6 +299,21 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         adapter.setNewData(recomList);
     }
 
+    @Override
+    public void closeActivity() {
+        if(PublishActivity.publishActivity !=null){
+            PublishActivity.publishActivity.finish();
+        }
+        if(ImageEditorActivity.imageEditorActivity!=null){
+            ImageEditorActivity.imageEditorActivity.finish();
+        }
+        if(MediaEditeActivity.mediaEditeActivity!=null){
+            MediaEditeActivity.mediaEditeActivity.finish();
+        }
+        finish();
+
+    }
+
 
     @OnClick({R.id.eara_next, R.id.dialy_next, R.id.tv_right})
     public void onViewClicked(View view) {
@@ -303,10 +328,29 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
                     uploadMedia();
                 } else if (selectType.equals("multipleImage")) {
                     checkData();
+                }else if(selectType.equals("oneImage")){
+                    upLoadOneImage();
                 }
 
                 break;
         }
+    }
+
+    private void upLoadOneImage() {
+        String mContent = etContent.getText().toString();
+
+        imagesUpList.clear();
+        LocalMedia localMedia = new LocalMedia();
+        localMedia.setPath(oneImagePath);
+        imagesUpList.add(localMedia);
+
+        if (isRuning) {
+            Toast.makeText(this, "文件上传中...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        showLoading();
+        mPresenter.upImages(imagesUpList, mContent, theme_id, userId,member_type);
+
     }
 
     private void uploadMedia() {
@@ -321,7 +365,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         }
 
         showLoading();
-        mPresenter.upLoadData(mediaPath, mContent, theme_id, userId,member_type, currentFile.getPath());
+        mPresenter.upLoadData(mediaPath, mContent, theme_id, userId,member_type, currentFile.getPath(),mediaLength);
     }
 
     private void checkData() {

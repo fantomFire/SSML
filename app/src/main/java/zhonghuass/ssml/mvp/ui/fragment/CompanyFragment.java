@@ -91,6 +91,7 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        currentPage=1;
         tradeRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
         tradeAdapter = new TradeAdapter(R.layout.trade_item, mList);
         tradeRecycle.setAdapter(tradeAdapter);

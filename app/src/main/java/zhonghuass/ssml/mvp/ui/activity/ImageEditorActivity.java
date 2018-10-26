@@ -50,7 +50,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> implements ImageEditorContract.View {
-
+    public static ImageEditorActivity imageEditorActivity;
     @BindView(R.id.rl_edit)
     RelativeLayout relativeLayout;
     @BindView(R.id.moban_item)
@@ -104,6 +104,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     private ImageLayout3Fragment fragment3;
     private List<LocalMedia> selectList;
     private EditText etTag;
+    private String filepath;
 
     public interface IOnFocusListenable {
         public void onWindowFocusChanged(boolean hasFocus);
@@ -135,14 +136,10 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+        imageEditorActivity = this;
         initToolBar("图片编辑", true, "保存");
-        tvRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveImage();
-            }
-        });
-
+        tvRight.setOnClickListener((v)-> saveImage());
+        llBack.setOnClickListener((v)->finish());
 
         Bundle mBundle = getIntent().getExtras();
         int imgMB = mBundle.getInt("template_num", 0);
@@ -601,7 +598,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 
     private int imageLayout = -1;
 
-    @OnClick({R.id.iv_back, R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
+    @OnClick({ R.id.moban_item, R.id.back_item, R.id.text_item, R.id.tag_item})
     public void onViewClicked(View view) {
         //发这消息是为了关闭TextView上的菜单
         ToFragmentMsg msg = new ToFragmentMsg();
@@ -610,9 +607,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 
         switch (view.getId()) {
 
-            case R.id.iv_back:
-                finish();
-                break;
+
             case R.id.moban_item:
 //                FragmentUtils.removeAllFragments(fm);
 //                imageLayout++;
@@ -655,7 +650,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
             File path = new File(SavePath);
             // 文件
             String imageName = (System.currentTimeMillis() / 1000) + ".jpg";
-            String filepath = SavePath + "/SSML" + imageName;
+            filepath = SavePath + "/SSML" + imageName;
             File file = new File(filepath);
             if (!path.exists()) {
                 path.mkdirs();
@@ -671,11 +666,17 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
                 fos.close();
                 Toast.makeText(this, "图片已保存至SDCard/SSMLImage/下",
                         Toast.LENGTH_SHORT).show();
+
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Intent intent = new Intent(this, PostVideosActivity.class);
+        intent.putExtra("selectType","oneImage");
+        intent.putExtra("imagePath",filepath);
+        startActivity(intent);
+
     }
 
     private Bitmap getBitmap() {

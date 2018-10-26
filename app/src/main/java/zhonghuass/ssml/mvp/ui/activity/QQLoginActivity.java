@@ -23,44 +23,47 @@ import zhonghuass.ssml.utils.ThirdUserInfo;
 public class QQLoginActivity extends Activity {
     //初始化Tencent
     public Tencent mTencent = null;
-    private ThirdUserInfo thirdUser = null;
+    private String QQ_APP_ID = "101516602";
+    private ThirdUserInfo thirdUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qqlogin);
-        mTencent = Tencent.createInstance("3103866703",this.getApplicationContext());
+        mTencent = Tencent.createInstance(QQ_APP_ID, this.getApplicationContext());
     }
 
     public void qqLogin(View view) {
+        //调取登录页面
 
-        mTencent.login(QQLoginActivity.this, "all", mIUiListener);
+        if (!mTencent.isSessionValid()) {
+            mTencent.login(QQLoginActivity.this, "all", new LoginUiListener());
+        }
+
     }
+
     /**
      * QQ的三方授权回调监听
      */
-    IUiListener mIUiListener = new IUiListener() {
-
-        @Override
-        public void onCancel() {
-            Log.i("qqauth", "==cancel");
-        }
-
+    private class LoginUiListener implements IUiListener {
         @Override
         public void onComplete(Object arg0) {
-            Toast.makeText(QQLoginActivity.this, "授权成功", Toast.LENGTH_SHORT).show();
             //登陆成功的回调，在此处可以获取用户信息
-//            AnimationUtil.showLoadingDialog(QQLoginActivity.this, "QQ登陆正在获取用户信息", false);
+            Toast.makeText(QQLoginActivity.this, "QQ登陆正在获取用户信息", Toast.LENGTH_SHORT).show();
             initOpenidAndToken((JSONObject) arg0);
             updateUserInfo();
         }
 
         @Override
-        public void onError(UiError arg0) {
-            Log.i("qqauth", "==error");
+        public void onError(UiError uiError) {
+
         }
 
-    };
+        @Override
+        public void onCancel() {
+
+        }
+    }
 
     /**
      * QQ初始化OPENID以及TOKEN身份验证。
@@ -105,9 +108,9 @@ public class QQLoginActivity extends Activity {
                         thirdUser.setNickName(obj.optString("nickname"));
                         thirdUser.setHeadimgurl(obj.optString("figureurl_qq_2"));
                         thirdUser.setGender("男".equals(obj.optString("gender")) ? "1" : "0");
-                        Log.i("qqNickname", thirdUser.getNickName());
-                        Log.i("qqHeadImg", thirdUser.getHeadimgurl());
-                        Log.i("qqGender", thirdUser.getGender());
+                        System.out.println("qqNickname = " + thirdUser.getNickName());
+                        System.out.println("qqHeadImg = " + thirdUser.getHeadimgurl());
+                        System.out.println("qqGender = " + thirdUser.getGender());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -130,14 +133,10 @@ public class QQLoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("TAG", "-->onActivityResult " + requestCode + " resultCode=" + resultCode);
+        System.out.println("requestCode = " + requestCode + " resultCode=" + resultCode);
         if (requestCode == com.tencent.connect.common.Constants.REQUEST_LOGIN ||
                 requestCode == com.tencent.connect.common.Constants.REQUEST_APPBAR) {
-            Tencent.onActivityResultData(requestCode, resultCode, data, mIUiListener);
+            Tencent.onActivityResultData(requestCode, resultCode, data, new LoginUiListener());
         }
-
-
     }
-
-
 }
-
