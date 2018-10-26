@@ -184,7 +184,7 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.snackbarText(message);
+        ArmsUtils.makeText(getActivity(),message);
     }
 
     @Override
@@ -223,10 +223,10 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
 
         tradeAdapter.loadMoreComplete();
         if (currentPage > 1) {
-            mList.addAll(data);
+         //   mList.addAll(data);
             tradeAdapter.addData(data);
         } else {
-            mList=data;
+          //  mList=data;
             tradeAdapter.setNewData(data);
         }
     }
@@ -241,6 +241,12 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     @Override
     public void showTradeItem(List<TradeItemBean> data) {
         tradeData = data;
+    }
+
+    @Override
+    public void notifystate() {
+        tradeAdapter.loadMoreEnd(true);
+        showMessage("没有更多数据,请稍后尝试!");
     }
 
     private void showPopupWindow() {

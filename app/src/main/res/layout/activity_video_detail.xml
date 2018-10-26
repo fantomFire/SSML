@@ -121,6 +121,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_collect"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:background="@mipmap/ml_icon_19" />
@@ -169,7 +170,7 @@
             <ImageView
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:background="@mipmap/ml_icon_19" />
+                android:background="@mipmap/fx" />
 
             <TextView
                 android:id="@+id/share_num"
@@ -192,6 +193,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_like"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:background="@mipmap/ml_icon_20" />

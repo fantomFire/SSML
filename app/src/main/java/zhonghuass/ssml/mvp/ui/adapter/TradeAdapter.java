@@ -30,6 +30,8 @@ public class TradeAdapter extends BaseQuickAdapter<TradeBean, BaseViewHolder> {
         helper.convertView.setOnClickListener((v) -> {
                     Intent intent = new Intent(mContext, TradeDetailActivity.class);
                     intent.putExtra("eid", item.getEid());
+                    intent.putExtra("member_type", item.getServicetype());
+
                     mContext.startActivity(intent);
                 }
 

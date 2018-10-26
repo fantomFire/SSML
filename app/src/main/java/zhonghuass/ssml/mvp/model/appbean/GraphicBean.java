@@ -92,6 +92,16 @@ public class GraphicBean {
         private String member_name;
         private String member_image;
 
+        public boolean isConcern_tag() {
+            return concern_tag;
+        }
+
+        public void setConcern_tag(boolean concern_tag) {
+            this.concern_tag = concern_tag;
+        }
+
+        private boolean concern_tag;
+
         public String getContent_cover() {
             return content_cover;
         }

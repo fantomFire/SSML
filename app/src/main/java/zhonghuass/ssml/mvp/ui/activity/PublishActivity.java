@@ -20,6 +20,7 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -72,11 +73,11 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         publishActivity = this;
-        imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx2.png");
-        imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx1.jpg");
-        imgList.add("http://video.zhonghuass.cn/public/admin/images/tx.jpg");
-        imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx4.png");
-        imgList.add("http://video.zhonghuass.cn/public/uploadfile/tmp/tx3.png");
+      //  int[] mImages = {R.mipmap.moban1,R.mipmap.moban2,R.mipmap.moban3,R.mipmap.moban4};
+        imgList.add("http://video.zhonghuass.cn/public/uploadfile/templet/1.jpg");
+        imgList.add("http://video.zhonghuass.cn/public/uploadfile/templet/2.jpg");
+        imgList.add("http://video.zhonghuass.cn/public/uploadfile/templet/3.jpg");
+        imgList.add("http://video.zhonghuass.cn/public/uploadfile/templet/4.jpg");
         ImageLoadFactory.getInstance().setImageClient(new GlideImageClient());
         CardPagerAdapter cardAdapter = new CardPagerAdapter(this);
         cardAdapter.addImgUrlList(imgList);  //放置图片url的list，v1.0.3版本imgList集合类型为List<Obj>，只要Glide支持的都可以加载

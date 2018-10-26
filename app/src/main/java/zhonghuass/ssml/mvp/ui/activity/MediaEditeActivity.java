@@ -126,7 +126,6 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
         llBack.setOnClickListener(v -> finish());
         Intent intent = this.getIntent();
         selectList = intent.getParcelableArrayListExtra("mediaList");
-        System.out.println("视频地址" + selectList.get(0).getPath());
         initInfo();
         initEditView();
         initEditVideo();
@@ -147,9 +146,6 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
                 getCutMedia();
                 //发布视频界面
 
-                break;
-            case R.id.back:
-                finish();
                 break;
         }
     }
@@ -186,12 +182,11 @@ public class MediaEditeActivity extends MBaseActivity<MediaEditePresenter> imple
             @Override
             public void onSuccess() {
                 isRuning = false;
-
                 Intent intent = new Intent(MediaEditeActivity.this, PostVideosActivity.class);
-                System.out.println("===========" + outFile);
                 intent.putExtra("mediaPath", outFile);
                 intent.putExtra("selectType", "editMedia");
-                intent.putExtra("mediaLength", videoLength);
+
+                intent.putExtra("mediaLength", videoLength+"");
                 startActivity(intent);
 
                 Message message = new Message();

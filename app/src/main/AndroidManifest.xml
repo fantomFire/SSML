@@ -10,9 +10,13 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
+    <!--用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <!--用于访问GPS定位-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
     <application
         android:name=".utils.MyApp"
         android:allowBackup="true"
@@ -93,6 +97,14 @@
             ></activity>
         <activity android:name=".mvp.ui.activity.QQLoginActivity" />
         <activity android:name=".mvp.ui.activity.WeiXinLoginActivity" />
+        //高德定位
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="5453f8bb7148744c073300ba8bc684d8" />
+        <!--声明定位service-->
+        <service android:name="com.amap.api.location.APSService"></service>
+
+
         //QQ登录
         <activity
             android:name="com.tencent.tauth.AuthActivity"

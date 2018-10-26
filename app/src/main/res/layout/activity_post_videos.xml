@@ -78,6 +78,7 @@
                 android:layout_marginRight="13dp"
                 android:background="@mipmap/news_next"
                 android:paddingLeft="10dp"
+                android:visibility="gone"
                 android:paddingRight="10dp" />
         </LinearLayout>
 

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerVideoDetailComponent;
@@ -83,6 +84,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     LinearLayout llLike;
     @BindView(R.id.ll_pop)
     LinearLayout llPop;
+    @BindView(R.id.img_collect)
+    ImageView imgCollect;
+    @BindView(R.id.img_like)
+    ImageView imgLike;
     private String content_id;
     private String member_id;
     private String member_type;
@@ -112,16 +117,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        user_id = PrefUtils.getString(this,Constants.USER_ID,"");
+        user_id = PrefUtils.getString(this, Constants.USER_ID, "");
         user_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "1");
         Intent intent = getIntent();
         content_id = intent.getStringExtra("content_id");
         member_id = intent.getStringExtra("member_id");
         member_type = intent.getStringExtra("member_type");
-        System.out.println("content_id"+ content_id +"   member_id"+ member_id);
-        mPresenter.vedioData(content_id,member_id, member_type);
+        System.out.println("content_id" + content_id + "   member_id" + member_id);
+        mPresenter.vedioData(content_id, user_id, user_type);
 
     }
+
     @Override
     public void showVeidoData(GraphicBean.DataBean data) {
         Glide.with(this)
@@ -129,19 +135,30 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 .into(civIcon1);
         tvCompany.setText(data.getContent_title());
         tvDate.setText(data.getAdd_time());
-        tvCounts.setText(data.getAmount_of_reading()+"次播放");
+        tvCounts.setText(data.getAmount_of_reading() + "次播放");
         collectNum.setText(data.getAmount_of_collection());
         dicussNum.setText(data.getAmount_of_comment());
         shareNum.setText(data.getAmount_of_forward());
         likeNum.setText(data.getAmount_of_praise());
         String content_cover = data.getContent_detail();
+        boolean praise_tag = data.isPraise_tag();
+        boolean collection_tag = data.isCollection_tag();
+        boolean concern_tag = data.isConcern_tag();
+        if (praise_tag) {
+            imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
+        }
+        if (collection_tag) {
+            imgCollect.setBackgroundResource(R.mipmap.sc);
+        }
+        if (concern_tag) {
+            btnFocus.setText("已关注");
+        }
 
-
-       if(content_cover!=null){
+        if (content_cover != null) {
             mediaView.setVideoPath(content_cover);
-        }else {
-           Toast.makeText(this, "视频信息有误!", Toast.LENGTH_SHORT).show();
-       }
+        } else {
+            Toast.makeText(this, "视频信息有误!", Toast.LENGTH_SHORT).show();
+        }
 
         mediaView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -155,11 +172,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mediaView != null){
+        if (mediaView != null) {
             mediaView.suspend();
         }
     }
@@ -177,7 +193,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.makeText(this,message);
+        ArmsUtils.makeText(this, message);
     }
 
     @Override
@@ -201,7 +217,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 break;
             case R.id.btn_focus:
                 if (checkIfUpload()) {
-                    mPresenter.addFocus(user_id,user_type,member_id,member_type);
+                    mPresenter.addFocus(user_id, user_type, member_id, member_type);
                 } else {
                     ArmsUtils.startActivity(LogInActivity.class);
                 }
@@ -210,11 +226,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 break;
             case R.id.ll_collect:
                 if (checkIfUpload()) {
-                    mPresenter.addCollect(user_id,content_id,user_type);
+                    mPresenter.addCollect(user_id, content_id, user_type);
                 } else {
                     ArmsUtils.startActivity(LogInActivity.class);
                 }
-
 
 
                 break;
@@ -225,7 +240,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 break;
             case R.id.ll_like:
                 if (checkIfUpload()) {
-                    mPresenter.addLike(user_id,content_id,user_type);
+                    mPresenter.addLike(user_id, content_id, user_type);
                 } else {
                     ArmsUtils.startActivity(LogInActivity.class);
                 }
@@ -235,13 +250,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     private void toDiscusss() {
-        mPresenter.getDiscussList(content_id, member_id, member_type,page);
+        mPresenter.getDiscussList(content_id, user_id, user_type, page);
 
 
         popupWindow = new PopupWindow(this);
         popupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         int screenHeidth = ArmsUtils.getScreenHeidth(this);
-        popupWindow.setHeight(screenHeidth/5*3);
+        popupWindow.setHeight(screenHeidth / 5 * 3);
         //  View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss, null);
         View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss_item, null);
         popupWindow.setContentView(popView);
@@ -270,11 +285,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (view.getId()){
+                switch (view.getId()) {
                     case R.id.ll_tolike:
                         String comment_id = mList.get(position).getComment_id();
 
-                        addContentLike(comment_id,position);
+                        addContentLike(comment_id, position);
 
                         break;
                 }
@@ -283,12 +298,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
         discussAdapter.setOnLoadMoreListener(() -> {
             page++;
-            mPresenter.getDiscussList(content_id, member_id, member_type,page);
+            mPresenter.getDiscussList(content_id, user_id, user_type, page);
         });
         swipe.setOnRefreshListener(() -> {
             page = 1;
-         //   discussAdapter.isLoadMoreEnable();
-            mPresenter.getDiscussList(content_id, member_id, member_type,page);
+            //   discussAdapter.isLoadMoreEnable();
+            mPresenter.getDiscussList(content_id, user_id, user_type, page);
 
         });
 
@@ -303,11 +318,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
 
     }
+
     //内容点赞
     private void addContentLike(String comment_id, int position) {
-        if(checkIfUpload()){
-            mPresenter.addContentLike(user_id,user_type,comment_id,position);
-        }else {
+        if (checkIfUpload()) {
+            mPresenter.addContentLike(user_id, user_type, comment_id, position);
+        } else {
             ArmsUtils.startActivity(LogInActivity.class);
         }
 
@@ -315,19 +331,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     private void toPublishContext(String mContext) {
-        if(checkIfUpload()){
+        if (checkIfUpload()) {
 
-            if(TextUtils.isEmpty(mContext)){
+            if (TextUtils.isEmpty(mContext)) {
                 Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
                 return;
             }
-            mPresenter.publishContext(user_id,member_type,content_id,mContext);
+            mPresenter.publishContext(user_id, member_type, content_id, mContext);
 
-        }else {
+        } else {
             ArmsUtils.startActivity(LogInActivity.class);
         }
-
-
 
 
     }
@@ -343,7 +357,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             mList.addAll(data);
             discussAdapter.addData(data);
         } else {
-            mList=data;
+            mList = data;
             discussAdapter.setNewData(data);
         }
     }
@@ -356,10 +370,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void showPopState() {
-        if(popupWindow.isShowing()){
+        if (popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
-        mPresenter.getDiscussList(content_id, member_id, member_type,page);
+        mPresenter.getDiscussList(content_id, user_id, user_type, page);
     }
 
     @Override
@@ -368,10 +382,16 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         discussAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void getNewData() {
+        mPresenter.vedioData(content_id, user_id, user_type);
+    }
+
     private void showToast() {
         Toast.makeText(this, "您还未登录!", Toast.LENGTH_SHORT).show();
         return;
     }
+
     private boolean checkIfUpload() {
 
         String member_id = PrefUtils.getString(this, Constants.USER_ID, "");
@@ -383,4 +403,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         return true;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
 }

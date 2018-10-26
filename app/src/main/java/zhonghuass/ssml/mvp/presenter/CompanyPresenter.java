@@ -63,6 +63,8 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.Model, Compa
                         if (listBaseResponse.isSuccess()) {
                             mRootView.showTradeData(listBaseResponse.getData());
 
+                        }else if(listBaseResponse.getStatus().equals("201")){
+                            mRootView.notifystate();
                         } else {
                             mRootView.showMessage(listBaseResponse.getMessage());
                         }

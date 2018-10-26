@@ -44,7 +44,7 @@ public class DanymicPresenter extends BasePresenter<DanymicContract.Model, Danym
         this.mImageLoader = null;
         this.mApplication = null;
     }
-    public void getDanymicData(String member_id, String member_type, int page) {
+    public void  getDanymicData(String member_id, String member_type, int page) {
         mModel.getDanymicData(member_id,member_type,page)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<List<DanynimicBean>>>(mErrorHandler) {

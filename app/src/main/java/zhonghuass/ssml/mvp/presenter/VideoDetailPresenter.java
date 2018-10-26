@@ -68,6 +68,9 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                     mRootView.showMessage(voidBaseResponse.getMessage());
+                    if(voidBaseResponse.isSuccess()){
+                        mRootView.getNewData();
+                    }
                     }
                 });
     }
@@ -79,6 +82,9 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
+                        if(voidBaseResponse.isSuccess()){
+                            mRootView.getNewData();
+                        }
                     }
                 });
     }
@@ -90,6 +96,9 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
+                        if(voidBaseResponse.isSuccess()){
+                            mRootView.getNewData();
+                        }
                     }
                 });
     }

@@ -18,16 +18,14 @@ public interface GraphicDetailsContract {
         void showGraphicData(GraphicBean.DataBean data);
 
         void showDiscussData(List<DiscussBean> data);
-
-        void changeFocusState();
-
-        void changeLikeState();
-
         void showPopState();
 
         void notifystate();
 
         void ContentState(int position);
+
+
+        void getNewData();
     }
 
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存

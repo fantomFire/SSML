@@ -11,7 +11,10 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.TradeDetailContract;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
@@ -37,5 +40,20 @@ public class TradeDetailPresenter extends BasePresenter<TradeDetailContract.Mode
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void addFocus(String user_id, String user_type, String eid, String member_type) {
+        mModel.addFocus(user_id,user_type,eid,member_type)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                        if(voidBaseResponse.isSuccess()){
+                            mRootView.changeFocusState();
+                        }
+                    }
+                });
     }
 }

@@ -97,7 +97,7 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
 
                         mRootView.showMessage(voidBaseResponse.getMessage());
                         if(voidBaseResponse.isSuccess()){
-                            mRootView.changeFocusState();
+                            mRootView.getNewData();
                         }
                     }
                 });
@@ -111,7 +111,9 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
-
+                        if(voidBaseResponse.isSuccess()){
+                            mRootView.getNewData();
+                        }
                     }
                 });
 
@@ -126,7 +128,7 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                         mRootView.showMessage(voidBaseResponse.getMessage());
                         System.out.println("diandddddd"+voidBaseResponse.getMessage());
                         if(voidBaseResponse.isSuccess()){
-                            mRootView.changeLikeState();
+                            mRootView.getNewData();
                         }
                     }
                 });

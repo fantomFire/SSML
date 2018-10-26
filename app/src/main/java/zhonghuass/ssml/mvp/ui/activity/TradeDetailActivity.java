@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import zhonghuass.ssml.R;
 import zhonghuass.ssml.di.component.DaggerTradeDetailComponent;
 import zhonghuass.ssml.di.module.TradeDetailModule;
@@ -48,6 +49,7 @@ import zhonghuass.ssml.mvp.ui.fragment.CompanyRecommendFragment;
 import zhonghuass.ssml.mvp.ui.fragment.DanymicFragment;
 import zhonghuass.ssml.mvp.ui.fragment.FocusFragment;
 import zhonghuass.ssml.mvp.ui.fragment.RecommendFragment;
+import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.PrefUtils;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
@@ -83,6 +85,10 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String[] mDataList = {"动态", "产品", "招聘", "简介"};
     private List<String> mTitle = Arrays.asList(mDataList);
+    private String eid;
+    private String member_type;
+    private String user_id;
+    private String user_type;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -109,7 +115,10 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
             getWindow().addFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-        String eid = getIntent().getStringExtra("eid");
+        eid = getIntent().getStringExtra("eid");
+        member_type = getIntent().getStringExtra("member_type");
+        user_id = PrefUtils.getString(this, Constants.USER_ID, "");
+        user_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "0");
         if (eid == null) {
             Toast.makeText(this, "eid=null", Toast.LENGTH_SHORT).show();
         }
@@ -163,6 +172,30 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
 
 
     }
+    @OnClick({R.id.btn_to_focus})
+    public void onViewClicked(View view) {
+        switch (view.getId()){
+            case R.id.btn_to_focus:
+
+                if (checkIfUpload()) {
+                    mPresenter.addFocus(user_id, user_type, eid, member_type);
+                } else {
+                    ArmsUtils.startActivity(LogInActivity.class);
+                }
+                break;
+
+        }
+    }
+    private boolean checkIfUpload() {
+
+        String member_id = PrefUtils.getString(this, Constants.USER_ID, "");
+        if (member_id.equals("")) {
+
+            return false;
+
+        }
+        return true;
+    }
 
     @Override
     public void showLoading() {
@@ -191,4 +224,8 @@ public class TradeDetailActivity extends BaseActivity<TradeDetailPresenter> impl
         finish();
     }
 
+    @Override
+    public void changeFocusState() {
+        btnToFocus.setText("已关注");
+    }
 }

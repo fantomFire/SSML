@@ -1,7 +1,6 @@
 package zhonghuass.ssml.mvp.presenter;
 
 import android.app.Application;
-import android.graphics.Bitmap;
 
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.http.imageloader.ImageLoader;
@@ -23,7 +22,6 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.PostVideosContract;
-import zhonghuass.ssml.mvp.model.appbean.IniviteBean;
 import zhonghuass.ssml.mvp.model.appbean.RecomDetailBean;
 import zhonghuass.ssml.utils.RxUtils;
 
@@ -67,13 +65,13 @@ public class PostVideosPresenter extends BasePresenter<PostVideosContract.Model,
                 });
     }
 
-    public void upLoadData(String mediaPath, String mContent, String theme_id, String userId, String member_type, String imagePath, String mediaLength) {
+    public void upLoadData(String mediaPath, String mContent, String theme_id, String userId, String member_type, String imagePath, String mediaLength, String localtion) {
         HashMap<String, RequestBody> map = new HashMap<>();
         map.put("content_type", convertToRequestBody("1"));
         map.put("member_id", convertToRequestBody(userId));
         map.put("member_type", convertToRequestBody(member_type));
         map.put("content_theme", convertToRequestBody(theme_id));
-        map.put("content_position", convertToRequestBody("西安"));
+        map.put("content_position", convertToRequestBody(localtion));
         map.put("content_title", convertToRequestBody(mContent));
         map.put("content_detail", convertToRequestBody(mediaLength));
 
@@ -110,14 +108,14 @@ public class PostVideosPresenter extends BasePresenter<PostVideosContract.Model,
 
     }
 
-    public void upImages(ArrayList<LocalMedia> paths, String content, String theme_id, String userId, String member_type) {
+    public void upImages(ArrayList<LocalMedia> paths, String content, String theme_id, String userId, String member_type, String localtion) {
         System.out.println("userId" + userId);
         HashMap<String, RequestBody> map = new HashMap<>();
         map.put("content_type", convertToRequestBody("0"));
         map.put("member_id", convertToRequestBody(userId));
         map.put("member_type", convertToRequestBody(member_type));
         map.put("content_theme", convertToRequestBody(theme_id));
-        map.put("content_position", convertToRequestBody("西安"));
+        map.put("content_position", convertToRequestBody(localtion));
         map.put("content_detail", convertToRequestBody(content));
         //详情图片
         MultipartBody.Part[] parts = new MultipartBody.Part[paths.size()];

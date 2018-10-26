@@ -129,8 +129,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         content_id = intent.getStringExtra("content_id");
         member_id = intent.getStringExtra("member_id");
         member_type = intent.getStringExtra("member_type");
-        System.out.println("content_id" + content_id + "   member_id" + member_id);
-        mPresenter.getGraphicData(content_id, member_id, member_type);
+        mPresenter.getGraphicData(content_id, user_id, user_type);
 
     }
 
@@ -183,10 +182,17 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         vpBanner.setAnimationDurtion(500);
         vpBanner.setAdapter(storePagerAdapter);
         boolean praise_tag = data.isPraise_tag();
+        boolean collection_tag = data.isCollection_tag();
+        boolean concern_tag = data.isConcern_tag();
         if (praise_tag) {
             imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
         }
-
+        if (collection_tag) {
+            imgCollect.setBackgroundResource(R.mipmap.sc);
+        }
+        if(concern_tag){
+            btnFocus.setText("已关注");
+        }
     }
 
     @Override
@@ -208,21 +214,11 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     }
 
     @Override
-    public void changeFocusState() {
-        btnFocus.setText("已关注");
-    }
-
-    @Override
-    public void changeLikeState() {
-        imgLike.setBackgroundResource(R.mipmap.ml_icon_16);
-    }
-
-    @Override
     public void showPopState() {
         if (popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
-        mPresenter.getDiscussList(content_id, member_id, member_type, page);
+        mPresenter.getDiscussList(content_id, user_id, user_type, page);
     }
 
     @Override
@@ -235,6 +231,11 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     public void ContentState(int position) {
         mList.get(position).setPraise_tag(true);
         discussAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getNewData() {
+        mPresenter.getGraphicData(content_id, user_id, user_type);
     }
 
 
@@ -282,7 +283,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     private void showPopowindow() {
 
-        mPresenter.getDiscussList(content_id, member_id, member_type, page);
+        mPresenter.getDiscussList(content_id, user_id, user_type, page);
 
 
         popupWindow = new PopupWindow(this);
@@ -317,12 +318,12 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
         discussAdapter.setOnLoadMoreListener(() -> {
             page++;
-            mPresenter.getDiscussList(content_id, member_id, member_type, page);
+            mPresenter.getDiscussList(content_id, user_id, user_type, page);
         });
         swipe.setOnRefreshListener(() -> {
             page = 1;
             //   discussAdapter.isLoadMoreEnable();
-            mPresenter.getDiscussList(content_id, member_id, member_type, page);
+            mPresenter.getDiscussList(content_id, user_id, user_type, page);
 
         });
         discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -360,7 +361,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     private void toPublishContext(String mContext) {
         if (checkIfUpload()) {
-            if(TextUtils.isEmpty(mContext)){
+            if (TextUtils.isEmpty(mContext)) {
                 Toast.makeText(this, "说点啥...", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -369,6 +370,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
             ArmsUtils.startActivity(LogInActivity.class);
         }
     }
+
     private boolean checkIfUpload() {
 
         String member_id = PrefUtils.getString(this, Constants.USER_ID, "");
