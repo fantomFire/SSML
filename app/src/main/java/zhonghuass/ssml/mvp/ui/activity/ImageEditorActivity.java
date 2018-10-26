@@ -33,8 +33,7 @@ import zhonghuass.ssml.mvp.ToFragmentMsg;
 import zhonghuass.ssml.mvp.contract.ImageEditorContract;
 import zhonghuass.ssml.mvp.presenter.ImageEditorPresenter;
 import zhonghuass.ssml.mvp.ui.MBaseActivity;
-import zhonghuass.ssml.mvp.ui.fragment.ImageLayout1Fragment;
-import zhonghuass.ssml.mvp.ui.fragment.ImageLayout2Fragment;
+import zhonghuass.ssml.mvp.ui.fragment.*;
 import zhonghuass.ssml.utils.CircleImageView;
 import zhonghuass.ssml.utils.CustomRadioGroup;
 import zhonghuass.ssml.utils.EventBusUtils;
@@ -100,6 +99,10 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     private EditText etFont;
     private ImageLayout1Fragment fragment1;
     private ImageLayout2Fragment fragment2;
+    private ImageLayout3Fragment fragment3;
+    private ImageLayoutQY1Fragment fragmentQY1;
+    private ImageLayoutQY2Fragment fragmentQY2;
+    private ImageLayoutQY3Fragment fragmentQY3;
     private List<LocalMedia> selectList;
     private EditText etTag;
     private String filepath;
@@ -111,8 +114,9 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (fragment1 instanceof IOnFocusListenable) {
-            ((IOnFocusListenable) fragment1).onWindowFocusChanged(hasFocus);
+        // 因为fragment里面的onWindowFocusChanged走不了需要从这走
+        if (fm.getFragments().get(0) instanceof IOnFocusListenable) {
+            ((IOnFocusListenable) fm.getFragments().get(0)).onWindowFocusChanged(hasFocus);
         }
     }
 
@@ -158,13 +162,30 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
     private void initFragment(int imgMB) {
         fm = getSupportFragmentManager();
         switch (imgMB) {
-            case 1://两张张图模板
-                fragment1 = ImageLayout1Fragment.newInstance(selectList);
-                initImageLayout(fragment1);
-                break;
+
             case 0://一张图模板
                 fragment2 = ImageLayout2Fragment.newInstance(selectList);
                 initImageLayout(fragment2);
+                break;
+            case 1://两张图模板
+                fragment1 = ImageLayout1Fragment.newInstance(selectList);
+                initImageLayout(fragment1);
+                break;
+            case 2://三张图模板
+                fragment3 = ImageLayout3Fragment.newInstance(selectList);
+                initImageLayout(fragment3);
+                break;
+            case 3://企业一张图模板
+                fragmentQY1 = ImageLayoutQY1Fragment.newInstance(selectList);
+                initImageLayout(fragmentQY1);
+                break;
+            case 4://企业两张图模板
+                fragmentQY2 = ImageLayoutQY2Fragment.newInstance(selectList);
+                initImageLayout(fragmentQY2);
+                break;
+            case 5://企业三张图模板
+                fragmentQY3 = ImageLayoutQY3Fragment.newInstance(selectList);
+                initImageLayout(fragmentQY3);
                 break;
         }
         imageLayout = imgMB;
@@ -228,8 +249,20 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 //                outBg.setBackgroundColor(getResources().getColor(colors[position]));
                 switch (imageLayout) {
                     case 0:
-                        ImageLayout2Fragment image1 = (ImageLayout2Fragment) fm.getFragments().get(0);
-                        image1.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        ImageLayout2Fragment image2F = (ImageLayout2Fragment) fm.getFragments().get(0);
+                        image2F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        break;
+                    case 1:
+                        ImageLayout1Fragment image1F = (ImageLayout1Fragment) fm.getFragments().get(0);
+                        image1F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        break;
+                    case 2:
+                        ImageLayout3Fragment image3F = (ImageLayout3Fragment) fm.getFragments().get(0);
+                        image3F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
+                        break;
+                    case 3:
+                        ImageLayoutQY1Fragment imageQY1F = (ImageLayoutQY1Fragment) fm.getFragments().get(0);
+                        imageQY1F.rlBg.setBackgroundColor(getResources().getColor(colors[position]));
                         break;
                 }
             }
@@ -245,7 +278,6 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
                 @Override
                 public void onClick(View v) {
                     int position = (int) v.getTag();
-                    Log.e("--", "" + position);
                 }
             });
         }
@@ -593,13 +625,6 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
 
 
             case R.id.moban_item:
-//                FragmentUtils.removeAllFragments(fm);
-//                imageLayout++;
-//                initImageLayout(mFragments.get(imageLayout));
-//                if (imageLayout > 0) {
-//                    imageLayout = -1;
-//                    fragment = 1;
-//                }
                 Intent intent = new Intent();
                 intent.setClass(ImageEditorActivity.this, SelectMBActivity.class);
                 startActivityForResult(intent, 999);
@@ -612,7 +637,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
                 msg = new ToFragmentMsg();
                 msg.fragment = fragment;
                 msg.text = etFont.getText().toString();
-                msg.size = 15;
+                msg.size = textSize;
                 msg.color = textColor;
                 msg.isAddText = true;
                 EventBusUtils.post(msg);
@@ -714,6 +739,7 @@ public class ImageEditorActivity extends MBaseActivity<ImageEditorPresenter> imp
             fontPopupWindow.showAtLocation(relativeLayout, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
             etFont.setText(msg.text);
             etFont.setTextColor(msg.color);
+            textColor = msg.color;
             viewId = msg.viewId;
             fragment = msg.fragment;
         }

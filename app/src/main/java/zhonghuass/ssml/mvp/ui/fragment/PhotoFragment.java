@@ -39,7 +39,8 @@ import zhonghuass.ssml.utils.PrefUtils;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-public class PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View {
+public class
+PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View {
 
     @BindView(R.id.photo_recy)
     RecyclerView photoRecy;

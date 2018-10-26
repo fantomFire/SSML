@@ -44,7 +44,9 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
-
+/**
+ * 两张图的模板
+ */
 public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> implements ImageLayout1Contract.View, OnSingleFlingListener, ImageEditorActivity.IOnFocusListenable {
 
     @BindView(R.id.stickerView)
@@ -52,9 +54,9 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
     @BindView(R.id.rl_bg)
     public RelativeLayout rlBg;
     @BindView(R.id.rl_mb)
-    public RelativeLayout rlMb;
-    @BindView(R.id.tv1)
-    public TextView tv1;
+    public LinearLayout rlMb;
+//    @BindView(R.id.tv1)
+//    public TextView tv1;
 
     @BindView(R.id.iv1)
     public PhotoView image1;
@@ -123,7 +125,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 .into(image2);
 
         //把模板中默认的textView添加进去，因为点击之后要弹出底部菜单修改
-        textViews.add(tv1);
+//        textViews.add(tv1);
 
 
         //获取屏幕宽高
@@ -174,7 +176,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
 
     }
 
-    @OnClick({R.id.rl_mb, R.id.iv1, R.id.iv2, R.id.tv1})
+    @OnClick({R.id.rl_mb, R.id.iv1, R.id.iv2})
     public void onViewClicked(View view) {
         closeTextViewMenu();
         switch (view.getId()) {
@@ -190,9 +192,9 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
                 clickIVNum = 1;
                 imageMenuPop.showAsDropDown(image2);
                 break;
-            case R.id.tv1:
-                toShowPop(0, 1);
-                break;
+//            case R.id.tv1:
+//                toShowPop(0, 1);
+//                break;
         }
     }
 

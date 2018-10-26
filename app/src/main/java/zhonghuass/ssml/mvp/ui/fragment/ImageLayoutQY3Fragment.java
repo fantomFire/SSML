@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.graphics.*;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
+
 import android.widget.*;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,23 +21,21 @@ import com.github.chrisbanes.photoview.OnSingleFlingListener;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
+
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import zhonghuass.ssml.R;
-import zhonghuass.ssml.di.component.DaggerImageLayout1Component;
-import zhonghuass.ssml.di.component.DaggerImageLayout2Component;
-import zhonghuass.ssml.di.module.ImageLayout1Module;
-import zhonghuass.ssml.di.module.ImageLayout2Module;
+import zhonghuass.ssml.di.component.DaggerImageLayoutQY3Component;
+import zhonghuass.ssml.di.module.ImageLayoutQY3Module;
 import zhonghuass.ssml.mvp.ToActivityMsg;
 import zhonghuass.ssml.mvp.ToFragmentMsg;
-import zhonghuass.ssml.mvp.contract.ImageLayout1Contract;
-import zhonghuass.ssml.mvp.contract.ImageLayout2Contract;
-import zhonghuass.ssml.mvp.presenter.ImageLayout1Presenter;
-import zhonghuass.ssml.mvp.presenter.ImageLayout2Presenter;
+import zhonghuass.ssml.mvp.contract.ImageLayoutQY3Contract;
+import zhonghuass.ssml.mvp.presenter.ImageLayoutQY3Presenter;
+
+import zhonghuass.ssml.R;
 import zhonghuass.ssml.mvp.ui.activity.ImageEditorActivity;
 import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.image.MessageEvent;
@@ -49,70 +50,99 @@ import static android.app.Activity.RESULT_OK;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
-/**
- * 一张图的模板
- */
-public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> implements ImageLayout2Contract.View {
-
+public class ImageLayoutQY3Fragment extends BaseFragment<ImageLayoutQY3Presenter> implements ImageLayoutQY3Contract.View, OnSingleFlingListener, ImageEditorActivity.IOnFocusListenable {
     @BindView(R.id.stickerView)
     public RelativeLayout stickerView;
     @BindView(R.id.rl_bg)
     public RelativeLayout rlBg;
     @BindView(R.id.rl_mb)
     public RelativeLayout rlMb;
-    @BindView(R.id.tv1)
-    public TextView tv1;
+//    @BindView(R.id.tv1)
+//    public TextView tv1;
     @BindView(R.id.iv1)
     public PhotoView image1;
+    @BindView(R.id.iv2)
+    public PhotoView image2;
+    @BindView(R.id.iv3)
 
-
+    public PhotoView image3;
     private ToActivityMsg eventMsg;
     private boolean isClick;
     private boolean isRotate;
     int defaultHeight, defaultWidth;// 屏幕宽高
+    private List<String> pathList = new ArrayList();
+    private View mDrawImage;//最终保存图片区域
+    private int statusBarHeight, titleBarHeight;
     private static List<LocalMedia> selectList;
     private PopupWindow imageMenuPop;
-    private String path;
 
-    public static ImageLayout2Fragment newInstance() {
-        ImageLayout2Fragment fragment = new ImageLayout2Fragment();
+    public static ImageLayoutQY3Fragment newInstance() {
+        ImageLayoutQY3Fragment fragment = new ImageLayoutQY3Fragment();
         return fragment;
     }
 
-    public static ImageLayout2Fragment newInstance(List<LocalMedia> imgList) {
-        ImageLayout2Fragment fragment = new ImageLayout2Fragment();
+    public static ImageLayoutQY3Fragment newInstance(List<LocalMedia> imgList) {
+        ImageLayoutQY3Fragment fragment = new ImageLayoutQY3Fragment();
         selectList = imgList;
         return fragment;
     }
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
-        DaggerImageLayout2Component //如找不到该类,请编译 一下项目
+        DaggerImageLayoutQY3Component //如找不到该类,请编译一下项目
                 .builder()
                 .appComponent(appComponent)
-                .imageLayout2Module(new ImageLayout2Module(this))
+                .imageLayoutQY3Module(new ImageLayoutQY3Module(this))
                 .build()
                 .inject(this);
     }
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_image_layout2, container, false);
+        return inflater.inflate(R.layout.fragment_image_layout_qy3, container, false);
     }
-
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initBackPopupWindow();
-        image1.setScaleType(ImageView.ScaleType.CENTER);
+        path1 = selectList.get(0).getPath();
 
-        path = selectList.get(0).getPath();
+        switch (selectList.size()) {
+            case 1:
+                path2 = path1;
+                path3 = path2;
+                break;
+            case 2:
+                path2 = selectList.get(1).getPath();
+                path3 = path2;
+                break;
+            case 3:
+                path2 = selectList.get(1).getPath();
+                path3 = selectList.get(2).getPath();
+                break;
+        }
+
+
+        pathList.add(path1);
+        pathList.add(path2);
+        pathList.add(path3);
+
+        image1.setScaleType(ImageView.ScaleType.CENTER);
+        image2.setScaleType(ImageView.ScaleType.CENTER);
+        image3.setScaleType(ImageView.ScaleType.CENTER);
+
         Glide.with(this)
-                .load(path)
+                .load(path1)
                 .into(image1);
+        Glide.with(this)
+                .load(path2)
+                .into(image2);
+        Glide.with(this)
+                .load(path3)
+                .into(image3);
 
         //把模板中默认的textView添加进去，因为点击之后要弹出底部菜单修改
-        textViews.add(tv1);
+//        textViews.add(tv1);
 
 
         //获取屏幕宽高
@@ -121,6 +151,11 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
         display.getSize(size);
         defaultWidth = size.x;
         defaultHeight = size.y;
+
+        // 获取状态栏高度
+        Rect frame = new Rect();
+        getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        statusBarHeight = frame.top;
 
 
     }
@@ -158,7 +193,7 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
 
     }
 
-    @OnClick({R.id.rl_mb, R.id.iv1, R.id.tv1})
+    @OnClick({R.id.rl_mb, R.id.iv1, R.id.iv2,R.id.iv3})
     public void onViewClicked(View view) {
         closeTextViewMenu();
         switch (view.getId()) {
@@ -169,15 +204,26 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
                 clickIVNum = 0;
                 imageMenuPop.showAsDropDown(image1);
                 break;
-            case R.id.tv1:
-                toShowPop(0, 1);
+            case R.id.iv2:
+                clickImageView = image2;
+                clickIVNum = 1;
+                imageMenuPop.showAsDropDown(image2);
                 break;
+            case R.id.iv3:
+                clickImageView = image3;
+                clickIVNum = 2;
+                imageMenuPop.showAsDropDown(image3);
+                break;
+
         }
     }
 
     private PhotoView clickImageView;
     private int clickIVNum;//标记点击的是那个iv
+
     private int rotateNum1 = 0;//点击旋转的次数，每次旋转90°
+    private int rotateNum2 = 0;//点击旋转的次数，每次旋转90°
+    private int rotateNum3 = 0;//点击旋转的次数，每次旋转90°
     private int maxNum = 0;//点击放大次数
 
     private void initBackPopupWindow() {
@@ -207,10 +253,30 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
         tvRotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String path = "";
+                int rotateNum = 0;
+                if (clickIVNum == 0) {
+                    rotateNum1++;
+                    rotateNum = rotateNum1;
+                    path = mList.get(0).imgPath;
+                }
+                if (clickIVNum == 1) {
+                    rotateNum2++;
+                    rotateNum = rotateNum2;
+                    path = mList.get(1).imgPath;
+                }
+                if (clickIVNum == 2) {
+                    rotateNum3++;
+                    rotateNum = rotateNum3;
+                    path = mList.get(2).imgPath;
+                }
 
-                rotateNum1++;
+
                 Bitmap bmp = BitmapFactory.decodeFile(path);
-                Bitmap newBmp = rotaingImageView(90 * rotateNum1, bmp);
+//                BitmapDrawable bitmapDrawable = new BitmapDrawable(rotaingImageView(90 * rotateNum, bmp));
+                //setImageDrawable图片就被缩放了。
+//                clickImageView.setImageDrawable(bitmapDrawable);
+                Bitmap newBmp = rotaingImageView(90 * rotateNum, bmp);
                 clickImageView.setImageBitmap(newBmp);
 
             }
@@ -341,10 +407,27 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
         if (resultCode == RESULT_OK && requestCode == 1) {
             if (data != null) {
                 List<LocalMedia> selectList = PictureSelector.obtainMultipleResult(data);
-                path = selectList.get(0).getPath();
-                Glide.with(this)
-                        .load(path)
-                        .into(image1);
+                if (clickIVNum == 0) {
+                    path1 = selectList.get(0).getPath();
+                    Glide.with(this)
+                            .load(path1)
+                            .into(image1);
+                    mList.get(clickIVNum).imgPath = path1;
+                }
+                if (clickIVNum == 1) {
+                    path2 = selectList.get(0).getPath();
+                    Glide.with(this)
+                            .load(path2)
+                            .into(image2);
+                    mList.get(clickIVNum).imgPath = path2;
+                }
+                if (clickIVNum == 2) {
+                    path3 = selectList.get(0).getPath();
+                    Glide.with(this)
+                            .load(path3)
+                            .into(image3);
+                    mList.get(clickIVNum).imgPath = path3;
+                }
             }
         }
     }
@@ -498,10 +581,8 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
     //添加一个tag
     private void addTagView(ToFragmentMsg msg) {
         View view = getActivity().getLayoutInflater().inflate(R.layout.layout_add_tag, null);
-        RelativeLayout llTag = (RelativeLayout) view.findViewById(R.id.ll_tag);
-        ImageView ivTag = (ImageView) view.findViewById(R.id.iv_tag);
-        Log.e("--", "IV: " + msg.type);
-        ivTag.setImageResource(msg.type);
+        LinearLayout llTag = (LinearLayout) view.findViewById(R.id.ll_tag);
+        llTag.setBackground(getResources().getDrawable(msg.type));
         TextView textView = (TextView) view.findViewById(R.id.tv_tag);
         ImageView ivDelete = (ImageView) view.findViewById(R.id.iv_delete);
         textView.setText(msg.text);
@@ -770,4 +851,128 @@ public class ImageLayout2Fragment extends BaseFragment<ImageLayout2Presenter> im
         touchTextView(textView);
     }
 
+
+    /**
+     * 下面为图片互换
+     */
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
+    }
+
+    //松开的位置
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        int currentX = (int) event.x;
+        int currentY = (int) event.y;
+        position1 = getCurrentView(currentX, currentY);
+        if (null != mList.get(position0).v && null != mList.get(position1).v) {
+            if (position0 != position1) {
+                changeImage(position0, position1);
+            }
+        }
+    }
+
+    //按下的位置
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEventCurrent event) {
+        int mLastX = (int) event.mLastX;
+        int mLastY = (int) event.mLastY;
+        position0 = getCurrentView(mLastX, mLastY);
+
+    }
+
+    //监测点击区域属于哪个view
+    private int getCurrentView(int mLastX, int mLastY) {
+        for (int i = 0; i < mList.size(); i++) {
+            RectF displayRect = mList.get(i).v.getDisplayRect();
+            int imgLeft = mList.get(i).imgLeft;
+            int imgRight = mList.get(i).imgRight;
+            int imgbottom = mList.get(i).imgbottom;
+            int imgrightBo = mList.get(i).imgrightBo;
+            if (mLastX >= imgLeft && mLastX <= imgRight && mLastY >= imgbottom && mLastY <= imgrightBo) {
+                return i;
+            }
+
+        }
+
+        return -1;
+    }
+
+    private void changeImage(int position0, int position1) {
+        String path = mList.get(position0).imgPath;
+        mList.get(position0).imgPath = mList.get(position1).imgPath;
+        mList.get(position1).imgPath = path;
+
+        Glide.with(this)
+                .load(mList.get(position0).imgPath)
+                .into(mList.get(position0).v);
+        Glide.with(this)
+                .load(mList.get(position1).imgPath)
+                .into(mList.get(position1).v);
+
+    }
+
+    private List<MyViewBean> mList = new ArrayList();
+    private int position0;//点击位置的view
+    private int position1;//松手位置的view
+
+    private String path1;
+    private String path2;
+    private String path3;
+
+    // View宽，高
+    public int[] getLocation(View v) {
+        int[] loc = new int[4];
+        int[] location = new int[2];
+        v.getLocationOnScreen(location);
+        loc[0] = location[0];
+        loc[1] = location[1];
+        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        v.measure(w, h);
+
+        loc[2] = v.getMeasuredWidth();
+        loc[3] = v.getMeasuredHeight();
+
+        return loc;
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (image1 != null && image2 != null && image3 != null) {
+            int[] location1 = getLocation(image1);//获取在整个屏幕内的绝对坐标
+            MyViewBean myViewBean1 = new MyViewBean();
+            myViewBean1.imgLeft = location1[0];
+            myViewBean1.imgbottom = location1[1];
+            myViewBean1.imgRight = location1[0] + image1.getWidth();
+            myViewBean1.imgrightBo = location1[1] + image1.getHeight();
+            myViewBean1.v = image1;
+            myViewBean1.imgPath = path1;
+            mList.add(myViewBean1);
+
+
+            int[] location2 = getLocation(image2);//获取在整个屏幕内的绝对坐标
+            MyViewBean myViewBean2 = new MyViewBean();
+            myViewBean2.imgLeft = location2[0];
+            myViewBean2.imgbottom = location2[1];
+            myViewBean2.imgRight = location2[0] + image2.getWidth();
+            myViewBean2.imgrightBo = location2[1] + image2.getHeight();
+            myViewBean2.v = image2;
+            myViewBean2.imgPath = path2;
+            mList.add(myViewBean2);
+
+            int[] location3 = getLocation(image3);//获取在整个屏幕内的绝对坐标
+            MyViewBean myViewBean3 = new MyViewBean();
+            myViewBean3.imgLeft = location3[0];
+            myViewBean3.imgbottom = location3[1];
+            myViewBean3.imgRight = location3[0] + image3.getWidth();
+            myViewBean3.imgrightBo = location3[1] + image3.getHeight();
+            myViewBean3.v = image3;
+            myViewBean3.imgPath = path3;
+            mList.add(myViewBean3);
+
+        }
+    }
 }
