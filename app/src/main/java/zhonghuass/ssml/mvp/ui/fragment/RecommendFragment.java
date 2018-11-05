@@ -78,10 +78,12 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     public void initData(@Nullable Bundle savedInstanceState) {
         member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
         member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
+
         initRecycleView();
-        mPresenter.getRecomendData(member_id, member_type, page);
+        mPresenter.getRecomendData(member_id,member_type,page);
 
     }
+
 
     private void initRecycleView() {
         mAdapter = new StaggeredGridAdapter(getContext(), recommendDatas);
@@ -181,7 +183,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
 
     @Override
     public void notifystate() {
-        mAdapter.noMoreData();
+        mAdapter.noMoreDataToast();
         mAdapter.disableLoadMoreIfNotFullPage(recommendRec);
     }
 }

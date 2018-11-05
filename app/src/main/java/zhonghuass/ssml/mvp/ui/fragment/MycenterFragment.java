@@ -74,6 +74,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        System.out.println("4hidd"+hidden);
         if (!hidden) {
             mTabLayout.post(new Runnable() {
                 @Override

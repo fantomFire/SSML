@@ -38,6 +38,8 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
 public class FocusFragment extends BaseFragment<FocusPresenter> implements FocusContract.View {
+    // 检测声明周期中，是否已经构建视图
+    private boolean mViewCreated = false;
     private boolean state = false;
     @BindView(R.id.fo_recy)
     RecyclerView foRecy;
@@ -74,11 +76,23 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
         member_id = PrefUtils.getString(getActivity(), Constants.USER_ID, "");
         member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
         initRecycleView();
-        mPresenter.getFocusData(member_id,member_type,page);
 
+        mViewCreated = true;
 
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser&&mViewCreated){
+            mPresenter.getFocusData(member_id,member_type,page);
+        }
+
+    }
+
+
 
     private void initRecycleView() {
         focusAdapter = new FocusAdapter(getActivity(), mList);

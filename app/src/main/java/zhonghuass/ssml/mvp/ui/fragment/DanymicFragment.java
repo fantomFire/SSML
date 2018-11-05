@@ -40,7 +40,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 public class DanymicFragment extends BaseFragment<DanymicPresenter> implements DanymicContract.View {
 
-
+    private boolean mViewCreated = false;
     @BindView(R.id.recommend_dny)
     RecyclerView recommendDny;
     @BindView(R.id.dany_refresh)
@@ -77,8 +77,17 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
         member_type = PrefUtils.getString(getActivity(), Constants.MEMBER_TYPE, "0");
 
         initRecycleView();
+        mViewCreated = true;
 
-        mPresenter.getDanymicData(member_id, member_type, page);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            mPresenter.getDanymicData(member_id, member_type, page);
+
+        }
     }
 
     private void initRecycleView() {
@@ -163,7 +172,7 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
 
     @Override
     public void notifystate() {
-        danymicAdapter.noMoreDataToast();
-        Toast.makeText(getActivity(), "没有更多数据,请稍后尝试!", Toast.LENGTH_SHORT).show();
+        danymicAdapter.noMoreData();
+       // Toast.makeText(getActivity(), "没有更多数据,请稍后尝试!", Toast.LENGTH_SHORT).show();
     }
 }

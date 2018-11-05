@@ -1,6 +1,8 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -169,6 +171,9 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         });
 
         mediaView.start();
+
+
+
     }
 
 

@@ -91,29 +91,17 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        currentPage=1;
+        currentPage = 1;
         tradeRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
         tradeAdapter = new TradeAdapter(R.layout.trade_item, mList);
         tradeRecycle.setAdapter(tradeAdapter);
         initPopupWindow();
-        System.out.println("area"+area+"type"+type +"currentPage"+currentPage);
-        //获取默认信息
-        mPresenter.getTradeData(area, type, currentPage, pagesize);
-        //获取区域
-        mPresenter.getAreaData();
-        //获取行业
-        mPresenter.getTradeItem();
-
-
-
-
-
-        comepanyRecycle.setOnRefreshListener(()->{
-                currentPage = 1;
-                mPresenter.getTradeData(area, type, currentPage, pagesize);
+        comepanyRecycle.setOnRefreshListener(() -> {
+            currentPage = 1;
+            mPresenter.getTradeData(area, type, currentPage, pagesize);
 
         });
-        tradeAdapter.setOnLoadMoreListener(()->{
+        tradeAdapter.setOnLoadMoreListener(() -> {
             currentPage++;
             mPresenter.getTradeData(area, type, currentPage, pagesize);
         });
@@ -133,7 +121,18 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
                 mPresenter.getTradeData(area, type, currentPage, pagesize);
             }
         });
-        //提前初始化数据，这样可以加载快一些。
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        System.out.println("area" + area + "type" + type + "currentPage" + currentPage);
+        //获取默认信息
+        mPresenter.getTradeData(area, type, currentPage, pagesize);
+        //获取区域
+        mPresenter.getAreaData();
+        //获取行业
+        mPresenter.getTradeItem();
     }
 
     private void initPopupWindow() {
@@ -184,7 +183,7 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.makeText(getActivity(),message);
+        ArmsUtils.makeText(getActivity(), message);
     }
 
     @Override
@@ -223,10 +222,10 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
 
         tradeAdapter.loadMoreComplete();
         if (currentPage > 1) {
-         //   mList.addAll(data);
+            //   mList.addAll(data);
             tradeAdapter.addData(data);
         } else {
-          //  mList=data;
+            //  mList=data;
             tradeAdapter.setNewData(data);
         }
     }
@@ -246,7 +245,7 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     @Override
     public void notifystate() {
         tradeAdapter.loadMoreEnd(true);
-        showMessage("没有更多数据,请稍后尝试!");
+       // showMessage("没有更多数据,请稍后尝试!");
     }
 
     private void showPopupWindow() {

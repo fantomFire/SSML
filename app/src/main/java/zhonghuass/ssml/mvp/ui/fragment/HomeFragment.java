@@ -146,7 +146,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         ViewPagerHelper.bind(magicIndicator, fragVp);
         fragVp.setOffscreenPageLimit(2);
     }
-
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        System.out.println("1hidden"+hidden);
+    }
     @Override
     public void setData(@Nullable Object data) {
 
