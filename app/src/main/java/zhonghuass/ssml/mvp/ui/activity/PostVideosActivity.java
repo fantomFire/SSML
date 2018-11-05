@@ -99,7 +99,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     private File fileDir;
     private File currentFile;
     private boolean isRuning;
-    private String theme_id="0";
+    private String theme_id = "0";
     private String member_type;
     private String oneImagePath;
     private String mediaLength;
@@ -107,7 +107,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     private AMapLocationClientOption mLocationOption;
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
-    private String localtion="西安";
+    private String localtion = "西安";
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -128,7 +128,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     public void initData(@Nullable Bundle savedInstanceState) {
         tvRight.setVisibility(View.VISIBLE);
         tvRight.setText("发布");
-        llBack.setOnClickListener(v ->finish() );
+        llBack.setOnClickListener(v -> finish());
         intent = getIntent();
         userId = PrefUtils.getString(this, Constants.USER_ID, "");
         member_type = PrefUtils.getString(this, Constants.MEMBER_TYPE, "");
@@ -142,6 +142,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
 
             mediaPath = intent.getStringExtra("mediaPath");
             mediaLength = intent.getStringExtra("mediaLength");
+            System.out.println("mediaLength"+mediaLength);
             //设置图片
             if (mediaPath != null) {
                 setImage(mediaPath);
@@ -159,7 +160,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             //初始化多图
             initImages();
 
-        }else if(selectType.equals("oneImage")){
+        } else if (selectType.equals("oneImage")) {
             oneImagePath = intent.getStringExtra("imagePath");
             Glide.with(this)
                     .load(oneImagePath)
@@ -200,8 +201,6 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         mLocationClient.startLocation();
 
 
-
-
     }
 
     @Override
@@ -218,15 +217,15 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
                 df.format(date);//定位时间
                 amapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
                 amapLocation.getCountry();//国家信息
-               String provence =  amapLocation.getProvince();//省信息
-                String city =  amapLocation.getCity();//城市信息
-                String area =  amapLocation.getDistrict();//城区信息
-                String street= amapLocation.getStreet();//街道信息
+                String provence = amapLocation.getProvince();//省信息
+                String city = amapLocation.getCity();//城市信息
+                String area = amapLocation.getDistrict();//城区信息
+                String street = amapLocation.getStreet();//街道信息
                 amapLocation.getStreetNum();//街道门牌号信息
                 amapLocation.getCityCode();//城市编码
                 amapLocation.getAdCode();//地区编码
-                System.out.println("省信息"+provence+city+area+street);
-                localtion = city+area+street;
+                System.out.println("省信息" + provence + city + area + street);
+                localtion = city + area + street;
                 tvEara.setText(localtion);
                 // 如果不设置标志位，此时再拖动地图时，它会不断将地图移动到当前的位置
                 if (isFirstLoc) {
@@ -241,7 +240,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
                     //获取定位信息
                     StringBuffer buffer = new StringBuffer();
                     buffer.append(amapLocation.getCountry() + "" + amapLocation.getProvince() + "" + amapLocation.getCity() + "" + amapLocation.getProvince() + "" + amapLocation.getDistrict() + "" + amapLocation.getStreet() + "" + amapLocation.getStreetNum());
-                   // Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
                     isFirstLoc = false;
                 }
 
@@ -253,8 +252,6 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
 
 
     }
-
-
 
 
     private void initImages() {
@@ -285,7 +282,6 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         });
 
     }
-
 
 
     @Override
@@ -358,7 +354,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
 
     @Override
     public void showLoading() {
-        isRuning=true;
+        isRuning = true;
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -371,7 +367,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
     @Override
     public void showMessage(@NonNull String message) {
         checkNotNull(message);
-        ArmsUtils.makeText(this,message);
+        ArmsUtils.makeText(this, message);
     }
 
     @Override
@@ -394,13 +390,13 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
 
     @Override
     public void closeActivity() {
-        if(PublishActivity.publishActivity !=null){
+        if (PublishActivity.publishActivity != null) {
             PublishActivity.publishActivity.finish();
         }
-        if(ImageEditorActivity.imageEditorActivity!=null){
+        if (ImageEditorActivity.imageEditorActivity != null) {
             ImageEditorActivity.imageEditorActivity.finish();
         }
-        if(MediaEditeActivity.mediaEditeActivity!=null){
+        if (MediaEditeActivity.mediaEditeActivity != null) {
             MediaEditeActivity.mediaEditeActivity.finish();
         }
         finish();
@@ -421,7 +417,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
                     uploadMedia();
                 } else if (selectType.equals("multipleImage")) {
                     checkData();
-                }else if(selectType.equals("oneImage")){
+                } else if (selectType.equals("oneImage")) {
                     upLoadOneImage();
                 }
 
@@ -442,7 +438,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             return;
         }
         showLoading();
-        mPresenter.upImages(imagesUpList, mContent, theme_id, userId,member_type, localtion);
+        mPresenter.upImages(imagesUpList, mContent, theme_id, userId, member_type, localtion);
 
     }
 
@@ -452,13 +448,17 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             return;
         }
         String mContent = etContent.getText().toString().trim();
-        if(TextUtils.isEmpty(mContent)){
+        if (TextUtils.isEmpty(mContent)) {
             Toast.makeText(this, "说点什么吧!", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        System.out.println("mtext.length()"+mContent.length());
+        if(mContent.length()<10||mContent.length()>60){
+            Toast.makeText(this, "内容标题应为5~30个字符!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         showLoading();
-        mPresenter.upLoadData(mediaPath, mContent, theme_id, userId,member_type, currentFile.getPath(),mediaLength,localtion);
+        mPresenter.upLoadData(mediaPath, mContent, theme_id, userId, member_type, currentFile.getPath(), mediaLength, localtion);
     }
 
     private void checkData() {
@@ -468,10 +468,11 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
         imagesUpList.addAll(imagesList);
         //   mPresenter.upLoadData(mList, mContent, userEare, dailyTag, );
         String mtext = etContent.getText().toString().trim();
-        if(TextUtils.isEmpty(mtext)){
+        if (TextUtils.isEmpty(mtext)) {
             Toast.makeText(this, "说点什么吧!", Toast.LENGTH_SHORT).show();
             return;
         }
+
         String path = imagesUpList.get(imagesList.size() - 1).getPath();
         if (path.equals(urlPath)) {
             imagesUpList.remove(imagesList.size() - 1);
@@ -481,7 +482,7 @@ public class PostVideosActivity extends MBaseActivity<PostVideosPresenter> imple
             return;
         }
         showLoading();
-        mPresenter.upImages(imagesUpList, mContent, theme_id, userId,member_type,localtion);
+        mPresenter.upImages(imagesUpList, mContent, theme_id, userId, member_type, localtion);
 
     }
 

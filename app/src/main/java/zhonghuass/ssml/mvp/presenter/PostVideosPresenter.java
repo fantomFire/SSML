@@ -95,7 +95,7 @@ public class PostVideosPresenter extends BasePresenter<PostVideosContract.Model,
                         if(voidBaseResponse.isSuccess()){
                             mRootView.closeActivity();
                         }
-                        System.out.println("voidBaseResponse" + voidBaseResponse.getStatus());
+                        System.out.println("voidBaseResponse" + voidBaseResponse.getMessage());
                         mRootView.hideLoading();
                     }
 
