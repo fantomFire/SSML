@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,11 +55,13 @@ public class QQLoginActivity extends Activity {
 
         @Override
         public void onError(UiError uiError) {
+            Toast.makeText(QQLoginActivity.this, "error", Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void onCancel() {
+            Toast.makeText(QQLoginActivity.this, "cnncel", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -128,15 +129,17 @@ public class QQLoginActivity extends Activity {
     }
 
     /**
-     * QQ的授权回调
-     */
+     * QQ的授权回调0
+0     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("TAG", "-->onActivityResult " + requestCode + " resultCode=" + resultCode);
+//        Log.d("TAG", "-->onActivityResult " + requestCode + " resultCode=" + resultCode);00
         System.out.println("requestCode = " + requestCode + " resultCode=" + resultCode);
         if (requestCode == com.tencent.connect.common.Constants.REQUEST_LOGIN ||
                 requestCode == com.tencent.connect.common.Constants.REQUEST_APPBAR) {
             Tencent.onActivityResultData(requestCode, resultCode, data, new LoginUiListener());
         }
+
+
     }
 }
