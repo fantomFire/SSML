@@ -3,6 +3,7 @@ package zhonghuass.ssml.mvp.ui.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -101,6 +102,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     private int page = 1;
     private SwipeRefreshLayout swipe;
     private RecyclerView disRecycle;
+    private boolean scoll;
+    private EditText mEdit;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -270,11 +273,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         popupWindow.setFocusable(true);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.showAtLocation(llPop, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
 
 
         swipe = popView.findViewById(R.id.discuss_swi);
         disRecycle = popView.findViewById(R.id.dis_rec);
-        EditText mEdit = popView.findViewById(R.id.et_context);
+        mEdit = popView.findViewById(R.id.et_context);
         TextView tvpublish = popView.findViewById(R.id.tv_publish);
 
 
@@ -326,7 +330,19 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 toPublishContext(mContext);
             }
         });
+        disRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy>5){
+                    scoll = true;
 
+                }else {
+                    scoll =false;
+                }
+
+            }
+        });
 
     }
 
@@ -379,15 +395,19 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             swipe.setRefreshing(false);
         }
         discussAdapter.loadMoreEnd(true);
-        showMessage("没有更多数据,请稍后尝试!");
+        if(scoll){
+
+            showMessage("没有更多数据,请稍后尝试!");
+        }
+
     }
 
     @Override
     public void showPopState() {
-        if (popupWindow.isShowing()) {
-            popupWindow.dismiss();
-        }
-        mPresenter.getDiscussList(content_id, user_id, user_type, page);
+        mEdit.setText("");
+        page=1;
+        mPresenter.getDiscussList(content_id, user_id, user_type, 1);
+        //mPresenter.getDiscussList(content_id, user_id, user_type, page);
     }
 
     @Override
@@ -417,10 +437,5 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         return true;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+
 }

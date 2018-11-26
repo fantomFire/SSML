@@ -52,8 +52,7 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                 .subscribe(new ErrorHandleSubscriber<GraphicBean>(mErrorHandler) {
                     @Override
                     public void onNext(GraphicBean listBaseResponse) {
-                        System.out.println("结果" + listBaseResponse.getStatus());
-                        //  System.out.println("结果"+ listBaseResponse.getData().getContent_title());
+                          System.out.println("结果"+ listBaseResponse.getData().getContent_title());
                         String status = listBaseResponse.getStatus();
 
                         if (status.equals("200")) {
@@ -69,11 +68,14 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
     }
 
     public void getDiscussList(String content_id, String member_id, String member_type, int page) {
+        System.out.println("content_id"+content_id+"member_id"+member_id+"member_type"+member_type+page);
         mModel.getDiscussList(content_id, member_id, member_type,page)
                 .compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<List<DiscussBean>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<List<DiscussBean>>  discussBeanBaseResponse) {
+                        System.out.println("结果!!!!" + discussBeanBaseResponse.getStatus());
+                        //
                         if (discussBeanBaseResponse.isSuccess()) {
                             mRootView.showDiscussData(discussBeanBaseResponse.getData());
                         } else if(discussBeanBaseResponse.getStatus().equals("201")) {
@@ -126,7 +128,7 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                     @Override
                     public void onNext(BaseResponse<Void> voidBaseResponse) {
                         mRootView.showMessage(voidBaseResponse.getMessage());
-                        System.out.println("diandddddd"+voidBaseResponse.getMessage());
+
                         if(voidBaseResponse.isSuccess()){
                             mRootView.getNewData();
                         }
@@ -143,7 +145,6 @@ public class GraphicDetailsPresenter extends BasePresenter<GraphicDetailsContrac
                         if(voidBaseResponse.isSuccess()){
                             mRootView.showPopState();
                         }
-                        System.out.println("评论结果"+voidBaseResponse.getStatus()+voidBaseResponse.getMessage());
                     mRootView.showMessage(voidBaseResponse.getMessage());
                     }
                 });

@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp.ui.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -104,6 +105,8 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
     private PopupWindow popupWindow;
     private SwipeRefreshLayout swipe;
     private RecyclerView disRecycle;
+    private boolean scoll = false;
+    private EditText mEdit;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -215,10 +218,14 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     @Override
     public void showPopState() {
-        if (popupWindow.isShowing()) {
+      /*  if (popupWindow.isShowing()) {
             popupWindow.dismiss();
-        }
-        mPresenter.getDiscussList(content_id, user_id, user_type, page);
+        }*/
+        mEdit.setText("");
+        page=1;
+        mPresenter.getDiscussList(content_id, user_id, user_type, 1);
+
+
     }
 
     @Override
@@ -227,7 +234,10 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
             swipe.setRefreshing(false);
         }
         discussAdapter.loadMoreEnd(true);
-        showMessage("没有更多数据,请稍后尝试!");
+        if(scoll){
+
+            showMessage("没有更多数据,请稍后尝试!");
+        }
     }
 
     @Override
@@ -297,7 +307,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         View popView = LayoutInflater.from(this).inflate(R.layout.layout_discuss_item, null);
         popupWindow.setContentView(popView);
         //获取评论内容
-
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
         popupWindow.setFocusable(true);
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.showAtLocation(llPop, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -305,7 +315,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
         swipe = popView.findViewById(R.id.discuss_swi);
         disRecycle = popView.findViewById(R.id.dis_rec);
-        EditText mEdit = popView.findViewById(R.id.et_context);
+        mEdit = popView.findViewById(R.id.et_context);
         TextView tvpublish = popView.findViewById(R.id.tv_publish);
 
 
@@ -326,8 +336,12 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
 
         discussAdapter.setOnLoadMoreListener(() -> {
-            page++;
-            mPresenter.getDiscussList(content_id, user_id, user_type, page);
+            if(!swipe.isRefreshing()){
+
+                page++;
+                mPresenter.getDiscussList(content_id, user_id, user_type, page);
+            }
+
         });
         swipe.setOnRefreshListener(() -> {
             page = 1;
@@ -335,6 +349,20 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
             mPresenter.getDiscussList(content_id, user_id, user_type, page);
 
         });
+        disRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(dy>5){
+                    scoll = true;
+
+                }else {
+                    scoll  =false;
+                }
+
+            }
+        });
+
         discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

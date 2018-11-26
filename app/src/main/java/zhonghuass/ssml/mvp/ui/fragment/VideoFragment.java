@@ -140,7 +140,6 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     @Override
     public void setContent(List<PhotoBean> data) {
-        System.out.println("============="+data.size());
         if(videoRefresh.isRefreshing()){
             videoRefresh.setRefreshing(false);
         }
