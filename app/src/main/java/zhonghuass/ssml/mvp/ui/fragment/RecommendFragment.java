@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.dl7.recycler.helper.RecyclerViewHelper;
 import com.dl7.recycler.listener.OnRecyclerViewItemClickListener;
 import com.dl7.recycler.listener.OnRequestDataListener;
+import com.github.library.baseAdapter.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.ArmsUtils;
@@ -89,6 +90,7 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
         mAdapter = new StaggeredGridAdapter(getContext(), recommendDatas);
         SlideInBottomAdapter slideAdapter = new SlideInBottomAdapter(mAdapter);
         RecyclerViewHelper.initRecyclerViewSV(getContext(), recommendRec, slideAdapter, 2);
+
         mAdapter.setRequestDataListener(new OnRequestDataListener() {
             @Override
             public void onLoadMore() {

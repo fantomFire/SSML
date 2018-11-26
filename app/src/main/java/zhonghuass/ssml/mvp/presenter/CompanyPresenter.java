@@ -60,6 +60,7 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.Model, Compa
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<List<TradeBean>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<List<TradeBean>> listBaseResponse) {
+                        System.out.println("stat"+listBaseResponse.getStatus());
                         if (listBaseResponse.isSuccess()) {
                             mRootView.showTradeData(listBaseResponse.getData());
 

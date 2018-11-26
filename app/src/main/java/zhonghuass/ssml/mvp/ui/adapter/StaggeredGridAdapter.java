@@ -59,11 +59,11 @@ public class StaggeredGridAdapter extends BaseQuickAdapter<RecommendBean, Recycl
         holder.setText(R.id.company_name, item.getMember_name())
                 .setText(R.id.company_title, item.getContent_title())
                 .setText(R.id.like_num, item.getAmount_of_praise());
-        holder.convertView.setOnClickListener((v) -> {
+      /*  holder.convertView.setOnClickListener((v) -> {
                     Intent intent = new Intent(mContext, GraphicDetailsActivity.class);
                     mContext.startActivity(intent);
                 }
-        );
+        );*/
         //设置红心
         ImageView likeImg = holder.getView(R.id.iflike);
         if (item.isPraise_tag()) {

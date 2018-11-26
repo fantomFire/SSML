@@ -170,7 +170,9 @@ PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View
 
     @Override
     public void notifystate() {
-
+        if (photoRefresh.isRefreshing()) {
+            photoRefresh.setRefreshing(false);
+        }
         photoAdapter.noMoreDataToast();
         if (state) {
             Toast.makeText(getActivity(), "没有更多数据,请稍后尝试!", Toast.LENGTH_SHORT).show();

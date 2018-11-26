@@ -15,7 +15,6 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginLeft="10dp"
-        android:background="@mipmap/meizi"
         android:scaleType="fitXY" />
 
     <LinearLayout
@@ -30,7 +29,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="陕西盛唐"
             android:textColor="@color/text_c28"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -45,7 +43,6 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="2dp"
-            android:text="陕西盛唐"
             android:textColor="@color/text_c28"
             android:textSize="13sp" />
         <LinearLayout

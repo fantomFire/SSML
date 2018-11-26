@@ -287,6 +287,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         discussAdapter = new DiscussAdapter(R.layout.discuss_item, mList);
         disRecycle.setAdapter(discussAdapter);
 
+        View emptView = getLayoutInflater().inflate(R.layout.my_photo_empt, null);
+        emptView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        TextView tvEmpty = emptView.findViewById(R.id.tv_empty);
+        tvEmpty.setText("还没有最新评论!");
+        discussAdapter.setEmptyView(emptView);
+
         discussAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -369,6 +375,9 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void notifystate() {
+        if (swipe.isRefreshing()) {
+            swipe.setRefreshing(false);
+        }
         discussAdapter.loadMoreEnd(true);
         showMessage("没有更多数据,请稍后尝试!");
     }

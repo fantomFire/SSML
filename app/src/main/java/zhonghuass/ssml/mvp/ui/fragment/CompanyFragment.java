@@ -95,6 +95,7 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
         tradeRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
         tradeAdapter = new TradeAdapter(R.layout.trade_item, mList);
         tradeRecycle.setAdapter(tradeAdapter);
+        tradeAdapter.openLoadAnimation();
         initPopupWindow();
         comepanyRecycle.setOnRefreshListener(() -> {
             currentPage = 1;
@@ -102,8 +103,11 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
 
         });
         tradeAdapter.setOnLoadMoreListener(() -> {
-            currentPage++;
-            mPresenter.getTradeData(area, type, currentPage, pagesize);
+            if(!comepanyRecycle.isRefreshing()){
+                currentPage++;
+                mPresenter.getTradeData(area, type, currentPage, pagesize);
+            }
+
         });
 
         cityPicker = new CustomCityPicker(getContext(), new CustomCityPicker.ResultHandler() {
@@ -127,12 +131,15 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         System.out.println("area" + area + "type" + type + "currentPage" + currentPage);
-        //获取默认信息
-        mPresenter.getTradeData(area, type, currentPage, pagesize);
-        //获取区域
-        mPresenter.getAreaData();
-        //获取行业
-        mPresenter.getTradeItem();
+        if(!hidden){
+            //获取默认信息
+            mPresenter.getTradeData(area, type, currentPage, pagesize);
+            //获取区域
+            mPresenter.getAreaData();
+            //获取行业
+            mPresenter.getTradeItem();
+        }
+
     }
 
     private void initPopupWindow() {
@@ -223,9 +230,11 @@ public class CompanyFragment extends BaseFragment<CompanyPresenter> implements C
         tradeAdapter.loadMoreComplete();
         if (currentPage > 1) {
             //   mList.addAll(data);
+            System.out.println("@@@@@@@@@@@@@@@@@)"+data.size());
             tradeAdapter.addData(data);
         } else {
             //  mList=data;
+            System.out.println("size"+data.size());
             tradeAdapter.setNewData(data);
         }
     }

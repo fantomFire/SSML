@@ -190,7 +190,7 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
         if (collection_tag) {
             imgCollect.setBackgroundResource(R.mipmap.sc);
         }
-        if(concern_tag){
+        if (concern_tag) {
             btnFocus.setText("已关注");
         }
     }
@@ -223,6 +223,9 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
     @Override
     public void notifystate() {
+        if (swipe.isRefreshing()) {
+            swipe.setRefreshing(false);
+        }
         discussAdapter.loadMoreEnd(true);
         showMessage("没有更多数据,请稍后尝试!");
     }
@@ -313,6 +316,12 @@ public class GraphicDetailsActivity extends BaseActivity<GraphicDetailsPresenter
 
         disRecycle.setLayoutManager(new LinearLayoutManager(this));
         discussAdapter = new DiscussAdapter(R.layout.discuss_item, mList);
+        View emptView = getLayoutInflater().inflate(R.layout.my_photo_empt, null);
+        emptView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        TextView tvEmpty = emptView.findViewById(R.id.tv_empty);
+        tvEmpty.setText("还没有最新评论!");
+        discussAdapter.setEmptyView(emptView);
+
         disRecycle.setAdapter(discussAdapter);
 
 

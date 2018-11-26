@@ -127,7 +127,9 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     @Override
     public void notifystate() {
-
+        if (videoRefresh.isRefreshing()) {
+            videoRefresh.setRefreshing(false);
+        }
         photoAdapter.noMoreDataToast();
         if(state){
 
