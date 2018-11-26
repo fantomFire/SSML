@@ -97,8 +97,11 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
         recommendDny.setAdapter(danymicAdapter);
 
         danymicAdapter.setRequestDataListener(() -> {
-            page++;
-            mPresenter.getDanymicData(member_id, member_type, page);
+            if(!danyRefresh.isRefreshing()){
+
+                page++;
+                mPresenter.getDanymicData(member_id, member_type, page);
+            }
         });
         danyRefresh.setOnRefreshListener(() -> {
             page = 1;

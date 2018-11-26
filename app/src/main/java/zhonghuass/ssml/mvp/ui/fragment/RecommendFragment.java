@@ -92,8 +92,12 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
         mAdapter.setRequestDataListener(new OnRequestDataListener() {
             @Override
             public void onLoadMore() {
-                page++;
-                mPresenter.getRecomendData(member_id, member_type, page);
+                if(!recommendSrl.isRefreshing()){
+
+                    page++;
+                    System.out.println("page"+page);
+                    mPresenter.getRecomendData(member_id, member_type, page);
+                }
             }
         });
         recommendSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -184,6 +188,6 @@ public class RecommendFragment extends BaseFragment<RecommendPresenter> implemen
     @Override
     public void notifystate() {
         mAdapter.noMoreDataToast();
-        mAdapter.disableLoadMoreIfNotFullPage(recommendRec);
+       // mAdapter.disableLoadMoreIfNotFullPage(recommendRec);
     }
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dl7.recycler.helper.RecyclerViewHelper;
@@ -53,6 +54,8 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
     private String eid;
     private String target_type = "0";
     private String content_type = "1";
+    private View view;
+
     public static VideoFragment newInstance() {
         VideoFragment fragment = new VideoFragment();
         return fragment;
@@ -70,6 +73,7 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.my_photo_empt,container, false);
         return inflater.inflate(R.layout.fragment_video, container, false);
     }
 
@@ -88,6 +92,9 @@ public class VideoFragment extends BaseFragment<VideoPresenter> implements Video
         SlideInBottomAdapter slideInBottomAdapter = new SlideInBottomAdapter(photoAdapter);
         RecyclerViewHelper.initRecyclerViewSV(getActivity(),videoRecy,slideInBottomAdapter,2);
         videoRecy.setAdapter(photoAdapter);
+        TextView tvEmpty = view.findViewById(R.id.tv_empty);
+        tvEmpty.setText("您未发布任何视频,快去发布吧!");
+        photoAdapter.setEmptyView(view);
 
         videoRefresh.setOnRefreshListener(()->{
             photoAdapter.enableLoadMore(false);

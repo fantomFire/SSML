@@ -106,8 +106,11 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
 
         });
         focusAdapter.setRequestDataListener(()->{
-            page++;
-            mPresenter.getFocusData(member_id,member_type,page);
+            if(!refreshFo.isRefreshing()){
+
+                page++;
+                mPresenter.getFocusData(member_id,member_type,page);
+            }
 
         });
         foRecy.addOnScrollListener(new RecyclerView.OnScrollListener() {

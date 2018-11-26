@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dl7.recycler.helper.RecyclerViewHelper;
@@ -56,6 +57,7 @@ PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View
     private String eid;
     private String target_type = "0";
     private String content_type = "0";
+    private View view;
 
     public static PhotoFragment newInstance() {
         PhotoFragment fragment = new PhotoFragment();
@@ -74,6 +76,8 @@ PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View
 
     @Override
     public View initView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.my_photo_empt,container, false);
+
         return inflater.inflate(R.layout.fragment_photo, container, false);
     }
 
@@ -92,7 +96,9 @@ PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View
         SlideInBottomAdapter slideInBottomAdapter = new SlideInBottomAdapter(photoAdapter);
         RecyclerViewHelper.initRecyclerViewSV(getActivity(), photoRecy, slideInBottomAdapter, 2);
         photoRecy.setAdapter(photoAdapter);
-
+        TextView tvEmpty = view.findViewById(R.id.tv_empty);
+        tvEmpty.setText("您未发布任何图文动态,快去发布吧!");
+        photoAdapter.setEmptyView(view);
         photoRefresh.setOnRefreshListener(() -> {
             photoAdapter.enableLoadMore(false);
             page = 1;
@@ -175,6 +181,7 @@ PhotoFragment extends BaseFragment<PhotoPresenter> implements PhotoContract.View
     @Override
     public void setContent(List<PhotoBean> data) {
         System.out.println("=============" + data.size());
+
         if (photoRefresh.isRefreshing()) {
             photoRefresh.setRefreshing(false);
         }
