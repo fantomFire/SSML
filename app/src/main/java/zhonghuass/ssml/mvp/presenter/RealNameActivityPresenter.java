@@ -11,7 +11,10 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import javax.inject.Inject;
 
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.RealNameActivityContract;
+import zhonghuass.ssml.utils.RxUtils;
 
 
 @ActivityScope
@@ -37,5 +40,22 @@ public class RealNameActivityPresenter extends BasePresenter<RealNameActivityCon
         this.mAppManager = null;
         this.mImageLoader = null;
         this.mApplication = null;
+    }
+
+    public void postUserInfo(String user_id, String memberType, String eName, String eTel, String eCid) {
+        mModel.postUserInfo(user_id,memberType,eName,eTel,eCid)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<BaseResponse<Void>>(mErrorHandler) {
+                    @Override
+                    public void onNext(BaseResponse<Void> voidBaseResponse) {
+                        mRootView.showMessage(voidBaseResponse.getMessage());
+                        System.out.println("身份信息"+voidBaseResponse.getMessage());
+                        if(voidBaseResponse.getStatus().equals("200")){
+                            mRootView.changeState();
+
+                        }
+                    }
+                });
+
     }
 }

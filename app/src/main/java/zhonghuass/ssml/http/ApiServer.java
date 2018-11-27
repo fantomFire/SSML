@@ -279,6 +279,14 @@ public interface ApiServer {
     @POST("/Api/Member/Editing")
     Observable<BaseResponse<List<UserInfoBean>>> updateMyInfo(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file);
 
+    @FormUrlEncoded
+    @POST("/Api/Certification/auth")
+    Observable<BaseResponse<Void>> postUserInfo(@Field("u_id")String user_id, @Field("member_type")String memberType,
+                                                @Field("truename")String eName, @Field("mobile")String eTel,
+                                                @Field("identity_card")String eCid);
+    @FormUrlEncoded
+    @POST("/Api/Certification/feedback")
+    Observable<BaseResponse<Void>> postMess(@Field("u_id")String user_id, @Field("member_type")String memberType,  @Field("opinion")String eContext);
 
 }
 

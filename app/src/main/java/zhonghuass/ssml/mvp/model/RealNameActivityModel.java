@@ -10,6 +10,9 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.RealNameActivityContract;
 
 
@@ -30,5 +33,12 @@ public class RealNameActivityModel extends BaseModel implements RealNameActivity
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> postUserInfo(String user_id, String memberType, String eName, String eTel, String eCid) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .postUserInfo(user_id,memberType,eName,eTel,eCid)
+                ;
     }
 }

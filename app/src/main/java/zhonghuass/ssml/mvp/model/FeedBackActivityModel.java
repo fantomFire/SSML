@@ -10,6 +10,9 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import zhonghuass.ssml.http.ApiServer;
+import zhonghuass.ssml.http.BaseResponse;
 import zhonghuass.ssml.mvp.contract.FeedBackActivityContract;
 
 
@@ -30,5 +33,12 @@ public class FeedBackActivityModel extends BaseModel implements FeedBackActivity
         super.onDestroy();
         this.mGson = null;
         this.mApplication = null;
+    }
+
+    @Override
+    public Observable<BaseResponse<Void>> postMess(String user_id, String memberType, String eContext) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class)
+                .postMess(user_id,memberType,eContext)
+                ;
     }
 }
