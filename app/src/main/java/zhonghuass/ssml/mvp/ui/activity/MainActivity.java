@@ -45,15 +45,13 @@ import zhonghuass.ssml.di.component.DaggerMainActivityComponent;
 import zhonghuass.ssml.di.module.MainActivityModule;
 import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.MainActivityContract;
+import zhonghuass.ssml.mvp.model.appbean.UserInfoBean;
 import zhonghuass.ssml.mvp.presenter.MainActivityPresenter;
 import zhonghuass.ssml.mvp.ui.fragment.CompanyFragment;
 import zhonghuass.ssml.mvp.ui.fragment.DialyFragment;
 import zhonghuass.ssml.mvp.ui.fragment.HomeFragment;
 import zhonghuass.ssml.mvp.ui.fragment.MycenterFragment;
-import zhonghuass.ssml.utils.Constants;
-import zhonghuass.ssml.utils.EventBusUtils;
-import zhonghuass.ssml.utils.FragmentUtils;
-import zhonghuass.ssml.utils.PrefUtils;
+import zhonghuass.ssml.utils.*;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 import static zhonghuass.ssml.utils.EventBusTags.ACTIVITY_FRAGMENT_REPLACE;
@@ -96,6 +94,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
     private DialyFragment dialyFragment;
     private MycenterFragment mycenterFragment;
     private WebSocketClient mSocketClient;
+    private UserInfoBean mUserInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -218,14 +217,13 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 changeFragment();
                 return true; //不返回图标不变色
             case R.id.bottom_menu4:
-
                 String member_id = PrefUtils.getString(MainActivity.this, Constants.USER_ID, "");
-                System.out.println("member_id!!!!!!"+member_id);
-                if(member_id.equals("")){
+                String member_type = "1";
+                if (member_id.equals("")) {
                     ArmsUtils.startActivity(LogInActivity.class);
-
-                }else {
-
+                } else {
+                    //请求查询我的数据统计接口
+                    mPresenter.getMyStatistics(member_id, member_type);
                     mReplace = 3;
                     changeFragment();
                     mycenterFragment.setData(1);
@@ -327,6 +325,7 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 break;
         }
     }
+
     private void init() {
         new Thread(new Runnable() {
             @Override
@@ -349,7 +348,6 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                         @Override
                         public void onMessage(String message) {
                             Log.d("picher_log", "接收消息" + message);
-
                         }
 
                         @Override
@@ -369,6 +367,31 @@ public class MainActivity extends BaseActivity<MainActivityPresenter> implements
                 }
             }
         }).start();
+
+
+    }
+
+    @Override
+    public void getStatisticsSuccess(UserInfoBean userInfoBean) {
+        if (userInfoBean != null) {
+            mUserInfo = (UserInfoBean) ACache.get(this).getAsObject(Constants.USERINFO);
+            if (mUserInfo == null) {
+                mUserInfo = new UserInfoBean();
+            }
+            mUserInfo.member_id = userInfoBean.member_id;
+            mUserInfo.member_type = userInfoBean.member_type;
+            mUserInfo.member_image = userInfoBean.member_image;//" : "用户头像
+            mUserInfo.amount_of_vermicelli = userInfoBean.amount_of_vermicelli;//
+            mUserInfo.amount_of_concern = userInfoBean.amount_of_concern;//" :
+            mUserInfo.amount_of_praise = userInfoBean.amount_of_praise;//" :
+            mUserInfo.content_image_text_num = userInfoBean.content_image_text_num == null ? "0" : userInfoBean.content_image_text_num;//" :
+            mUserInfo.content_video_num = userInfoBean.content_video_num == null ? "0" : userInfoBean.content_video_num;//" :
+            ACache.get(this).put(Constants.USERINFO, mUserInfo);
+            //通知我的页面刷新信息
+            EventMsg msg = new EventMsg();
+            msg.isShowInfo = true;
+            EventBusUtils.post(msg);
+        }
 
 
     }

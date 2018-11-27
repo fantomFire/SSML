@@ -43,7 +43,7 @@ public class MyInfoModel extends BaseModel implements MyInfoContract.Model {
     }
 
     @Override
-    public Observable<BaseResponse<List<UserInfoBean>>> updateInfo(HashMap<String, RequestBody> map, MultipartBody.Part parts) {
+    public Observable<ResponseBody> updateInfo(HashMap<String, RequestBody> map, MultipartBody.Part parts) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).updateMyInfo(map,parts);
 
     }

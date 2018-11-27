@@ -9,13 +9,19 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.library.layoutView.CircleImageView;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
@@ -26,10 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import zhonghuass.ssml.di.component.DaggerMycenterComponent;
 import zhonghuass.ssml.di.module.MycenterModule;
 import zhonghuass.ssml.mvp.EventMsg;
 import zhonghuass.ssml.mvp.contract.MycenterContract;
+import zhonghuass.ssml.mvp.model.appbean.UserInfoBean;
 import zhonghuass.ssml.mvp.presenter.MycenterPresenter;
 
 import zhonghuass.ssml.R;
@@ -39,6 +48,7 @@ import zhonghuass.ssml.mvp.ui.activity.MyFansActivity;
 import zhonghuass.ssml.mvp.ui.activity.MyInfoActivity;
 import zhonghuass.ssml.mvp.ui.activity.PicEditActivity;
 import zhonghuass.ssml.mvp.ui.adapter.ViewPagerAdapter;
+import zhonghuass.ssml.utils.ACache;
 import zhonghuass.ssml.utils.Constants;
 import zhonghuass.ssml.utils.EventBusUtils;
 import zhonghuass.ssml.utils.PrefUtils;
@@ -53,6 +63,8 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     ViewPager mViewPager;
     @BindView(R.id.iv_photo)
     CircleImageView mPhoto;
+    @BindView(R.id.tv_name)
+    TextView tvName;
     @BindView(R.id.iv_setting)
     TextView ivSetting;
     @BindView(R.id.ll_concern)
@@ -61,6 +73,12 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     LinearLayout llFans;
     @BindView(R.id.ll_good)
     LinearLayout llGood;
+    @BindView(R.id.tv_concern)
+    TextView tvConcern;
+    @BindView(R.id.tv_fans)
+    TextView tvFans;
+    @BindView(R.id.tv_good)
+    TextView tvGood;
     private List<Fragment> fragments = new ArrayList<>();
     private ViewPagerAdapter mAdapter;
     private String[] titles = {"图文", "视频"};
@@ -99,10 +117,49 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
         return inflater.inflate(R.layout.fragment_mycenter, container, false);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        initInfo();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBusUtils.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBusUtils.unregister(this);
+
+    }
+
+    private void initInfo() {
+        UserInfoBean mUserInfo = (UserInfoBean) ACache.get(getActivity()).getAsObject(Constants.USERINFO);
+        tvName.setText(mUserInfo.member_name);
+        Glide.with(this).load(mUserInfo.member_image).into(mPhoto);
+        tvConcern.setText(mUserInfo.amount_of_concern);
+        tvFans.setText(mUserInfo.amount_of_vermicelli);
+        tvGood.setText(mUserInfo.amount_of_praise);
+        tvConcern.setText(mUserInfo.amount_of_concern);
+
+        Log.e("--","photo： "+mUserInfo.member_image);
+        mTabLayout.getTabAt(0).setText("图文(" + mUserInfo.content_image_text_num + ")");
+        mTabLayout.getTabAt(1).setText("视频(" + mUserInfo.content_video_num + ")");
+    }
+
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-
         mPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArmsUtils.startActivity(MyInfoActivity.class);
+            }
+        });
+        tvName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArmsUtils.startActivity(MyInfoActivity.class);
@@ -172,6 +229,7 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
 
 
     }
+
     @Override
     public void setData(@Nullable Object data) {
         //通知图文模块加载
@@ -210,4 +268,10 @@ public class MycenterFragment extends BaseFragment<MycenterPresenter> implements
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showMInfo(EventMsg eventMsg) {
+        if (eventMsg != null && eventMsg.isShowInfo) {
+            initInfo();
+        }
+    }
 }

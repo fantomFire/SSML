@@ -1,6 +1,7 @@
 package zhonghuass.ssml.mvp;
 
 public class EventMsg {
+    public boolean isShowInfo;
     public boolean isShowNav;
     public int page = -1;
     public int tag;

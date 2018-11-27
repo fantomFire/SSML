@@ -59,6 +59,7 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
     private CustomCityPicker cityPicker;
     private Dialog cityPickerDialog;
     private List<LocalMedia> selectList = new ArrayList<>();
+    private UserInfoBean mUserInfo;
 
     @Override
     public void setupActivityComponent(@NonNull AppComponent appComponent) {
@@ -79,10 +80,10 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
     public void initData(@Nullable Bundle savedInstanceState) {
         initToolBar("编辑资料", true, "保存");
 
-        UserInfoBean mUserInfo = (UserInfoBean) ACache.get(this).getAsObject(Constants.USERINFO);
+        mUserInfo = (UserInfoBean) ACache.get(this).getAsObject(Constants.USERINFO);
         if (mUserInfo != null) {
-            Glide.with(this).load(mUserInfo.avatar).into(civPhoto);
-            etName.setText(mUserInfo.nickname);
+            Glide.with(this).load(mUserInfo.member_image).into(civPhoto);
+            etName.setText(mUserInfo.member_name);
             etMy.setText(mUserInfo.introduction);
             tvArea.setText(mUserInfo.provincie + "-" + mUserInfo.city + "-" + mUserInfo.area);
         }
@@ -117,7 +118,6 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.e("--", "输入：" + s);
                 tvNum.setText(s.length() + "/140");
             }
         });
@@ -235,7 +235,14 @@ public class MyInfoActivity extends MBaseActivity<MyInfoPresenter> implements My
 
         Toast.makeText(this, "修改成功！", Toast.LENGTH_SHORT).show();
         //存起来
-        ACache.get(this).put(Constants.USERINFO, userInfoBeans.get(0));
+        mUserInfo.member_name = userInfoBeans.get(0).nickname;//" : "用户名称
+        mUserInfo.member_image = userInfoBeans.get(0).avatar;//" : "用户头
+        Log.e("--","头像： "+userInfoBeans.get(0).avatar);
+        mUserInfo.introduction = userInfoBeans.get(0).introduction;
+        mUserInfo.provincie = userInfoBeans.get(0).provincie;
+        mUserInfo.city = userInfoBeans.get(0).city;
+        mUserInfo.area = userInfoBeans.get(0).area;
+        ACache.get(this).put(Constants.USERINFO, mUserInfo);
         //finish
         finish();
     }

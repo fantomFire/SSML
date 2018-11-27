@@ -117,6 +117,7 @@ public class ImageLayout1Fragment extends BaseFragment<ImageLayout1Presenter> im
         image1.setScaleType(ImageView.ScaleType.CENTER);
         image2.setScaleType(ImageView.ScaleType.CENTER);
 
+
         Glide.with(this)
                 .load(path1)
                 .into(image1);

@@ -51,9 +51,7 @@ public class PhotoPresenter extends BasePresenter<PhotoContract.Model, PhotoCont
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<List<PhotoBean>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<List<PhotoBean>> listBaseResponse) {
-                        System.out.println("~!~~~~~"+listBaseResponse.getStatus());
                         if(listBaseResponse.isSuccess()){
-
                             mRootView.setContent(listBaseResponse.getData());
                         }else if (listBaseResponse.getStatus().equals("201")) {
                             mRootView.notifystate();

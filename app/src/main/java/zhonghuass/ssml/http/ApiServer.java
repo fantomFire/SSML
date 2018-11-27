@@ -84,6 +84,7 @@ public interface ApiServer {
     Observable<BaseResponse<Void>> toForgetPassworldVerification(@Field("username") String mPhone,
                                                                  @Field("code") String mCode,
                                                                  @Field("type") String s);
+
     @FormUrlEncoded
     @POST("/Api/Login/forgetpwd")
     Observable<BaseResponse<Void>> toConfirModi(@Field("mobile") String phone
@@ -277,7 +278,11 @@ public interface ApiServer {
     //更新个人资料
     @Multipart
     @POST("/Api/Member/Editing")
-    Observable<BaseResponse<List<UserInfoBean>>> updateMyInfo(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file);
+    Observable<ResponseBody> updateMyInfo(@PartMap Map<String, RequestBody> map, @Part MultipartBody.Part file);
+
+    //获取用户数量统计
+    @GET("/Api/member/statistics")
+    Observable<BaseResponse<UserInfoBean>> getStatistics(@Query("member_id") String user_id, @Query("member_type") String member_type);
 
     @FormUrlEncoded
     @POST("/Api/Certification/auth")

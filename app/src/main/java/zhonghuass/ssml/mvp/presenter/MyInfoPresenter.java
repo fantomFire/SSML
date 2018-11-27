@@ -91,27 +91,56 @@ public class MyInfoPresenter extends BasePresenter<MyInfoContract.Model, MyInfoC
 //        }
 
 
+//        mModel.updateInfo(map, photoPart)
+//                .compose(RxUtils.applySchedulers(mRootView))
+//                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<UserInfoBean>>>(mErrorHandler) {
+//
+//                    @Override
+//                    public void onNext(BaseResponse<List<UserInfoBean>> userInfoBeans) {
+//
+//                        Log.e("--", "修改完毕。");
+//                        Log.e("--", "状态。" + userInfoBeans.getStatus());
+//                        Log.e("--", "消息。" + userInfoBeans.getMessage());
+//                        Log.e("--", "头像。" + userInfoBeans.getData().get(0).avatar);
+//                        Log.e("--", "用户信息。" + userInfoBeans.getData().get(0).toString());
+//                        mRootView.showUpdateSuccess(userInfoBeans.getData());
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable t) {
+//                        super.onError(t);
+//                        mRootView.showError();
+//                        Log.e("--", "修改问题：" + t);
+//                    }
+//                });
+
+
         mModel.updateInfo(map, photoPart)
-                .compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<BaseResponse<List<UserInfoBean>>>(mErrorHandler) {
-
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
                     @Override
-                    public void onNext(BaseResponse<List<UserInfoBean>> userInfoBeans) {
+                    public void onSubscribe(Disposable d) {
 
-
-                        Log.e("--","修改完毕。");
-                        Log.e("--","状态。"+userInfoBeans.getStatus());
-                        Log.e("--","消息。"+userInfoBeans.getMessage());
-                        Log.e("--","头像。"+userInfoBeans.getData().get(0).avatar);
-                        Log.e("--","用户信息。"+userInfoBeans.getData().get(0).toString());
-                        mRootView.showUpdateSuccess(userInfoBeans.getData());
                     }
 
                     @Override
-                    public void onError(Throwable t) {
-                        super.onError(t);
-                        mRootView.showError();
-                        Log.e("--","修改问题："+t);
+                    public void onNext(ResponseBody responseBody) {
+                        try {
+                            String mString = responseBody.string();
+                            Log.e("--", "JSON: " + mString);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
                     }
                 });
 
