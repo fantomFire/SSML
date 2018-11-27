@@ -11,4 +11,5 @@
     <string name="my_menu4">实名认证</string>
     <string name="my_menu5">帮助反馈</string>
     <string name="my_menu6">设置</string>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>
