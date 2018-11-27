@@ -79,14 +79,14 @@ public class DanymicFragment extends BaseFragment<DanymicPresenter> implements D
         initRecycleView();
         mViewCreated = true;
 
+
     }
-
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if(!hidden){
-            mPresenter.getDanymicData(member_id, member_type, page);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
 
+        if(isVisibleToUser&&mViewCreated){
+            mPresenter.getDanymicData(member_id, member_type, page);
         }
     }
 

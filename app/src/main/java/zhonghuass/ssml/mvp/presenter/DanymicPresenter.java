@@ -50,6 +50,7 @@ public class DanymicPresenter extends BasePresenter<DanymicContract.Model, Danym
                 .subscribe(new ErrorHandleSubscriber<BaseResponse<List<DanynimicBean>>>(mErrorHandler) {
                     @Override
                     public void onNext(BaseResponse<List<DanynimicBean>> listDamnymic) {
+                        System.out.println("listDamnymic"+listDamnymic.getStatus());
                         if(listDamnymic.isSuccess()){
 
                             mRootView.setContent(listDamnymic.getData());

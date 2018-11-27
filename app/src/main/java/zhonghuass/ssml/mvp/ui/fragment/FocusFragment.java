@@ -84,15 +84,12 @@ public class FocusFragment extends BaseFragment<FocusPresenter> implements Focus
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-
         super.setUserVisibleHint(isVisibleToUser);
+
         if(isVisibleToUser&&mViewCreated){
             mPresenter.getFocusData(member_id,member_type,page);
         }
-
     }
-
-
 
     private void initRecycleView() {
         focusAdapter = new FocusAdapter(getActivity(), mList);
