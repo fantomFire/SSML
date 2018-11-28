@@ -130,6 +130,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".mvp.ui.activity.SelectMBActivity" />
     </application>
 
 
